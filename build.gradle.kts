@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt") version kotlinVersion
     id("org.jetbrains.kotlin.plugin.noarg") version kotlinVersion
     id("java")
+    id("maven-publish")
 }
 
 val vertxVersion = "4.0.3"
