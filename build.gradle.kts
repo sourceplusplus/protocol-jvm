@@ -11,6 +11,9 @@ plugins {
 val vertxVersion = "4.0.3"
 val kotlinVersion = "1.5.10"
 
+group = "spp.protocol"
+version = "0.1.13"
+
 repositories {
     mavenCentral()
 }
