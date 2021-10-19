@@ -7,7 +7,7 @@ plugins {
     id("java")
 }
 
-val vertxVersion = "4.0.3"
+val vertxVersion = "4.1.5"
 val kotlinVersion = "1.5.10"
 
 repositories {
