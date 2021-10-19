@@ -85,7 +85,7 @@ tasks {
         doFirst {
             file("$buildDir/libs/protocol-jvm.jar").delete()
             file("$buildDir/libs/protocol-jvm-final.jar")
-                    .renameTo(file("$buildDir/libs/protocol-jvm.jar"))
+                .renameTo(file("$buildDir/libs/protocol-jvm.jar"))
         }
     }
     register<Jar>("mergeJars") {
