@@ -2,7 +2,7 @@ package com.sourceplusplus.protocol.artifact.exception
 
 import com.google.common.io.Resources
 import io.vertx.core.json.JsonObject
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -16,7 +16,6 @@ class JvmStackTraceTest {
             Resources.toString(Resources.getResource("serialized-service-exception.json"), Charsets.UTF_8)
         ).getString("cause")
         val stackTrace = JvmStackTrace.fromString(jsonObj)
-        println(stackTrace)
-        //BreakpointRemoved        Assert.assertNotNull(stackTrace)
+        assertNotNull(stackTrace)
     }
 }
