@@ -4,7 +4,6 @@ plugins {
     kotlin("plugin.serialization") version kotlinVersion
     kotlin("kapt") version kotlinVersion
     id("org.jetbrains.kotlin.plugin.noarg") version kotlinVersion
-    id("java")
     id("maven-publish")
 }
 
@@ -19,7 +18,9 @@ repositories {
 }
 
 kotlin {
-    jvm { }
+    jvm {
+        withJava()
+    }
     js {
         browser { }
     }
@@ -42,10 +43,13 @@ kotlin {
             dependencies {
                 implementation("io.vertx:vertx-core:$vertxVersion")
                 implementation("io.vertx:vertx-codegen:$vertxVersion")
+                implementation(files(".ext/vertx-service-discovery-4.0.3-SNAPSHOT.jar"))
+                implementation(files(".ext/vertx-service-proxy-4.0.2.jar"))
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.0")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.13.0")
                 implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
+                implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.0")
                 implementation("org.jooq:jooq:3.15.3")
             }
         }
@@ -68,20 +72,6 @@ kotlin {
 
 dependencies {
     "kapt"("io.vertx:vertx-codegen:$vertxVersion:processor")
-}
-
-tasks {
-    configure<SourceSetContainer> {
-        named("main") {
-            java.srcDir("$buildDir/generated/source/kapt/main")
-
-            dependencies {
-                implementation("io.vertx:vertx-core:$vertxVersion")
-                implementation("io.vertx:vertx-codegen:$vertxVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
-            }
-        }
-    }
 }
 
 tasks.register<Copy>("setupJsonMappers") {

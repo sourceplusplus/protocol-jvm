@@ -11,7 +11,7 @@ object EventBusUtil {
             var exceptionParams = exception.substringAfter("[")
             exceptionParams = exceptionParams.substringBefore("]")
             val exceptionMessage = exception.substringAfter("]: ").trim { it <= ' ' }
-            if (LiveInstrumentException::class.simpleName == exceptionType) {
+            if (LiveInstrumentException::class.java.simpleName == exceptionType) {
                 LiveInstrumentException(
                     LiveInstrumentException.ErrorType.valueOf(exceptionParams),
                     exceptionMessage
