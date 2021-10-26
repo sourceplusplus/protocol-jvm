@@ -18,6 +18,12 @@ repositories {
     mavenCentral()
 }
 
+configure<PublishingExtension> {
+    repositories {
+        maven("file://${System.getenv("HOME")}/.m2/repository")
+    }
+}
+
 kotlin {
     jvm {
         withJava()
