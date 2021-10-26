@@ -90,3 +90,7 @@ tasks.getByName("compileKotlinJvm").dependsOn("setupJsonMappers")
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
     annotation("kotlinx.serialization.Serializable")
 }
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
+}
