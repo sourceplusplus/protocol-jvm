@@ -7,11 +7,12 @@ plugins {
     id("maven-publish")
 }
 
-val vertxVersion = "4.0.3"
-val kotlinVersion = "1.5.10"
+val vertxVersion: String by project
+val kotlinVersion: String by project
+val protocolVersion: String by project
 
 group = "spp.protocol"
-version = "0.1.13"
+version = protocolVersion
 
 repositories {
     mavenCentral()
