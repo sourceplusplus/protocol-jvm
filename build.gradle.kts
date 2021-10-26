@@ -91,6 +91,10 @@ configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
     annotation("kotlinx.serialization.Serializable")
 }
 
+tasks.withType<JavaCompile> {
+    options.release.set(8)
+    sourceCompatibility = "1.8"
+}
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
