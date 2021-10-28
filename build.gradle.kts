@@ -56,7 +56,7 @@ kotlin {
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.13.0")
                 implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
                 implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.0")
-                implementation("org.jooq:jooq:3.15.3")
+                implementation("org.jooq:jooq:3.15.4")
             }
         }
         val jvmTest by getting {
