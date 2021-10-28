@@ -1,9 +1,8 @@
 plugins {
-    val kotlinVersion = "1.5.31"
-    kotlin("multiplatform") version kotlinVersion
-    kotlin("plugin.serialization") version kotlinVersion
-    kotlin("kapt") version kotlinVersion
-    id("org.jetbrains.kotlin.plugin.noarg") version kotlinVersion
+    kotlin("multiplatform")
+    kotlin("plugin.serialization")
+    kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.noarg")
     id("maven-publish")
 }
 
