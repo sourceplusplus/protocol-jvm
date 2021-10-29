@@ -5,7 +5,7 @@ package com.sourceplusplus.protocol.instrument.meter
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-enum class MetricType {
+enum class MeterType {
     COUNTER,
     GAUGE,
     HISTOGRAM

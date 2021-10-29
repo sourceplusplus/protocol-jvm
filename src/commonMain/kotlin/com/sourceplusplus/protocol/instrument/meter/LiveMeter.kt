@@ -15,7 +15,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LiveMeter(
     val meterName: String,
-    val metricType: MetricType,
+    val meterType: MeterType,
+    val metricValue: MetricValue,
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
