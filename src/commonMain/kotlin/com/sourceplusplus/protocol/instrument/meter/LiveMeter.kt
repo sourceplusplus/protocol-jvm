@@ -20,7 +20,7 @@ data class LiveMeter(
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
-    override val hitLimit: Int = 1,
+    override val hitLimit: Int = -1,
     override val id: String? = null,
     override val applyImmediately: Boolean = false,
     override val applied: Boolean = false,

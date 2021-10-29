@@ -5,6 +5,7 @@ import com.sourceplusplus.protocol.instrument.LiveInstrumentBatch
 import com.sourceplusplus.protocol.instrument.LiveSourceLocation
 import com.sourceplusplus.protocol.instrument.breakpoint.LiveBreakpoint
 import com.sourceplusplus.protocol.instrument.log.LiveLog
+import com.sourceplusplus.protocol.instrument.meter.LiveMeter
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.AsyncResult
@@ -28,7 +29,9 @@ interface LiveInstrumentService {
     fun getLiveInstruments(handler: Handler<AsyncResult<List<LiveInstrument>>>)
     fun getLiveBreakpoints(handler: Handler<AsyncResult<List<LiveBreakpoint>>>)
     fun getLiveLogs(handler: Handler<AsyncResult<List<LiveLog>>>)
+    fun getLiveMeters(handler: Handler<AsyncResult<List<LiveMeter>>>)
     fun clearLiveInstruments(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveBreakpoints(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveLogs(handler: Handler<AsyncResult<Boolean>>)
+    fun clearLiveMeters(handler: Handler<AsyncResult<Boolean>>)
 }

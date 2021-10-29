@@ -15,5 +15,9 @@ enum class LiveInstrumentEventType {
     LOG_ADDED,
     LOG_APPLIED,
     LOG_HIT,
-    LOG_REMOVED
+    LOG_REMOVED,
+
+    METER_ADDED,
+    METER_APPLIED,
+    METER_REMOVED;
 }

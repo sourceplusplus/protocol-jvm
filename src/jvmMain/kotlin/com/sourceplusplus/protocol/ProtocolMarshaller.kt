@@ -16,6 +16,7 @@ import com.sourceplusplus.protocol.instrument.LiveSourceLocation
 import com.sourceplusplus.protocol.instrument.breakpoint.LiveBreakpoint
 import com.sourceplusplus.protocol.instrument.breakpoint.event.LiveBreakpointHit
 import com.sourceplusplus.protocol.instrument.log.LiveLog
+import com.sourceplusplus.protocol.instrument.meter.LiveMeter
 import com.sourceplusplus.protocol.view.LiveViewSubscription
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
@@ -93,6 +94,7 @@ object ProtocolMarshaller {
         when (value) {
             is LiveBreakpoint -> valueObject.put("type", LiveInstrumentType.BREAKPOINT.name)
             is LiveLog -> valueObject.put("type", LiveInstrumentType.LOG.name)
+            is LiveMeter -> valueObject.put("type", LiveInstrumentType.METER.name)
             else -> throw UnsupportedOperationException("Live instrument: $value")
         }
         return valueObject
@@ -104,6 +106,8 @@ object ProtocolMarshaller {
             value.mapTo(LiveBreakpoint::class.java)
         } else if (value.getString("type") == "LOG") {
             value.mapTo(LiveLog::class.java)
+        } else if (value.getString("type") == "METER") {
+            value.mapTo(LiveMeter::class.java)
         } else {
             throw UnsupportedOperationException("Live instrument type: " + value.getString("type"))
         }
@@ -127,6 +131,16 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeLiveLog(value: JsonObject): LiveLog {
         return value.mapTo(LiveLog::class.java)
+    }
+
+    @JvmStatic
+    fun serializeLiveMeter(value: LiveMeter): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveMeter(value: JsonObject): LiveMeter {
+        return value.mapTo(LiveMeter::class.java)
     }
 
     @JvmStatic
