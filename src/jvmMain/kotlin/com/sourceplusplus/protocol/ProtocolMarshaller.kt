@@ -36,7 +36,6 @@ import java.util.*
 object ProtocolMarshaller {
     init {
         try {
-            //todo: verify if this init is needed
             DatabindCodec.mapper().registerModule(GuavaModule())
             DatabindCodec.mapper().registerModule(Jdk8Module())
             DatabindCodec.mapper().registerModule(JavaTimeModule())

@@ -1,6 +1,6 @@
 plugins {
     kotlin("multiplatform")
-    kotlin("plugin.serialization")
+//    kotlin("plugin.serialization")
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.noarg")
     id("maven-publish")
@@ -9,6 +9,7 @@ plugins {
 val vertxVersion: String by project
 val kotlinVersion: String by project
 val protocolVersion: String by project
+val jacksonVersion: String by project
 
 group = "spp.protocol"
 version = protocolVersion
@@ -53,11 +54,11 @@ kotlin {
                 implementation("io.vertx:vertx-codegen:$vertxVersion")
                 implementation(files(".ext/vertx-service-discovery-4.0.3-SNAPSHOT.jar"))
                 implementation(files(".ext/vertx-service-proxy-4.0.2.jar"))
-                implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0")
-                implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.0")
-                implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.13.0")
-                implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
-                implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.0")
+                implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+                implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+                implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
+                implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+                implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
                 implementation("org.jooq:jooq:3.15.4")
             }
         }
@@ -66,12 +67,12 @@ kotlin {
                 implementation("io.vertx:vertx-core:$vertxVersion")
                 implementation("com.google.guava:guava:31.0.1-jre")
                 implementation("junit:junit:4.13.2")
-                implementation("com.fasterxml.jackson.core:jackson-core:2.13.0")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
-                implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0")
-                implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.0")
-                implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.13.0")
-                implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
+                implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+                implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+                implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+                implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+                implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
+                implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
             }
         }
