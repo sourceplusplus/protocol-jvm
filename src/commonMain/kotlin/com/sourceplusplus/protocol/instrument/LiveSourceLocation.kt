@@ -13,6 +13,8 @@ import kotlin.jvm.JvmOverloads
 data class LiveSourceLocation @JvmOverloads constructor(
     val source: String,
     val line: Int,
+    val service: String? = null,
+    val serviceInstance: String? = null,
     val commitId: String? = null,
     val fileChecksum: String? = null
 ) : Comparable<LiveSourceLocation> {
