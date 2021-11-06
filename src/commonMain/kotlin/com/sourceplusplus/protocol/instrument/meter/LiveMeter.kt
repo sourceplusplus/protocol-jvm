@@ -30,6 +30,8 @@ data class LiveMeter(
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.METER
 
+    fun toMetricId(): String = "spp_" + meterType.name.lowercase() + "_" + id!!.replace("-", "_")
+
     /**
      * Specify explicitly so Kotlin doesn't override.
      */
