@@ -6,4 +6,4 @@
 
 ## What is this?
 
-This project holds common communication models and functionality for [Source++](https://github.com/sourceplusplus/live-platform), the open-source live coding platform.
+This project holds common communication models for [Source++](https://github.com/sourceplusplus/live-platform), the open-source live coding platform.
