@@ -24,7 +24,6 @@
     },
     "logs": [],
     "meta": {
-      "appUuid": "null",
       "rootArtifactQualifiedName": "spp.example.webapp.controller.WebappController.userList()",
       "operationName": "/users",
       "totalTracePercent": "100.0"
@@ -67,7 +66,6 @@
       }
     ],
     "meta": {
-      "appUuid": "null",
       "rootArtifactQualifiedName": "spp.example.webapp.controller.WebappController.userList()",
       "operationName": "{GET}/users",
       "totalTracePercent": "100.0"
@@ -95,7 +93,6 @@
     "tags": {},
     "logs": [],
     "meta": {
-      "appUuid": "null",
       "rootArtifactQualifiedName": "spp.example.webapp.controller.WebappController.userList()",
       "operationName": "getUsers()",
       "totalTracePercent": "100.0"
@@ -127,7 +124,6 @@
     },
     "logs": [],
     "meta": {
-      "appUuid": "null",
       "rootArtifactQualifiedName": "spp.example.webapp.controller.WebappController.userList()",
       "operationName": "H2/JDBI/PreparedStatement/executeQuery",
       "totalTracePercent": "0.0"
@@ -159,7 +155,6 @@
     },
     "logs": [],
     "meta": {
-      "appUuid": "null",
       "rootArtifactQualifiedName": "spp.example.webapp.controller.WebappController.userList()",
       "operationName": "H2/JDBI/Connection/commit",
       "totalTracePercent": "0.0"
@@ -191,7 +186,6 @@
     },
     "logs": [],
     "meta": {
-      "appUuid": "null",
       "rootArtifactQualifiedName": "spp.example.webapp.controller.WebappController.userList()",
       "operationName": "H2/JDBI/Connection/commit",
       "totalTracePercent": "0.0"

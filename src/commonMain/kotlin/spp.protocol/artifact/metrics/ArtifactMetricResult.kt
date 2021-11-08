@@ -13,7 +13,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ArtifactMetricResult(
-    val appUuid: String,
     val artifactQualifiedName: String,
     val timeFrame: QueryTimeFrame,
     val focus: MetricType,

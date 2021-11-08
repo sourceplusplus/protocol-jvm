@@ -12,7 +12,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TraceResult(
-    val appUuid: String,
     val artifactQualifiedName: String,
     val artifactSimpleName: String? = null,
     val orderType: TraceOrderType,
@@ -26,7 +25,6 @@ data class TraceResult(
 ) {
     fun mergeWith(traceResult: TraceResult): TraceResult {
         var result: TraceResult = traceResult
-        require(appUuid == result.appUuid) { "Mismatching application uuid" }
         require(artifactQualifiedName == result.artifactQualifiedName) { "Mismatching artifact qualified name" }
         require(orderType == result.orderType) { "Mismatching order type" }
         require(step == result.step) { "Mismatching step" }

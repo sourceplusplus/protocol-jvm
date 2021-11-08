@@ -14,7 +14,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class EndpointResult(
-    val appUuid: String,
     val timeFrame: QueryTimeFrame,
     @Serializable(with = Serializers.InstantKSerializer::class)
     val start: Instant,
