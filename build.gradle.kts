@@ -1,8 +1,8 @@
 plugins {
     kotlin("multiplatform")
-//    kotlin("plugin.serialization")
+    kotlin("plugin.serialization")
     kotlin("kapt")
-    id("org.jetbrains.kotlin.plugin.noarg")
+    //id("org.jetbrains.kotlin.plugin.noarg")
     id("maven-publish")
 }
 
@@ -89,9 +89,9 @@ tasks.register<Copy>("setupJsonMappers") {
 }
 tasks.getByName("compileKotlinJvm").dependsOn("setupJsonMappers")
 
-configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
-    annotation("kotlinx.serialization.Serializable")
-}
+//configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
+//    annotation("kotlinx.serialization.Serializable")
+//}
 
 tasks.withType<JavaCompile> {
     options.release.set(8)
