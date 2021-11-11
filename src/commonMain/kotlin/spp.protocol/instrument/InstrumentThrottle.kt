@@ -15,5 +15,6 @@ data class InstrumentThrottle(
 ) {
     companion object {
         val DEFAULT: InstrumentThrottle = InstrumentThrottle(1, ThrottleStep.SECOND)
+        //todo: no throttle
     }
 }

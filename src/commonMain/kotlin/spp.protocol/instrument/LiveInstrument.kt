@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 abstract class LiveInstrument {
     abstract val location: LiveSourceLocation
     abstract val condition: String?
-    abstract val expiresAt: Long?
+    abstract val expiresAt: Long? //todo: can just use -1 like hitLimit?
     abstract val hitLimit: Int
     abstract val id: String?
     abstract val type: LiveInstrumentType
