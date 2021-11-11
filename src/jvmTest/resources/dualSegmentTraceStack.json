@@ -46,7 +46,7 @@
     "serviceInstanceName": null,
     "startTime": 1605487330854,
     "endTime": 1605487330855,
-    "endpointName": "{GET}/users",
+    "endpointName": "GET:/users",
     "artifactQualifiedName": null,
     "type": "Entry",
     "peer": "",
@@ -67,7 +67,7 @@
     ],
     "meta": {
       "rootArtifactQualifiedName": "spp.example.webapp.controller.WebappController.userList()",
-      "operationName": "{GET}/users",
+      "operationName": "GET:/users",
       "totalTracePercent": "100.0"
     }
   },
