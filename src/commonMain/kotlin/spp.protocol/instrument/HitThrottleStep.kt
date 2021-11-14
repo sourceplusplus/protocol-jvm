@@ -1,0 +1,12 @@
+package spp.protocol.instrument
+
+enum class HitThrottleStep(private val millis: Int) {
+    SECOND(1000),
+    MINUTE(1000 * 60),
+    HOUR(1000 * 60 * 60),
+    DAY(1000 * 60 * 60 * 24);
+
+    fun toMillis(duration: Long): Long {
+        return millis * duration
+    }
+}
