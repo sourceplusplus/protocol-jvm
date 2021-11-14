@@ -3,9 +3,9 @@ package spp.protocol.instrument
 import kotlinx.datetime.Clock
 import kotlin.jvm.Transient
 
-class HitThrottle(private val limit: Int, step: HitThrottleStep) {
+class HitThrottle(private val limit: Int, step: ThrottleStep) {
 
-    private val step: HitThrottleStep
+    private val step: ThrottleStep
 
     @Transient
     private var lastReset: Long = -1
