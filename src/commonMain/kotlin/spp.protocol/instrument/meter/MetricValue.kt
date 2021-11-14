@@ -10,6 +10,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MetricValue(
     val valueType: MetricValueType,
-    val number: String? = null,
-    val supplier: String? = null
+    val value: String
 )
