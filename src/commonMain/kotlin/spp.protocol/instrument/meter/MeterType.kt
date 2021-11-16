@@ -6,7 +6,7 @@ package spp.protocol.instrument.meter
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 enum class MeterType {
-    COUNTER,
+    COUNT,
     GAUGE,
     HISTOGRAM
 }
