@@ -1,11 +1,11 @@
 package spp.protocol.instrument.meter
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import spp.protocol.instrument.InstrumentThrottle
 import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.LiveInstrumentType
 import spp.protocol.instrument.LiveSourceLocation
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 
 /**
  * todo: description.
@@ -30,7 +30,8 @@ data class LiveMeter(
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.METER
 
-    fun toMetricId(): String = "spp_" + meterType.name.lowercase() + "_" + id!!.replace("-", "_")
+    fun toMetricIdWithoutPrefix(): String = meterType.name.lowercase() + "_" + id!!.replace("-", "_")
+    fun toMetricId(): String = "spp_" + toMetricIdWithoutPrefix()
 
     /**
      * Specify explicitly so Kotlin doesn't override.
