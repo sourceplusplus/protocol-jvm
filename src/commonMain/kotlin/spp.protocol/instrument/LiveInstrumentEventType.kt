@@ -19,5 +19,6 @@ enum class LiveInstrumentEventType {
 
     METER_ADDED,
     METER_APPLIED,
+    METER_UPDATED,
     METER_REMOVED;
 }
