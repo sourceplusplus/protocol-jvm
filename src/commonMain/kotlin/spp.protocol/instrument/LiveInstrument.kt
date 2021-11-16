@@ -20,7 +20,7 @@ abstract class LiveInstrument {
     abstract val applyImmediately: Boolean
     abstract val applied: Boolean
     abstract val pending: Boolean
-    abstract val throttle: InstrumentThrottle
+    abstract val throttle: InstrumentThrottle?
     abstract val meta: Map<String, @Contextual Any>
 
     override fun equals(other: Any?): Boolean {
