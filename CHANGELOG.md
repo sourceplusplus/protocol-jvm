@@ -1,3 +1,6 @@
+# 0.2.2
+- Added serialization utility classes
+
 # 0.2.1
 - Added global variable scope
 
