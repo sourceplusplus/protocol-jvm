@@ -1,3 +1,6 @@
+# 0.2.3
+- Added TCP frame parser
+
 # 0.2.2
 - Added serialization utility classes
 
