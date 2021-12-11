@@ -16,7 +16,6 @@ version = protocolVersion
 
 repositories {
     mavenCentral()
-    //jcenter()
 }
 
 configure<PublishingExtension> {
