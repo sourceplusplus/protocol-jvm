@@ -3,6 +3,13 @@ package spp.protocol.probe.command
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import io.vertx.core.json.Json
+import kotlinx.serialization.encodeToString
+import spp.protocol.instrument.LiveInstrument
+import spp.protocol.instrument.LiveSourceLocation
+import spp.protocol.instrument.breakpoint.LiveBreakpoint
+import spp.protocol.instrument.log.LiveLog
+import spp.protocol.instrument.meter.LiveMeter
+import spp.protocol.util.KSerializers
 import java.io.Serializable
 import java.util.stream.Collectors
 
@@ -17,8 +24,18 @@ data class LiveInstrumentContext(
     val liveInstruments: List<String>
         get() = instruments.toList()
 
-    fun addLiveInstrument(liveInstrument: Any): LiveInstrumentContext {
-        instruments.add(Json.encode(liveInstrument))
+    fun addLiveInstrument(liveInstrument: LiveInstrument): LiveInstrumentContext {
+        when (liveInstrument) {
+            is LiveBreakpoint -> {
+                instruments.add(KSerializers.json.encodeToString(liveInstrument))
+            }
+            is LiveLog -> {
+                instruments.add(KSerializers.json.encodeToString(LiveLog.serializer(), liveInstrument))
+            }
+            is LiveMeter -> {
+                instruments.add(KSerializers.json.encodeToString(LiveMeter.serializer(), liveInstrument))
+            }
+        }
         return this
     }
 
@@ -36,8 +53,8 @@ data class LiveInstrumentContext(
         return instruments.stream().map { Json.decodeValue(it, clazz) }.collect(Collectors.toList())
     }
 
-    fun addLocation(location: Any) {
-        locations.add(Json.encode(location))
+    fun addLocation(location: LiveSourceLocation) {
+        locations.add(KSerializers.json.encodeToString(LiveSourceLocation.serializer(), location))
     }
 
     fun <T> getLocationsCast(clazz: Class<T>): List<T> {

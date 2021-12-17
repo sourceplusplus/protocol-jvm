@@ -2,10 +2,17 @@ package spp.protocol
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import io.vertx.core.Vertx
+import io.vertx.core.buffer.Buffer
+import io.vertx.core.eventbus.MessageCodec
+import io.vertx.core.json.Json
+import io.vertx.core.json.JsonObject
+import io.vertx.core.json.jackson.DatabindCodec
+import kotlinx.datetime.Instant
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
@@ -17,14 +24,8 @@ import spp.protocol.instrument.breakpoint.LiveBreakpoint
 import spp.protocol.instrument.breakpoint.event.LiveBreakpointHit
 import spp.protocol.instrument.log.LiveLog
 import spp.protocol.instrument.meter.LiveMeter
+import spp.protocol.util.KSerializers
 import spp.protocol.view.LiveViewSubscription
-import io.vertx.core.Vertx
-import io.vertx.core.buffer.Buffer
-import io.vertx.core.eventbus.MessageCodec
-import io.vertx.core.json.Json
-import io.vertx.core.json.JsonObject
-import io.vertx.core.json.jackson.DatabindCodec
-import kotlinx.datetime.Instant
 import java.util.*
 
 /**
@@ -39,9 +40,13 @@ object ProtocolMarshaller {
             DatabindCodec.mapper().registerModule(GuavaModule())
             DatabindCodec.mapper().registerModule(Jdk8Module())
             DatabindCodec.mapper().registerModule(JavaTimeModule())
-            DatabindCodec.mapper().registerModule(KotlinModule())
             DatabindCodec.mapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
+
+            val module = SimpleModule()
+            module.addSerializer(Instant::class.java, KSerializers.KotlinInstantSerializer())
+            module.addDeserializer(Instant::class.java, KSerializers.KotlinInstantDeserializer())
+            DatabindCodec.mapper().registerModule(module)
         } catch (ignore: Throwable) {
         }
     }
@@ -88,7 +93,13 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun serializeLiveInstrument(value: LiveInstrument): JsonObject {
-        val valueObject = JsonObject(Json.encode(value))
+        val valueObject = when (value) {
+            is LiveBreakpoint -> JsonObject(KSerializers.json.encodeToString(LiveBreakpoint.serializer(), value))
+            is LiveLog -> JsonObject(KSerializers.json.encodeToString(LiveLog.serializer(), value))
+            is LiveMeter -> JsonObject(KSerializers.json.encodeToString(LiveMeter.serializer(), value))
+            else -> throw IllegalArgumentException("Unknown LiveInstrument type: ${value::class.java.name}")
+        }
+
         //force persistence of "type" as graalvm's native-image drops it for some reason
         when (value) {
             is LiveBreakpoint -> valueObject.put("type", LiveInstrumentType.BREAKPOINT.name)
@@ -102,11 +113,11 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeLiveInstrument(value: JsonObject): LiveInstrument {
         return if (value.getString("type") == "BREAKPOINT") {
-            value.mapTo(LiveBreakpoint::class.java)
+            KSerializers.json.decodeFromString(LiveBreakpoint.serializer(), value.toString())
         } else if (value.getString("type") == "LOG") {
-            value.mapTo(LiveLog::class.java)
+            KSerializers.json.decodeFromString(LiveLog.serializer(), value.toString())
         } else if (value.getString("type") == "METER") {
-            value.mapTo(LiveMeter::class.java)
+            KSerializers.json.decodeFromString(LiveMeter.serializer(), value.toString())
         } else {
             throw UnsupportedOperationException("Live instrument type: " + value.getString("type"))
         }
@@ -149,7 +160,7 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun deserializeLiveSourceLocation(value: JsonObject): LiveSourceLocation {
-        return value.mapTo(LiveSourceLocation::class.java)
+        return kotlinx.serialization.json.Json.decodeFromString(LiveSourceLocation.serializer(), value.toString())
     }
 
     @JvmStatic

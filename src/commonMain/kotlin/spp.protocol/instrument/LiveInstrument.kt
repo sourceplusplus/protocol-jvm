@@ -2,6 +2,7 @@ package spp.protocol.instrument
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonClassDiscriminator
 
 /**
  * todo: description.
@@ -10,6 +11,7 @@ import kotlinx.serialization.Serializable
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
+@JsonClassDiscriminator("type")
 abstract class LiveInstrument {
     abstract val location: LiveSourceLocation
     abstract val condition: String?
