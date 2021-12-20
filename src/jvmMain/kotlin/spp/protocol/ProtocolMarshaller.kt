@@ -2,10 +2,10 @@ package spp.protocol
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.eventbus.MessageCodec
@@ -25,7 +25,6 @@ import spp.protocol.instrument.breakpoint.LiveBreakpoint
 import spp.protocol.instrument.breakpoint.event.LiveBreakpointHit
 import spp.protocol.instrument.log.LiveLog
 import spp.protocol.instrument.meter.LiveMeter
-import spp.protocol.util.KSerializers
 import spp.protocol.view.LiveViewSubscription
 import java.util.*
 
@@ -41,13 +40,9 @@ object ProtocolMarshaller {
             DatabindCodec.mapper().registerModule(GuavaModule())
             DatabindCodec.mapper().registerModule(Jdk8Module())
             DatabindCodec.mapper().registerModule(JavaTimeModule())
+            DatabindCodec.mapper().registerModule(KotlinModule())
             DatabindCodec.mapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
-
-            val module = SimpleModule()
-            module.addSerializer(Instant::class.java, KSerializers.KotlinInstantSerializer())
-            module.addDeserializer(Instant::class.java, KSerializers.KotlinInstantDeserializer())
-            DatabindCodec.mapper().registerModule(module)
         } catch (ignore: Throwable) {
         }
     }
