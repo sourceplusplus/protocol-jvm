@@ -11,7 +11,6 @@ import kotlinx.datetime.Instant
  * @since 0.1.0
  */
 object KSerializers {
-
     class KotlinInstantSerializer : JsonSerializer<Instant>() {
         override fun serialize(value: Instant, jgen: JsonGenerator, provider: SerializerProvider) =
             jgen.writeNumber(value.toEpochMilliseconds())
