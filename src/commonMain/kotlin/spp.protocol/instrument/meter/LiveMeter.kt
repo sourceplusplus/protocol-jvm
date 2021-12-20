@@ -1,7 +1,6 @@
 package spp.protocol.instrument.meter
 
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import spp.protocol.instrument.InstrumentThrottle
 import spp.protocol.instrument.LiveInstrument
@@ -14,7 +13,6 @@ import spp.protocol.instrument.LiveSourceLocation
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-@SerialName("METER")
 data class LiveMeter(
     val meterName: String,
     val meterType: MeterType,

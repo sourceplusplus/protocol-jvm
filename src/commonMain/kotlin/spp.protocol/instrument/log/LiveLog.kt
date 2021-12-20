@@ -5,7 +5,6 @@ import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.LiveInstrumentType
 import spp.protocol.instrument.LiveSourceLocation
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,7 +14,6 @@ import kotlinx.serialization.Serializable
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-@SerialName("LOG")
 data class LiveLog(
     val logFormat: String,
     val logArguments: List<String> = emptyList(),

@@ -1,9 +1,7 @@
 package spp.protocol.instrument.breakpoint
 
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonClassDiscriminator
 import spp.protocol.instrument.InstrumentThrottle
 import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.LiveInstrumentType
@@ -16,8 +14,6 @@ import spp.protocol.instrument.LiveSourceLocation
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-@SerialName("BREAKPOINT")
-@JsonClassDiscriminator("type")
 data class LiveBreakpoint(
     override val location: LiveSourceLocation,
     override val condition: String? = null,

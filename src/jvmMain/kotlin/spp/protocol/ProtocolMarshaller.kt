@@ -94,13 +94,7 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun serializeLiveInstrument(value: LiveInstrument): JsonObject {
-        val valueObject = when (value) {
-            is LiveBreakpoint -> JsonObject(KSerializers.json.encodeToString(LiveBreakpoint.serializer(), value))
-            is LiveLog -> JsonObject(KSerializers.json.encodeToString(LiveLog.serializer(), value))
-            is LiveMeter -> JsonObject(KSerializers.json.encodeToString(LiveMeter.serializer(), value))
-            else -> throw IllegalArgumentException("Unknown LiveInstrument type: ${value::class.java.name}")
-        }
-
+        val valueObject = JsonObject(Json.encode(value))
         //force persistence of "type" as graalvm's native-image drops it for some reason
         when (value) {
             is LiveBreakpoint -> valueObject.put("type", LiveInstrumentType.BREAKPOINT.name)
@@ -114,11 +108,11 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeLiveInstrument(value: JsonObject): LiveInstrument {
         return if (value.getString("type") == "BREAKPOINT") {
-            KSerializers.json.decodeFromString(LiveBreakpoint.serializer(), value.toString())
+            value.mapTo(LiveBreakpoint::class.java)
         } else if (value.getString("type") == "LOG") {
-            KSerializers.json.decodeFromString(LiveLog.serializer(), value.toString())
+            value.mapTo(LiveLog::class.java)
         } else if (value.getString("type") == "METER") {
-            KSerializers.json.decodeFromString(LiveMeter.serializer(), value.toString())
+            value.mapTo(LiveMeter::class.java)
         } else {
             throw UnsupportedOperationException("Live instrument type: " + value.getString("type"))
         }
@@ -161,7 +155,7 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun deserializeLiveSourceLocation(value: JsonObject): LiveSourceLocation {
-        return kotlinx.serialization.json.Json.decodeFromString(LiveSourceLocation.serializer(), value.toString())
+        return value.mapTo(LiveSourceLocation::class.java)
     }
 
     @JvmStatic
