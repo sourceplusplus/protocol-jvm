@@ -1,3 +1,7 @@
+# 0.2.4
+- Added `LiveService.getSelf`
+- Moved auth models from platform to protocol
+
 # 0.2.3
 - Added TCP frame parser
 
