@@ -16,6 +16,7 @@ import kotlinx.datetime.Instant
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
+import spp.protocol.developer.SelfInfo
 import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.LiveInstrumentBatch
 import spp.protocol.instrument.LiveInstrumentType
@@ -176,6 +177,16 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeLiveViewSubscription(value: JsonObject): LiveViewSubscription {
         return value.mapTo(LiveViewSubscription::class.java)
+    }
+
+    @JvmStatic
+    fun serializeSelfInfo(value: SelfInfo): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeSelfInfo(value: JsonObject): SelfInfo {
+        return value.mapTo(SelfInfo::class.java)
     }
 
     @JvmStatic

@@ -2,6 +2,7 @@ package spp.protocol
 
 import spp.protocol.SourceMarkerServices.Utilize.LIVE_INSTRUMENT
 import spp.protocol.SourceMarkerServices.Utilize.LIVE_VIEW
+import spp.protocol.service.LiveService
 import spp.protocol.service.live.LiveInstrumentService
 import spp.protocol.service.live.LiveViewService
 import spp.protocol.service.logging.LogCountIndicatorService
@@ -16,6 +17,7 @@ import spp.protocol.service.tracing.LocalTracingService
 object SourceMarkerServices {
 
     object Instance {
+        var liveService: LiveService? = null
         var liveInstrument: LiveInstrumentService? = null
         var liveView: LiveViewService? = null
         var localTracing: LocalTracingService? = null
@@ -23,14 +25,15 @@ object SourceMarkerServices {
     }
 
     object Status {
-        const val MARKER_CONNECTED = "sm.status.marker-connected"
+        const val MARKER_CONNECTED = "spp.status.marker-connected"
     }
 
     object Utilize {
-        const val LIVE_VIEW = "sm.service.live-view"
-        const val LIVE_INSTRUMENT = "sm.service.live-instrument"
-        const val LOCAL_TRACING = "sm.service.local-tracing"
-        const val LOG_COUNT_INDICATOR = "sm.service.log-count-indicator"
+        const val LIVE_SERVICE = "spp.service.live-service"
+        const val LIVE_INSTRUMENT = "spp.service.live-instrument"
+        const val LIVE_VIEW = "spp.service.live-view"
+        const val LOCAL_TRACING = "spp.service.local-tracing"
+        const val LOG_COUNT_INDICATOR = "spp.service.log-count-indicator"
     }
 
     object Provide {
