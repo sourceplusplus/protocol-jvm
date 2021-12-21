@@ -17,6 +17,7 @@ import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.developer.SelfInfo
+import spp.protocol.general.Service
 import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.LiveInstrumentBatch
 import spp.protocol.instrument.LiveInstrumentType
@@ -176,6 +177,16 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeSelfInfo(value: JsonObject): SelfInfo {
         return value.mapTo(SelfInfo::class.java)
+    }
+
+    @JvmStatic
+    fun serializeService(value: Service): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeService(value: JsonObject): Service {
+        return value.mapTo(Service::class.java)
     }
 
     @JvmStatic
