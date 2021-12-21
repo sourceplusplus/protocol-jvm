@@ -3,9 +3,8 @@ package spp.protocol.developer
 import kotlinx.serialization.Serializable
 
 /**
- * todo: description.
+ * Represents a developer.
  *
- * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
