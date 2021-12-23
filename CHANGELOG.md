@@ -1,3 +1,6 @@
+# 0.2.5
+- Added `LiveService.getServices`
+
 # 0.2.4
 - Added `LiveService.getSelf`
 - Moved auth models from platform to protocol
