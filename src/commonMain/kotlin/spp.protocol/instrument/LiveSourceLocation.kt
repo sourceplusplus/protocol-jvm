@@ -14,9 +14,9 @@ data class LiveSourceLocation @JvmOverloads constructor(
     val source: String,
     val line: Int,
     val service: String? = null,
-    val serviceInstance: String? = null,
-    val commitId: String? = null,
-    val fileChecksum: String? = null
+    val serviceInstance: String? = null, //todo: fully impl
+    val commitId: String? = null, //todo: impl
+    val fileChecksum: String? = null //todo: impl
 ) : Comparable<LiveSourceLocation> {
 
     override fun compareTo(other: LiveSourceLocation): Int {
