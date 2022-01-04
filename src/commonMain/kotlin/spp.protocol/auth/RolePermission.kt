@@ -36,9 +36,11 @@ enum class RolePermission(val manager: Boolean = true) {
     ADD_LIVE_BREAKPOINT(false),
     ADD_LIVE_LOG(false),
     ADD_LIVE_METER(false),
+    ADD_LIVE_SPAN(false),
     GET_LIVE_INSTRUMENTS(false),
     GET_LIVE_BREAKPOINTS(false),
     GET_LIVE_LOGS(false),
     GET_LIVE_METERS(false),
+    GET_LIVE_SPANS(false),
     REMOVE_LIVE_INSTRUMENT(false)
 }

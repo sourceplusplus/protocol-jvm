@@ -26,11 +26,12 @@ import spp.protocol.instrument.breakpoint.LiveBreakpoint
 import spp.protocol.instrument.breakpoint.event.LiveBreakpointHit
 import spp.protocol.instrument.log.LiveLog
 import spp.protocol.instrument.meter.LiveMeter
+import spp.protocol.instrument.span.LiveSpan
 import spp.protocol.view.LiveViewSubscription
 import java.util.*
 
 /**
- * todo: description.
+ * Used for marshalling and unmarshalling protocol messages.
  *
  * @since 0.2.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
@@ -91,11 +92,13 @@ object ProtocolMarshaller {
     @JvmStatic
     fun serializeLiveInstrument(value: LiveInstrument): JsonObject {
         val valueObject = JsonObject(Json.encode(value))
+        //todo: don't use graalvm anymore, remove this
         //force persistence of "type" as graalvm's native-image drops it for some reason
         when (value) {
             is LiveBreakpoint -> valueObject.put("type", LiveInstrumentType.BREAKPOINT.name)
             is LiveLog -> valueObject.put("type", LiveInstrumentType.LOG.name)
             is LiveMeter -> valueObject.put("type", LiveInstrumentType.METER.name)
+            is LiveSpan -> valueObject.put("type", LiveInstrumentType.SPAN.name)
             else -> throw UnsupportedOperationException("Live instrument: $value")
         }
         return valueObject
@@ -109,6 +112,8 @@ object ProtocolMarshaller {
             value.mapTo(LiveLog::class.java)
         } else if (value.getString("type") == "METER") {
             value.mapTo(LiveMeter::class.java)
+        } else if (value.getString("type") == "SPAN") {
+            value.mapTo(LiveSpan::class.java)
         } else {
             throw UnsupportedOperationException("Live instrument type: " + value.getString("type"))
         }
@@ -142,6 +147,16 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeLiveMeter(value: JsonObject): LiveMeter {
         return value.mapTo(LiveMeter::class.java)
+    }
+
+    @JvmStatic
+    fun serializeLiveSpan(value: LiveSpan): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveSpan(value: JsonObject): LiveSpan {
+        return value.mapTo(LiveSpan::class.java)
     }
 
     @JvmStatic

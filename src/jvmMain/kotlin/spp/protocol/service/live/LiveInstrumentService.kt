@@ -10,6 +10,7 @@ import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.AsyncResult
 import io.vertx.core.Handler
+import spp.protocol.instrument.span.LiveSpan
 
 /**
  * todo: description.
@@ -30,8 +31,10 @@ interface LiveInstrumentService {
     fun getLiveBreakpoints(handler: Handler<AsyncResult<List<LiveBreakpoint>>>)
     fun getLiveLogs(handler: Handler<AsyncResult<List<LiveLog>>>)
     fun getLiveMeters(handler: Handler<AsyncResult<List<LiveMeter>>>)
+    fun getLiveSpans(handler: Handler<AsyncResult<List<LiveSpan>>>)
     fun clearLiveInstruments(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveBreakpoints(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveLogs(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveMeters(handler: Handler<AsyncResult<Boolean>>)
+    fun clearLiveSpans(handler: Handler<AsyncResult<Boolean>>)
 }
