@@ -8,7 +8,7 @@ import spp.protocol.instrument.LiveInstrumentType
 import spp.protocol.instrument.LiveSourceLocation
 
 /**
- * todo: description.
+ * A live meter represents a metric that is measured continuously over time.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */

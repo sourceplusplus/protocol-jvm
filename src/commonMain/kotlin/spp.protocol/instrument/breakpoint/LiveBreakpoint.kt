@@ -8,7 +8,7 @@ import spp.protocol.instrument.LiveInstrumentType
 import spp.protocol.instrument.LiveSourceLocation
 
 /**
- * todo: description.
+ * A live breakpoint represents a non-breaking breakpoint.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
