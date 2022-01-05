@@ -1,5 +1,6 @@
 # 0.2.5
 - Added `LiveService.getServices`
+- Added `LiveSpan`
 
 # 0.2.4
 - Added `LiveService.getSelf`
