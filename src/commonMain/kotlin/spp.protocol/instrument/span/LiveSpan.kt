@@ -14,7 +14,7 @@ import spp.protocol.instrument.LiveSourceLocation
  */
 @Serializable
 data class LiveSpan(
-    val name: String,
+    val operationName: String,
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
