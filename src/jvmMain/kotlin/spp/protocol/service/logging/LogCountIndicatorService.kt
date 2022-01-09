@@ -4,7 +4,7 @@ import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.AsyncResult
 import io.vertx.core.Handler
-import io.vertx.core.json.JsonArray
+import io.vertx.core.json.JsonObject
 import kotlinx.datetime.Instant
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.instrument.DurationStep
@@ -25,7 +25,7 @@ interface LogCountIndicatorService {
         start: Instant,
         stop: Instant,
         step: DurationStep,
-        handler: Handler<AsyncResult<List<JsonArray>>>
+        handler: Handler<AsyncResult<JsonObject>>
     )
 
     fun getLogCountSummary(handler: Handler<AsyncResult<LogCountSummary>>)
