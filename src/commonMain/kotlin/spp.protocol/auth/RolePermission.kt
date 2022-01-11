@@ -42,5 +42,10 @@ enum class RolePermission(val manager: Boolean = true) {
     GET_LIVE_LOGS(false),
     GET_LIVE_METERS(false),
     GET_LIVE_SPANS(false),
-    REMOVE_LIVE_INSTRUMENT(false)
+    REMOVE_LIVE_INSTRUMENT(false),
+
+    //views
+    VIEW_ACTIVITY(false),
+    VIEW_TRACES(false),
+    VIEW_LOGS(false)
 }
