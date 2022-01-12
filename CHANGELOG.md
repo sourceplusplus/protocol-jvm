@@ -1,3 +1,8 @@
+# 0.2.6
+- Added live view role permissions
+- Added `LogCountIndicatorService.getPatternOccurrences`
+- Dependency upgrades
+
 # 0.2.5
 - Added `LiveService.getServices`
 - Added `LiveSpan`
