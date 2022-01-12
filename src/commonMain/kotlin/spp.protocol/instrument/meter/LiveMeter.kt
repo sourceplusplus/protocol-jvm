@@ -17,6 +17,7 @@ data class LiveMeter(
     val meterName: String,
     val meterType: MeterType,
     val metricValue: MetricValue,
+    val metricConfig: Map<String, @Contextual Any> = emptyMap(),
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
