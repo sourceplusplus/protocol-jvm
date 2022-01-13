@@ -1,6 +1,7 @@
 package spp.protocol.view
 
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.instrument.LiveSourceLocation
 
 /**
@@ -13,7 +14,7 @@ import spp.protocol.instrument.LiveSourceLocation
 data class LiveViewSubscription(
     val subscriptionId: String? = null,
     val entityIds: List<String>,
-    val artifactQualifiedName: String, //todo: remove, use artifactLocation
+    val artifactQualifiedName: ArtifactQualifiedName, //todo: remove, use artifactLocation
     val artifactLocation: LiveSourceLocation,
     val liveViewConfig: LiveViewConfig
 )
