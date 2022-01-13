@@ -9,6 +9,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class MetricValue(
-    val valueType: MetricValueType,
+    val valueType: MetricValueType, //todo: can put mode in here instead of LiveMeter.meta
     val value: String
 )
