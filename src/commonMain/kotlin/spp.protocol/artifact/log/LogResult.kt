@@ -3,6 +3,7 @@ package spp.protocol.artifact.log
 import spp.protocol.Serializers
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactQualifiedName
 
 /**
  * todo: description.
@@ -12,7 +13,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class LogResult(
-    val artifactQualifiedName: String? = null,
+    val artifactQualifiedName: ArtifactQualifiedName? = null,
     val orderType: LogOrderType,
     @Serializable(with = Serializers.InstantKSerializer::class)
     val timestamp: Instant,

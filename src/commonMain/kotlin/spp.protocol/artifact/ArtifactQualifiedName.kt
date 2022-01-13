@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ArtifactQualifiedName(
     val identifier: String,
-    val commitId: String,
+    val commitId: String? = null,
     @Serializable(with = ArtifactTypeSerializer::class)
     val type: ArtifactType,
     val lineNumber: Int? = null,
