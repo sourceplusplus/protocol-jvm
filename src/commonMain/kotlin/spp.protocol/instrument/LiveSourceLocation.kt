@@ -12,7 +12,7 @@ import kotlin.jvm.JvmOverloads
 @Serializable
 data class LiveSourceLocation @JvmOverloads constructor(
     val source: String,
-    val line: Int,
+    val line: Int = -1,
     val service: String? = null,
     val serviceInstance: String? = null, //todo: fully impl
     val commitId: String? = null, //todo: impl
