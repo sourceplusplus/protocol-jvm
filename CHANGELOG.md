@@ -1,5 +1,6 @@
 # 0.2.8
 - Replaced `artifactQualifiedName` string with type `ArtifactQualifiedName`
+- Dependency upgrades
 
 # 0.2.6
 - Added live view role permissions
