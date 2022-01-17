@@ -4,6 +4,7 @@ import spp.protocol.Serializers
 import spp.protocol.artifact.QueryTimeFrame
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactQualifiedName
 
 /**
  * todo: description.
@@ -13,7 +14,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ArtifactMetricResult(
-    val artifactQualifiedName: String,
+    val artifactQualifiedName: ArtifactQualifiedName,
     val timeFrame: QueryTimeFrame,
     val focus: MetricType,
     @Serializable(with = Serializers.InstantKSerializer::class)

@@ -3,6 +3,7 @@ package spp.protocol.artifact.trace
 import spp.protocol.Serializers
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactQualifiedName
 
 /**
  * todo: description.
@@ -24,7 +25,7 @@ data class TraceSpan(
     @Serializable(with = Serializers.InstantKSerializer::class)
     val endTime: Instant,
     val endpointName: String? = null,
-    val artifactQualifiedName: String? = null,
+    val artifactQualifiedName: ArtifactQualifiedName? = null,
     val type: String,
     val peer: String? = null,
     val component: String? = null,

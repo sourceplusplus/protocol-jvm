@@ -3,6 +3,7 @@ package spp.protocol.artifact.trace
 import spp.protocol.Serializers
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactQualifiedName
 
 /**
  * todo: description.
@@ -12,7 +13,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TraceResult(
-    val artifactQualifiedName: String,
+    val artifactQualifiedName: ArtifactQualifiedName,
     val artifactSimpleName: String? = null,
     val orderType: TraceOrderType,
     @Serializable(with = Serializers.InstantKSerializer::class)

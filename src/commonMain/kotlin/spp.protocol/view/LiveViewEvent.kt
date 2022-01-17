@@ -1,6 +1,7 @@
 package spp.protocol.view
 
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactQualifiedName
 
 /**
  * todo: description.
@@ -11,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LiveViewEvent(
     val entityId: String,
-    val artifactQualifiedName: String,
+    val artifactQualifiedName: ArtifactQualifiedName,
     val timeBucket: String,
     val viewConfig: LiveViewConfig,
     val metricsData: String, //todo: type out
