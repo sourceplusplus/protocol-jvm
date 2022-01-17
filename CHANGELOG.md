@@ -1,4 +1,4 @@
-# 0.2.7
+# 0.2.8
 - Replaced `artifactQualifiedName` string with type `ArtifactQualifiedName`
 
 # 0.2.6
