@@ -42,6 +42,7 @@ object ProtocolMarshaller {
             DatabindCodec.mapper().registerModule(KotlinModule())
             DatabindCodec.mapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
+            DatabindCodec.mapper().enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
         } catch (ignore: Throwable) {
         }
     }
