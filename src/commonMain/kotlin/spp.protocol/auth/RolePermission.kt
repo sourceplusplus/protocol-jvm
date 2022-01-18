@@ -45,6 +45,9 @@ enum class RolePermission(val manager: Boolean = true) {
     REMOVE_LIVE_INSTRUMENT(false),
 
     //views
+    ADD_LIVE_VIEW_SUBSCRIPTION(false),
+    REMOVE_LIVE_VIEW_SUBSCRIPTION(false),
+    GET_LIVE_VIEW_SUBSCRIPTIONS(false),
     VIEW_ACTIVITY(false),
     VIEW_TRACES(false),
     VIEW_LOGS(false)
