@@ -51,11 +51,13 @@ object ArtifactNameUtils {
     }
 
     fun getShortFunctionSignature(qualifiedName: String): String {
-        return getFunctionSignature(qualifiedName).replace("\\B\\w+(\\.)".toRegex(), "$1")
+        return getFunctionSignature(qualifiedName.substringBefore("#"))
+            .replace("\\B\\w+(\\.)".toRegex(), "$1")
     }
 
     fun getFunctionSignature(qualifiedName: String): String {
-        val withoutClassName = qualifiedName.replace(getQualifiedClassName(qualifiedName)!!, "")
+        val withoutClassName = qualifiedName.substringBefore("#")
+            .replace(getQualifiedClassName(qualifiedName.substringBefore("#"))!!, "")
         return withoutClassName.substring(
             withoutClassName.substring(0, withoutClassName.indexOf("(")).lastIndexOf("?") + 2
         )
