@@ -1,10 +1,10 @@
 package spp.protocol.service.live
 
-import spp.protocol.view.LiveViewSubscription
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.AsyncResult
 import io.vertx.core.Handler
+import spp.protocol.view.LiveViewSubscription
 
 /**
  * todo: description.
@@ -17,5 +17,6 @@ import io.vertx.core.Handler
 interface LiveViewService {
     fun addLiveViewSubscription(subscription: LiveViewSubscription, handler: Handler<AsyncResult<LiveViewSubscription>>)
     fun removeLiveViewSubscription(subscriptionId: String, handler: Handler<AsyncResult<LiveViewSubscription>>)
+    fun getLiveViewSubscriptions(handler: Handler<AsyncResult<List<LiveViewSubscription>>>)
     fun clearLiveViewSubscriptions(handler: Handler<AsyncResult<List<LiveViewSubscription>>>)
 }
