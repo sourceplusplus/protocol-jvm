@@ -1,5 +1,6 @@
 # 0.2.8
 - Replaced `artifactQualifiedName` string with type `ArtifactQualifiedName`
+- Added `LiveViewService.getLiveViewSubscriptions`
 - Dependency upgrades
 
 # 0.2.6
