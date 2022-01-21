@@ -7,6 +7,5 @@ enum class ProcessorAddress(val address: String) {
     LIVE_AUDIT_PROCESSOR("sw.processor.live-audit"),
     BREAKPOINT_HIT("spp.provider.status.breakpoint-hit"),
     LOG_HIT("spp.provider.status.log-hit"),
-    VIEW_SUBSCRIPTION_EVENT("spp.provider.status.view-subscription-event"),
     SET_LOG_PUBLISH_RATE_LIMIT("spp.provider.setting.log-publish-rate-limit");
 }
