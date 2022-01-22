@@ -1,15 +1,18 @@
 package spp.protocol.service.live
 
+import io.vertx.codegen.annotations.ProxyGen
+import io.vertx.codegen.annotations.VertxGen
+import io.vertx.core.AsyncResult
+import io.vertx.core.Handler
+import io.vertx.core.json.JsonObject
+import kotlinx.datetime.Instant
+import spp.protocol.instrument.DurationStep
 import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.LiveInstrumentBatch
 import spp.protocol.instrument.LiveSourceLocation
 import spp.protocol.instrument.breakpoint.LiveBreakpoint
 import spp.protocol.instrument.log.LiveLog
 import spp.protocol.instrument.meter.LiveMeter
-import io.vertx.codegen.annotations.ProxyGen
-import io.vertx.codegen.annotations.VertxGen
-import io.vertx.core.AsyncResult
-import io.vertx.core.Handler
 import spp.protocol.instrument.span.LiveSpan
 
 /**
@@ -37,4 +40,13 @@ interface LiveInstrumentService {
     fun clearLiveLogs(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveMeters(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveSpans(handler: Handler<AsyncResult<Boolean>>)
+
+    fun setupLiveMeter(liveMeter: LiveMeter, handler: Handler<AsyncResult<JsonObject>>)
+    fun getLiveMeterMetrics(
+        liveMeter: LiveMeter,
+        start: Instant,
+        stop: Instant,
+        step: DurationStep,
+        handler: Handler<AsyncResult<JsonObject>>
+    )
 }

@@ -24,6 +24,7 @@ import spp.protocol.instrument.breakpoint.event.LiveBreakpointHit
 import spp.protocol.instrument.log.LiveLog
 import spp.protocol.instrument.meter.LiveMeter
 import spp.protocol.instrument.span.LiveSpan
+import spp.protocol.platform.client.ActiveProbe
 import spp.protocol.view.LiveViewSubscription
 import java.util.*
 
@@ -200,6 +201,16 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeService(value: JsonObject): Service {
         return value.mapTo(Service::class.java)
+    }
+
+    @JvmStatic
+    fun serializeActiveProbe(value: ActiveProbe): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeActiveProbe(value: JsonObject): ActiveProbe {
+        return value.mapTo(ActiveProbe::class.java)
     }
 
     @JvmStatic
