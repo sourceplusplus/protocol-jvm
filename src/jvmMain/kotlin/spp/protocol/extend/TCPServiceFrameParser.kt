@@ -11,7 +11,8 @@ import io.vertx.core.net.NetSocket
 import io.vertx.ext.bridge.BridgeEventType
 import io.vertx.ext.eventbus.bridge.tcp.impl.protocol.FrameHelper
 import spp.protocol.error.*
-import spp.protocol.error.LiveInstrumentException.ErrorType
+import spp.protocol.service.error.LiveInstrumentException
+import spp.protocol.service.error.LiveInstrumentException.ErrorType
 
 class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<AsyncResult<JsonObject>> {
 
@@ -58,13 +59,17 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
             } else {
                 val body = frame.getValue("body")
                 if (body is JsonObject) {
-                    if (body.fieldNames().size == 1 && body.containsKey("value")) {
-                        //todo: understand why can't just re-send body like below
-                        vertx.eventBus()
-                            .send("local." + frame.getString("address"), body.getValue("value"))
+                    if (body.getString("message")?.startsWith("EventBusException:") == true) {
+                        handleErrorFrame(body.put("address", frame.getString("address")))
                     } else {
-                        vertx.eventBus()
-                            .send("local." + frame.getString("address"), body)
+                        if (body.fieldNames().size == 1 && body.containsKey("value")) {
+                            //todo: understand why can't just re-send body like below
+                            vertx.eventBus()
+                                .send("local." + frame.getString("address"), body.getValue("value"))
+                        } else {
+                            vertx.eventBus()
+                                .send("local." + frame.getString("address"), body)
+                        }
                     }
                 } else {
                     vertx.eventBus()
@@ -82,7 +87,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
     private fun handleErrorFrame(frame: JsonObject) {
         if (frame.getString("message")?.startsWith("EventBusException:") == true) {
             val rawFailure = frame.getString("rawFailure")
-            val failureCode = frame.getInteger("failureCode")
+            val failureCode = frame.getInteger("failureCode") ?: 500
             val error = ReplyException(
                 ReplyFailure.RECIPIENT_FAILURE,
                 failureCode,

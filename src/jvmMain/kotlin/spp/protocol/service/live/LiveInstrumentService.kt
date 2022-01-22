@@ -40,6 +40,7 @@ interface LiveInstrumentService {
     fun clearLiveLogs(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveMeters(handler: Handler<AsyncResult<Boolean>>)
     fun clearLiveSpans(handler: Handler<AsyncResult<Boolean>>)
+    fun clearAllLiveInstruments(handler: Handler<AsyncResult<Boolean>>)
 
     fun setupLiveMeter(liveMeter: LiveMeter, handler: Handler<AsyncResult<JsonObject>>)
     fun getLiveMeterMetrics(

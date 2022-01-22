@@ -1,6 +1,6 @@
 package spp.protocol.platform.error
 
-import spp.protocol.probe.error.LiveInstrumentException
+import spp.protocol.service.error.LiveInstrumentException
 
 object EventBusUtil {
 

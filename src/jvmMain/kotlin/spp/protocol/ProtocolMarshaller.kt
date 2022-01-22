@@ -17,6 +17,7 @@ import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.developer.SelfInfo
+import spp.protocol.service.error.LiveInstrumentException
 import spp.protocol.general.Service
 import spp.protocol.instrument.*
 import spp.protocol.instrument.breakpoint.LiveBreakpoint
@@ -226,6 +227,7 @@ object ProtocolMarshaller {
     @JvmStatic
     fun setupCodecs(vertx: Vertx) {
         vertx.eventBus().registerDefaultCodec(LiveBreakpointHit::class.java, ProtocolMessageCodec())
+        vertx.eventBus().registerDefaultCodec(LiveInstrumentException::class.java, ProtocolMessageCodec())
     }
 
     class ProtocolMessageCodec<T> : MessageCodec<T, T> {
