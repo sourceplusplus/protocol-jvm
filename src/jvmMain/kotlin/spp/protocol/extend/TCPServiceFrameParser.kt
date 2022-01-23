@@ -10,7 +10,10 @@ import io.vertx.core.json.JsonObject
 import io.vertx.core.net.NetSocket
 import io.vertx.ext.bridge.BridgeEventType
 import io.vertx.ext.eventbus.bridge.tcp.impl.protocol.FrameHelper
-import spp.protocol.error.*
+import spp.protocol.error.AccessDenied
+import spp.protocol.error.JWTVerificationException
+import spp.protocol.error.MissingRemoteException
+import spp.protocol.service.error.InstrumentAccessDenied
 import spp.protocol.service.error.LiveInstrumentException
 import spp.protocol.service.error.LiveInstrumentException.ErrorType
 
@@ -99,12 +102,12 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                 .substringBefore("[")
             val exceptionParams = causeMessage.substringAfter("[").substringBefore("]")
             val exceptionMessage = causeMessage.substringAfter("]: ").trimEnd()
-            if (exceptionType == "LiveInstrumentException") {
-                error.initCause(
+            when (exceptionType) {
+                "LiveInstrumentException" -> error.initCause(
                     LiveInstrumentException(ErrorType.valueOf(exceptionParams), exceptionMessage)
                 )
-            } else {
-                TODO()
+                "InstrumentAccessDenied" -> error.initCause(InstrumentAccessDenied(exceptionParams))
+                else -> TODO()
             }
             vertx.eventBus()
                 .send("local." + frame.getString("address"), error)
