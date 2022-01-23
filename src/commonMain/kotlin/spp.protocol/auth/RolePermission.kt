@@ -43,6 +43,7 @@ enum class RolePermission(val manager: Boolean = true) {
     GET_LIVE_METERS(false),
     GET_LIVE_SPANS(false),
     REMOVE_LIVE_INSTRUMENT(false),
+    CLEAR_ALL_LIVE_INSTRUMENTS(false),
 
     //views
     ADD_LIVE_VIEW_SUBSCRIPTION(false),
@@ -50,5 +51,23 @@ enum class RolePermission(val manager: Boolean = true) {
     GET_LIVE_VIEW_SUBSCRIPTIONS(false),
     VIEW_ACTIVITY(false),
     VIEW_TRACES(false),
-    VIEW_LOGS(false)
+    VIEW_LOGS(false);
+
+    companion object {
+        fun fromString(s: String): RolePermission? {
+            val sb = StringBuilder()
+            for (i in s.indices) {
+                val c = s[i]
+                if (c.isUpperCase()) {
+                    if (i > 0) {
+                        sb.append('_')
+                    }
+                    sb.append(c.lowercase())
+                } else {
+                    sb.append(c)
+                }
+            }
+            return values().firstOrNull { it.name.equals(sb.toString(), true) }
+        }
+    }
 }

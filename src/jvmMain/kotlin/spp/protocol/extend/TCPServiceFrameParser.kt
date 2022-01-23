@@ -10,12 +10,14 @@ import io.vertx.core.json.JsonObject
 import io.vertx.core.net.NetSocket
 import io.vertx.ext.bridge.BridgeEventType
 import io.vertx.ext.eventbus.bridge.tcp.impl.protocol.FrameHelper
+import spp.protocol.auth.RolePermission
 import spp.protocol.error.AccessDenied
 import spp.protocol.error.JWTVerificationException
 import spp.protocol.error.MissingRemoteException
 import spp.protocol.service.error.InstrumentAccessDenied
 import spp.protocol.service.error.LiveInstrumentException
 import spp.protocol.service.error.LiveInstrumentException.ErrorType
+import spp.protocol.service.error.PermissionAccessDenied
 
 class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<AsyncResult<JsonObject>> {
 
@@ -107,6 +109,9 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                     LiveInstrumentException(ErrorType.valueOf(exceptionParams), exceptionMessage)
                 )
                 "InstrumentAccessDenied" -> error.initCause(InstrumentAccessDenied(exceptionParams))
+                "PermissionAccessDenied" -> error.initCause(
+                    PermissionAccessDenied(RolePermission.valueOf(exceptionParams))
+                )
                 else -> TODO()
             }
             vertx.eventBus()
