@@ -46,12 +46,21 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                     deliveryOptions
                 ).onComplete {
                     if (it.succeeded()) {
-                        FrameHelper.sendFrame(
-                            BridgeEventType.SEND.name.toLowerCase(),
-                            frame.getString("replyAddress"),
-                            JsonObject.mapFrom(it.result().body()),
-                            socket
-                        )
+                        if (it.result().body() is JsonObject) {
+                            FrameHelper.sendFrame(
+                                BridgeEventType.SEND.name.toLowerCase(),
+                                frame.getString("replyAddress"),
+                                it.result().body() as JsonObject,
+                                socket
+                            )
+                        } else {
+                            FrameHelper.sendFrame(
+                                BridgeEventType.SEND.name.toLowerCase(),
+                                frame.getString("replyAddress"),
+                                JsonObject.mapFrom(it.result().body()),
+                                socket
+                            )
+                        }
                     } else {
                         FrameHelper.sendFrame(
                             BridgeEventType.SEND.name.toLowerCase(),
