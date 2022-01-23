@@ -6,6 +6,7 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyException
 import io.vertx.core.eventbus.ReplyFailure
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.net.NetSocket
 import io.vertx.ext.bridge.BridgeEventType
@@ -50,7 +51,21 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                             FrameHelper.sendFrame(
                                 BridgeEventType.SEND.name.toLowerCase(),
                                 frame.getString("replyAddress"),
-                                it.result().body() as JsonObject,
+                                it.result().body(),
+                                socket
+                            )
+                        } else if (it.result().body() is JsonArray) {
+                            FrameHelper.sendFrame(
+                                BridgeEventType.SEND.name.toLowerCase(),
+                                frame.getString("replyAddress"),
+                                it.result().body(),
+                                socket
+                            )
+                        } else if (it.result().body() is Boolean) {
+                            FrameHelper.sendFrame(
+                                BridgeEventType.SEND.name.toLowerCase(),
+                                frame.getString("replyAddress"),
+                                it.result().body(),
                                 socket
                             )
                         } else {
