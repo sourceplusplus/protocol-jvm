@@ -2,7 +2,6 @@ package spp.protocol.auth
 
 enum class RolePermission(val manager: Boolean = true) {
     RESET(true),
-//    CLEAR_LIVE_INSTRUMENTS(true),
 
     //devs
     ADD_DEVELOPER(true),
