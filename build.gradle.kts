@@ -8,11 +8,11 @@ plugins {
 
 val vertxVersion: String by project
 val kotlinVersion: String by project
-val protocolVersion: String by project
+val projectVersion: String by project
 val jacksonVersion: String by project
 
 group = "spp.protocol"
-version = protocolVersion
+version = projectVersion
 
 repositories {
     mavenCentral()
