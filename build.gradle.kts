@@ -49,7 +49,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.vertx:vertx-core:$vertxVersion")
-                implementation("io.vertx:vertx-codegen:4.1.5")
+                implementation("io.vertx:vertx-codegen:4.2.4")
                 implementation("io.vertx:vertx-tcp-eventbus-bridge:$vertxVersion")
                 //implementation(files(".ext/vertx-service-discovery-4.0.3-SNAPSHOT.jar"))
                 implementation("io.vertx:vertx-service-proxy:4.1.5")
