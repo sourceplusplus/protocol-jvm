@@ -22,7 +22,7 @@ enum class PlatformAddress(val address: String) {
     LIVE_SPAN_APPLIED("spp.platform.status.live-span-applied"),
     LIVE_SPANS("spp.platform.status.live-spans"),
 
-    //MARKER_CONNECTED("spp.status.marker-connected"),
+    MARKER_CONNECTED("spp.status.marker-connected"),
     MARKER_DISCONNECTED("spp.platform.status.marker-disconnected"),
     GENERATE_PROBE("spp.platform.generate-probe");
 }

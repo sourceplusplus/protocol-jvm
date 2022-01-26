@@ -10,13 +10,6 @@ data class LiveInstrumentCommand @ConstructorProperties("commandType", "context"
     var context: LiveInstrumentContext
 ) : Serializable {
 
-    data class Response(
-        var isSuccess: Boolean,
-        var fault: String? = null,
-        var timestamp: Long,
-        var context: LiveInstrumentContext
-    ) : Serializable
-
     enum class CommandType {
         ADD_LIVE_INSTRUMENT,
         REMOVE_LIVE_INSTRUMENT

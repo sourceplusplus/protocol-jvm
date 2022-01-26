@@ -27,6 +27,4 @@ interface LogCountIndicatorService {
         step: DurationStep,
         handler: Handler<AsyncResult<JsonObject>>
     )
-
-    fun getLogCountSummary(handler: Handler<AsyncResult<LogCountSummary>>)
 }

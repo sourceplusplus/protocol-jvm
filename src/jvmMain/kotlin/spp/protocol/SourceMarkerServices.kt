@@ -24,10 +24,6 @@ object SourceMarkerServices {
         var logCountIndicator: LogCountIndicatorService? = null
     }
 
-    object Status {
-        const val MARKER_CONNECTED = "spp.status.marker-connected"
-    }
-
     object Utilize {
         const val LIVE_SERVICE = "spp.service.live-service"
         const val LIVE_INSTRUMENT = "spp.service.live-instrument"

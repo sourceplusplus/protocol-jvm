@@ -6,7 +6,6 @@ import io.vertx.core.json.Json
 import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.LiveSourceLocation
 import java.io.Serializable
-import java.util.stream.Collectors
 
 //todo: treat this as a regular data class
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -34,15 +33,7 @@ data class LiveInstrumentContext(
         return this
     }
 
-    fun <T> getLiveInstrumentsCast(clazz: Class<T>): List<T> {
-        return instruments.stream().map { Json.decodeValue(it, clazz) }.collect(Collectors.toList())
-    }
-
     fun addLocation(location: LiveSourceLocation) {
         locations.add(Json.encode(location))
-    }
-
-    fun <T> getLocationsCast(clazz: Class<T>): List<T> {
-        return locations.stream().map { Json.decodeValue(it, clazz) }.collect(Collectors.toList())
     }
 }
