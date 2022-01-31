@@ -52,7 +52,7 @@ kotlin {
                 implementation("io.vertx:vertx-core:$vertxVersion")
                 implementation("io.vertx:vertx-codegen:$vertxVersion")
                 implementation("io.vertx:vertx-tcp-eventbus-bridge:$vertxVersion")
-                implementation("io.vertx:vertx-service-proxy:4.1.5")
+                implementation("io.vertx:vertx-service-proxy:4.2.4")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
