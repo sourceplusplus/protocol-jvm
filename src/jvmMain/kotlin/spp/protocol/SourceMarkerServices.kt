@@ -23,7 +23,6 @@ import spp.protocol.service.LiveService
 import spp.protocol.service.live.LiveInstrumentService
 import spp.protocol.service.live.LiveViewService
 import spp.protocol.service.logging.LogCountIndicatorService
-import spp.protocol.service.tracing.LocalTracingService
 
 /**
  * todo: description.
@@ -37,7 +36,6 @@ object SourceMarkerServices {
         var liveService: LiveService? = null
         var liveInstrument: LiveInstrumentService? = null
         var liveView: LiveViewService? = null
-        var localTracing: LocalTracingService? = null
         var logCountIndicator: LogCountIndicatorService? = null
     }
 
@@ -45,7 +43,6 @@ object SourceMarkerServices {
         const val LIVE_SERVICE = "spp.service.live-service"
         const val LIVE_INSTRUMENT = "spp.service.live-instrument"
         const val LIVE_VIEW = "spp.service.live-view"
-        const val LOCAL_TRACING = "spp.service.local-tracing"
         const val LOG_COUNT_INDICATOR = "spp.service.log-count-indicator"
     }
 
