@@ -1,9 +1,9 @@
 package spp.protocol.artifact.log
 
-import spp.protocol.Serializers
-import spp.protocol.artifact.exception.LiveStackTrace
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.Serializers
+import spp.protocol.artifact.exception.LiveStackTrace
 
 /**
  * todo: description.
@@ -22,7 +22,12 @@ data class Log(
     val exception: LiveStackTrace? = null,
     val arguments: List<String> = listOf()
 ) {
+    @Deprecated("Use toFormattedString() instead.", ReplaceWith("toFormattedString()"))
     fun getFormattedMessage(): String {
+        return toFormattedMessage()
+    }
+
+    fun toFormattedMessage(): String {
         var arg = 0
         var formattedMessage = content
         while (formattedMessage.contains("{}")) {
