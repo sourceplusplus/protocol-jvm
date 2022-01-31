@@ -28,5 +28,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LiveInstrumentEvent(
     val eventType: LiveInstrumentEventType,
-    val data: String
+    val data: String //todo: type out
 )
