@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.noarg")
     id("maven-publish")
+    id("com.diffplug.spotless")
 }
 
 val vertxVersion: String by project
@@ -97,4 +98,11 @@ tasks.withType<JavaCompile> {
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+spotless {
+    kotlin {
+        target("**/*.kt")
+        licenseHeaderFile(file("LICENSE-HEADER.txt"))
+    }
 }
