@@ -22,14 +22,8 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.json.JsonObject
 import kotlinx.datetime.Instant
-import spp.protocol.instrument.DurationStep
-import spp.protocol.instrument.LiveInstrument
-import spp.protocol.instrument.LiveInstrumentBatch
-import spp.protocol.instrument.LiveSourceLocation
-import spp.protocol.instrument.breakpoint.LiveBreakpoint
-import spp.protocol.instrument.log.LiveLog
+import spp.protocol.instrument.*
 import spp.protocol.instrument.meter.LiveMeter
-import spp.protocol.instrument.span.LiveSpan
 
 /**
  * todo: description.
@@ -46,17 +40,10 @@ interface LiveInstrumentService {
     fun removeLiveInstruments(location: LiveSourceLocation): Future<List<LiveInstrument>>
     fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
     fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
-    fun getLiveInstruments(): Future<List<LiveInstrument>>
-    fun getLiveBreakpoints(): Future<List<LiveBreakpoint>>
-    fun getLiveLogs(): Future<List<LiveLog>>
-    fun getLiveMeters(): Future<List<LiveMeter>>
-    fun getLiveSpans(): Future<List<LiveSpan>>
-    fun clearLiveInstruments(): Future<Boolean>
-    fun clearLiveBreakpoints(): Future<Boolean>
-    fun clearLiveLogs(): Future<Boolean>
-    fun clearLiveMeters(): Future<Boolean>
-    fun clearLiveSpans(): Future<Boolean>
-    fun clearAllLiveInstruments(): Future<Boolean>
+    fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
+    fun getLiveInstruments(type: LiveInstrumentType?): Future<List<LiveInstrument>>
+    fun clearLiveInstruments(type: LiveInstrumentType?): Future<Boolean>
+    fun clearAllLiveInstruments(type: LiveInstrumentType?): Future<Boolean>
 
     fun setupLiveMeter(liveMeter: LiveMeter): Future<JsonObject>
     fun getLiveMeterMetrics(
