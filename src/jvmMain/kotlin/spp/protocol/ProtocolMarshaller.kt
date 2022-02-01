@@ -44,6 +44,9 @@ import spp.protocol.instrument.breakpoint.event.LiveBreakpointHit
 import spp.protocol.instrument.log.LiveLog
 import spp.protocol.instrument.meter.LiveMeter
 import spp.protocol.instrument.span.LiveSpan
+import spp.protocol.probe.command.CommandType
+import spp.protocol.probe.command.LiveInstrumentCommand
+import spp.protocol.probe.command.LiveInstrumentContext
 import spp.protocol.status.ActiveProbe
 import spp.protocol.view.LiveViewSubscription
 import java.util.*
@@ -241,6 +244,26 @@ object ProtocolMarshaller {
             typedInstruments.add(deserializeLiveInstrument(rawInstruments.getJsonObject(i)))
         }
         return LiveInstrumentBatch(typedInstruments)
+    }
+
+    @JvmStatic
+    fun serializeLiveInstrumentCommand(value: LiveInstrumentCommand): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveInstrumentCommand(value: JsonObject): LiveInstrumentCommand {
+        return LiveInstrumentCommand(
+            CommandType.valueOf(value.getString("commandType")),
+            LiveInstrumentContext(
+                value.getJsonObject("context").getJsonArray("instruments").list.map {
+                    deserializeLiveInstrument(it as JsonObject)
+                }.toSet(),
+                value.getJsonObject("context").getJsonArray("locations").list.map {
+                    deserializeLiveSourceLocation(it as JsonObject)
+                }.toSet()
+            )
+        )
     }
 
     @JvmStatic

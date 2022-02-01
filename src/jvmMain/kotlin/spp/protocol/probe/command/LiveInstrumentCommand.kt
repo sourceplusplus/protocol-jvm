@@ -17,18 +17,10 @@
  */
 package spp.protocol.probe.command
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import java.beans.ConstructorProperties
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class LiveInstrumentCommand @ConstructorProperties("commandType", "context") constructor(
+@Serializable
+data class LiveInstrumentCommand constructor(
     var commandType: CommandType,
     var context: LiveInstrumentContext
-) : Serializable {
-
-    enum class CommandType {
-        ADD_LIVE_INSTRUMENT,
-        REMOVE_LIVE_INSTRUMENT
-    }
-}
+)
