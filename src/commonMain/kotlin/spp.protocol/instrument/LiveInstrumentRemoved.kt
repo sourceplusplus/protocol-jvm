@@ -15,27 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.instrument.breakpoint.event
+package spp.protocol.instrument
 
-import spp.protocol.Serializers
-import spp.protocol.artifact.exception.LiveStackTrace
-import spp.protocol.instrument.LiveInstrumentEventType
-import spp.protocol.instrument.TrackedLiveEvent
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.Serializers
+import spp.protocol.artifact.exception.LiveStackTrace
 
 /**
  * todo: description.
  *
- * @since 0.3.0
+ * @since 0.3.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-data class LiveBreakpointRemoved(
-    val breakpointId: String,
+data class LiveInstrumentRemoved(
+    val liveInstrument: LiveInstrument,
     @Serializable(with = Serializers.InstantKSerializer::class)
     override val occurredAt: Instant,
     val cause: LiveStackTrace? = null
-) : TrackedLiveEvent {
-    val eventType: LiveInstrumentEventType = LiveInstrumentEventType.BREAKPOINT_REMOVED
-}
+) : TrackedLiveEvent

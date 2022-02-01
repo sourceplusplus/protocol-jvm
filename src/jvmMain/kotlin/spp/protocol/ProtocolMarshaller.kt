@@ -31,6 +31,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
 import kotlinx.datetime.Instant
 import spp.protocol.artifact.ArtifactQualifiedName
+import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.developer.SelfInfo
@@ -249,6 +250,20 @@ object ProtocolMarshaller {
                     }
                 }.toSet()
             )
+        )
+    }
+
+    @JvmStatic
+    fun serializeLiveInstrumentRemoved(value: LiveInstrumentRemoved): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveInstrumentRemoved(value: JsonObject): LiveInstrumentRemoved {
+        return LiveInstrumentRemoved(
+            deserializeLiveInstrument(value.getJsonObject("liveInstrument")),
+            Instant.fromEpochMilliseconds(value.getLong("occurredAt")),
+            value.getJsonObject("cause")?.let { Json.decodeValue(it.toString(), LiveStackTrace::class.java) }
         )
     }
 
