@@ -17,12 +17,12 @@
  */
 package spp.protocol
 
-import spp.protocol.SourceMarkerServices.Utilize.LIVE_INSTRUMENT
-import spp.protocol.SourceMarkerServices.Utilize.LIVE_VIEW
+import spp.protocol.SourceServices.Utilize.LIVE_INSTRUMENT
+import spp.protocol.SourceServices.Utilize.LIVE_VIEW
 import spp.protocol.service.LiveService
-import spp.protocol.service.live.LiveInstrumentService
-import spp.protocol.service.live.LiveViewService
-import spp.protocol.service.logging.LogCountIndicatorService
+import spp.protocol.service.LiveInstrumentService
+import spp.protocol.service.LiveViewService
+import spp.protocol.service.LogCountIndicatorService
 
 /**
  * todo: description.
@@ -30,7 +30,7 @@ import spp.protocol.service.logging.LogCountIndicatorService
  * @since 0.2.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-object SourceMarkerServices {
+object SourceServices {
 
     object Instance {
         var liveService: LiveService? = null

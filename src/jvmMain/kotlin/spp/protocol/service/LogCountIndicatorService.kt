@@ -15,40 +15,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.service.live
+package spp.protocol.service
 
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.json.JsonObject
 import kotlinx.datetime.Instant
-import spp.protocol.instrument.*
+import spp.protocol.instrument.DurationStep
 
 /**
  * todo: description.
  *
- * @since 0.3.0
+ * @since 0.2.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @ProxyGen
 @VertxGen
-interface LiveInstrumentService {
-    fun addLiveInstrument(instrument: LiveInstrument): Future<LiveInstrument>
+interface LogCountIndicatorService {
 
-    @JvmSuppressWildcards
-    fun addLiveInstruments(instruments: List<LiveInstrument>): Future<List<LiveInstrument>>
-    fun removeLiveInstrument(id: String): Future<LiveInstrument?>
-    fun removeLiveInstruments(location: LiveSourceLocation): Future<List<LiveInstrument>>
-    fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
-    fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
-    fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
-    fun getLiveInstruments(type: LiveInstrumentType?): Future<List<LiveInstrument>>
-    fun clearLiveInstruments(type: LiveInstrumentType?): Future<Boolean>
-    fun clearAllLiveInstruments(type: LiveInstrumentType?): Future<Boolean>
-
-    fun setupLiveMeter(liveMeter: LiveMeter): Future<JsonObject>
-    fun getLiveMeterMetrics(
-        liveMeter: LiveMeter,
+    fun getPatternOccurrences(
+        logPatterns: List<String>,
+        serviceName: String?,
         start: Instant,
         stop: Instant,
         step: DurationStep
