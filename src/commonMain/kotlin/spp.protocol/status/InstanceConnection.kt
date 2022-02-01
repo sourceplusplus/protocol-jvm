@@ -15,13 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.platform.client
+package spp.protocol.status
 
-import java.io.Serializable
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 
-data class ActiveMarker(
-    val markerId: String,
-    val connectedAt: Long,
-    val developerId: String,
-    val meta: Map<String, Any> = emptyMap()
-) : Serializable
+/**
+ * todo: description.
+ *
+ * @since 0.3.1
+ * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
+ */
+@Serializable
+data class InstanceConnection(
+    var instanceId: String,
+    var connectionTime: Long,
+    val meta: MutableMap<String, @Contextual Any> = mutableMapOf()
+)

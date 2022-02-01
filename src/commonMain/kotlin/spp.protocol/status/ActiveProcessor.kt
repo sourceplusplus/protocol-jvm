@@ -15,15 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.platform.client
+package spp.protocol.status
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ActiveProbe(
-    val probeId: String,
+data class ActiveProcessor(
+    val processorId: String,
     val connectedAt: Long,
-    val remotes: MutableList<String> = mutableListOf(),
     val meta: MutableMap<String, @Contextual Any> = mutableMapOf()
 )

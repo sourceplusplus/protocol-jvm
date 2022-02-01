@@ -44,7 +44,7 @@ import spp.protocol.instrument.breakpoint.event.LiveBreakpointHit
 import spp.protocol.instrument.log.LiveLog
 import spp.protocol.instrument.meter.LiveMeter
 import spp.protocol.instrument.span.LiveSpan
-import spp.protocol.platform.client.ActiveProbe
+import spp.protocol.status.ActiveProbe
 import spp.protocol.view.LiveViewSubscription
 import java.util.*
 

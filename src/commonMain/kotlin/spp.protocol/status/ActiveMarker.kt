@@ -15,12 +15,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.platform.client
+package spp.protocol.status
 
-import java.io.Serializable
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 
-data class ActiveProcessor(
-    val processorId: String,
+@Serializable
+data class ActiveMarker(
+    val markerId: String,
     val connectedAt: Long,
-    val meta: MutableMap<String, Any> = mutableMapOf()
-) : Serializable
+    val developerId: String,
+    val meta: Map<String, @Contextual Any> = emptyMap()
+)

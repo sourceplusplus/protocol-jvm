@@ -22,7 +22,7 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import spp.protocol.developer.SelfInfo
 import spp.protocol.general.Service
-import spp.protocol.platform.client.ActiveProbe
+import spp.protocol.status.ActiveProbe
 
 /**
  * todo: description.

@@ -20,15 +20,10 @@ package spp.protocol.status
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
-/**
- * todo: description.
- *
- * @since 0.3.0
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
 @Serializable
-data class MarkerConnection(
-    var markerId: String,
-    var connectionTime: Long,
+data class ActiveProbe(
+    val probeId: String,
+    val connectedAt: Long,
+    val remotes: MutableList<String> = mutableListOf(),
     val meta: MutableMap<String, @Contextual Any> = mutableMapOf()
 )
