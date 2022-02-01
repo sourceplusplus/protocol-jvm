@@ -18,7 +18,6 @@
 package spp.protocol
 
 import spp.protocol.artifact.ArtifactType
-import spp.protocol.portal.PageType
 import kotlinx.datetime.Instant
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -64,21 +63,5 @@ class Serializers {
 
         override fun deserialize(decoder: Decoder) = ArtifactType.valueOf(decoder.decodeString())
         override fun serialize(encoder: Encoder, value: ArtifactType) = encoder.encodeString(value.name)
-    }
-
-    /**
-     * Used to serialize/deserialize [PageType] classes.
-     *
-     * @since 0.2.0
-     */
-    class PageTypeSerializer : KSerializer<PageType> {
-
-        override val descriptor = PrimitiveSerialDescriptor(
-            "spp.protocol.PageTypeSerializer",
-            PrimitiveKind.STRING
-        )
-
-        override fun deserialize(decoder: Decoder) = PageType.valueOf(decoder.decodeString())
-        override fun serialize(encoder: Encoder, value: PageType) = encoder.encodeString(value.name)
     }
 }
