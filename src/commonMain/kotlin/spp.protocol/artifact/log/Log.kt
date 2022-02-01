@@ -39,11 +39,6 @@ data class Log(
     val exception: LiveStackTrace? = null,
     val arguments: List<String> = listOf()
 ) {
-    @Deprecated("Use toFormattedString() instead.", ReplaceWith("toFormattedString()"))
-    fun getFormattedMessage(): String {
-        return toFormattedMessage()
-    }
-
     fun toFormattedMessage(): String {
         var arg = 0
         var formattedMessage = content
