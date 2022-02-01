@@ -27,7 +27,7 @@ import kotlinx.serialization.Serializable
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-abstract class LiveInstrument {
+sealed class LiveInstrument {
     abstract val location: LiveSourceLocation
     abstract val condition: String?
     abstract val expiresAt: Long? //todo: can just use -1 like hitLimit?

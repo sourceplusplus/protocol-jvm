@@ -17,13 +17,13 @@
  */
 package spp.protocol.instrument.log.event
 
+import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
 import spp.protocol.Serializers
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.instrument.LiveInstrumentEventType
+import spp.protocol.instrument.LiveLog
 import spp.protocol.instrument.TrackedLiveEvent
-import spp.protocol.instrument.log.LiveLog
-import kotlinx.datetime.Instant
-import kotlinx.serialization.Serializable
 
 /**
  * todo: description.

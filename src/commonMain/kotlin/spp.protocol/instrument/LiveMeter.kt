@@ -15,23 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.instrument.span
+package spp.protocol.instrument
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import spp.protocol.instrument.InstrumentThrottle
-import spp.protocol.instrument.LiveInstrument
-import spp.protocol.instrument.LiveInstrumentType
-import spp.protocol.instrument.LiveSourceLocation
+import spp.protocol.instrument.meter.MeterType
+import spp.protocol.instrument.meter.MetricValue
 
 /**
- * A live span represents a single unit of work in a program.
+ * A live meter represents a metric that is measured continuously over time.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-data class LiveSpan(
-    val operationName: String,
+data class LiveMeter(
+    val meterName: String,
+    val meterType: MeterType,
+    val metricValue: MetricValue,
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
@@ -43,7 +43,10 @@ data class LiveSpan(
     override val throttle: InstrumentThrottle? = null,
     override val meta: Map<String, @Contextual Any> = emptyMap()
 ) : LiveInstrument() {
-    override val type: LiveInstrumentType = LiveInstrumentType.SPAN
+    override val type: LiveInstrumentType = LiveInstrumentType.METER
+
+    fun toMetricIdWithoutPrefix(): String = meterType.name.lowercase() + "_" + id!!.replace("-", "_")
+    fun toMetricId(): String = "spp_" + toMetricIdWithoutPrefix()
 
     /**
      * Specify explicitly so Kotlin doesn't override.

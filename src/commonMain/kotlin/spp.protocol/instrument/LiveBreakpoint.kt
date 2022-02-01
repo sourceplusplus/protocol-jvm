@@ -15,25 +15,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.instrument.log
+package spp.protocol.instrument
 
-import spp.protocol.instrument.InstrumentThrottle
-import spp.protocol.instrument.LiveInstrument
-import spp.protocol.instrument.LiveInstrumentType
-import spp.protocol.instrument.LiveSourceLocation
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 /**
- * A live log represents a textual message.
+ * A live breakpoint represents a non-breaking breakpoint.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-data class LiveLog(
-    val logFormat: String,
-    val logArguments: List<String> = emptyList(),
+data class LiveBreakpoint(
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
@@ -45,7 +39,7 @@ data class LiveLog(
     override val throttle: InstrumentThrottle = InstrumentThrottle.DEFAULT,
     override val meta: Map<String, @Contextual Any> = emptyMap()
 ) : LiveInstrument() {
-    override val type: LiveInstrumentType = LiveInstrumentType.LOG
+    override val type: LiveInstrumentType = LiveInstrumentType.BREAKPOINT
 
     /**
      * Specify explicitly so Kotlin doesn't override.

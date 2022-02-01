@@ -23,7 +23,6 @@ import io.vertx.core.Future
 import io.vertx.core.json.JsonObject
 import kotlinx.datetime.Instant
 import spp.protocol.instrument.*
-import spp.protocol.instrument.meter.LiveMeter
 
 /**
  * todo: description.
@@ -35,7 +34,9 @@ import spp.protocol.instrument.meter.LiveMeter
 @VertxGen
 interface LiveInstrumentService {
     fun addLiveInstrument(instrument: LiveInstrument): Future<LiveInstrument>
-    fun addLiveInstruments(batch: LiveInstrumentBatch): Future<List<LiveInstrument>>
+
+    @JvmSuppressWildcards
+    fun addLiveInstruments(instruments: List<LiveInstrument>): Future<List<LiveInstrument>>
     fun removeLiveInstrument(id: String): Future<LiveInstrument?>
     fun removeLiveInstruments(location: LiveSourceLocation): Future<List<LiveInstrument>>
     fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
