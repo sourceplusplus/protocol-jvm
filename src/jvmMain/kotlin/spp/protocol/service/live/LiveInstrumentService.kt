@@ -19,8 +19,7 @@ package spp.protocol.service.live
 
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
-import io.vertx.core.AsyncResult
-import io.vertx.core.Handler
+import io.vertx.core.Future
 import io.vertx.core.json.JsonObject
 import kotlinx.datetime.Instant
 import spp.protocol.instrument.DurationStep
@@ -41,30 +40,29 @@ import spp.protocol.instrument.span.LiveSpan
 @ProxyGen
 @VertxGen
 interface LiveInstrumentService {
-    fun addLiveInstrument(instrument: LiveInstrument, handler: Handler<AsyncResult<LiveInstrument>>)
-    fun addLiveInstruments(batch: LiveInstrumentBatch, handler: Handler<AsyncResult<List<LiveInstrument>>>)
-    fun removeLiveInstrument(id: String, handler: Handler<AsyncResult<LiveInstrument?>>)
-    fun removeLiveInstruments(location: LiveSourceLocation, handler: Handler<AsyncResult<List<LiveInstrument>>>)
-    fun getLiveInstrumentById(id: String, handler: Handler<AsyncResult<LiveInstrument?>>)
-    fun getLiveInstrumentsByIds(ids: List<String>, handler: Handler<AsyncResult<List<LiveInstrument>>>)
-    fun getLiveInstruments(handler: Handler<AsyncResult<List<LiveInstrument>>>)
-    fun getLiveBreakpoints(handler: Handler<AsyncResult<List<LiveBreakpoint>>>)
-    fun getLiveLogs(handler: Handler<AsyncResult<List<LiveLog>>>)
-    fun getLiveMeters(handler: Handler<AsyncResult<List<LiveMeter>>>)
-    fun getLiveSpans(handler: Handler<AsyncResult<List<LiveSpan>>>)
-    fun clearLiveInstruments(handler: Handler<AsyncResult<Boolean>>)
-    fun clearLiveBreakpoints(handler: Handler<AsyncResult<Boolean>>)
-    fun clearLiveLogs(handler: Handler<AsyncResult<Boolean>>)
-    fun clearLiveMeters(handler: Handler<AsyncResult<Boolean>>)
-    fun clearLiveSpans(handler: Handler<AsyncResult<Boolean>>)
-    fun clearAllLiveInstruments(handler: Handler<AsyncResult<Boolean>>)
+    fun addLiveInstrument(instrument: LiveInstrument): Future<LiveInstrument>
+    fun addLiveInstruments(batch: LiveInstrumentBatch): Future<List<LiveInstrument>>
+    fun removeLiveInstrument(id: String): Future<LiveInstrument?>
+    fun removeLiveInstruments(location: LiveSourceLocation): Future<List<LiveInstrument>>
+    fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
+    fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
+    fun getLiveInstruments(): Future<List<LiveInstrument>>
+    fun getLiveBreakpoints(): Future<List<LiveBreakpoint>>
+    fun getLiveLogs(): Future<List<LiveLog>>
+    fun getLiveMeters(): Future<List<LiveMeter>>
+    fun getLiveSpans(): Future<List<LiveSpan>>
+    fun clearLiveInstruments(): Future<Boolean>
+    fun clearLiveBreakpoints(): Future<Boolean>
+    fun clearLiveLogs(): Future<Boolean>
+    fun clearLiveMeters(): Future<Boolean>
+    fun clearLiveSpans(): Future<Boolean>
+    fun clearAllLiveInstruments(): Future<Boolean>
 
-    fun setupLiveMeter(liveMeter: LiveMeter, handler: Handler<AsyncResult<JsonObject>>)
+    fun setupLiveMeter(liveMeter: LiveMeter): Future<JsonObject>
     fun getLiveMeterMetrics(
         liveMeter: LiveMeter,
         start: Instant,
         stop: Instant,
-        step: DurationStep,
-        handler: Handler<AsyncResult<JsonObject>>
-    )
+        step: DurationStep
+    ): Future<JsonObject>
 }

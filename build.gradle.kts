@@ -52,7 +52,7 @@ kotlin {
                 implementation("io.vertx:vertx-core:$vertxVersion")
                 implementation("io.vertx:vertx-codegen:$vertxVersion")
                 implementation("io.vertx:vertx-tcp-eventbus-bridge:$vertxVersion")
-                implementation("io.vertx:vertx-service-proxy:4.1.5")
+                implementation("io.vertx:vertx-service-proxy:$vertxVersion")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
@@ -79,14 +79,26 @@ kotlin {
 }
 
 dependencies {
-    "kapt"("io.vertx:vertx-codegen:4.1.5:processor")
+    "kapt"("io.vertx:vertx-codegen:$vertxVersion:processor")
 }
 
 tasks.register<Copy>("setupJsonMappers") {
     from(file("$projectDir/src/jvmMain/resources/META-INF/vertx/json-mappers.properties"))
-    into(file("$buildDir/tmp/kapt3/src/main/resources/META-INF/vertx"))
+    into(file("$buildDir/generated/source/kapt/main/META-INF/vertx"))
 }
 tasks.getByName("compileKotlinJvm").dependsOn("setupJsonMappers")
+
+tasks.register<Exec>("restrictDeletionOfJsonMappers"){
+    mustRunAfter("setupJsonMappers")
+    commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+}
+tasks.getByName("compileKotlinJvm").dependsOn("restrictDeletionOfJsonMappers")
+
+tasks.register<Exec>("unrestrictDeletionOfJsonMappers"){
+    mustRunAfter("compileKotlinJvm")
+    commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+}
+tasks.getByName("build").dependsOn("unrestrictDeletionOfJsonMappers")
 
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
     annotation("kotlinx.serialization.Serializable")

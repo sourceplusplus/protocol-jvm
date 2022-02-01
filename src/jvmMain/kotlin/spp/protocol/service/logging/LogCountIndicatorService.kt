@@ -19,11 +19,9 @@ package spp.protocol.service.logging
 
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
-import io.vertx.core.AsyncResult
-import io.vertx.core.Handler
+import io.vertx.core.Future
 import io.vertx.core.json.JsonObject
 import kotlinx.datetime.Instant
-import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.instrument.DurationStep
 
 /**
@@ -41,7 +39,6 @@ interface LogCountIndicatorService {
         serviceName: String?,
         start: Instant,
         stop: Instant,
-        step: DurationStep,
-        handler: Handler<AsyncResult<JsonObject>>
-    )
+        step: DurationStep
+    ): Future<JsonObject>
 }
