@@ -18,11 +18,11 @@
 package spp.protocol.artifact.trace
 
 import com.google.common.io.Resources
-import spp.protocol.artifact.exception.LiveStackTrace
 import io.vertx.core.json.JsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
+import spp.protocol.artifact.exception.LiveStackTrace
 
 class LiveStackTraceTest {
 

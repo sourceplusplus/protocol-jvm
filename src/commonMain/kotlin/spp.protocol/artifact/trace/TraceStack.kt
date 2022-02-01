@@ -17,8 +17,8 @@
  */
 package spp.protocol.artifact.trace
 
-import spp.protocol.artifact.trace.TraceStack.Segment
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.trace.TraceStack.Segment
 
 /**
  * Represents a list of [TraceSpan]s as the equivalent tree structure.

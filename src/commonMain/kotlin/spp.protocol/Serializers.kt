@@ -17,13 +17,13 @@
  */
 package spp.protocol
 
-import spp.protocol.artifact.ArtifactType
 import kotlinx.datetime.Instant
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import spp.protocol.artifact.ArtifactType
 
 /**
  * Used to serialize/deserialize protocol messages.
