@@ -29,7 +29,6 @@ import io.vertx.core.net.NetSocket
 import io.vertx.ext.bridge.BridgeEventType
 import io.vertx.ext.eventbus.bridge.tcp.impl.protocol.FrameHelper
 import spp.protocol.auth.RolePermission
-import spp.protocol.error.AccessDenied
 import spp.protocol.error.JWTVerificationException
 import spp.protocol.error.MissingRemoteException
 import spp.protocol.service.error.InstrumentAccessDenied
@@ -193,9 +192,6 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                         }
                         InstrumentAccessDenied::class.simpleName -> {
                             error.initCause(InstrumentAccessDenied(exceptionParams))
-                        }
-                        AccessDenied::class.simpleName -> {
-                            error.initCause(AccessDenied(exceptionParams))
                         }
                         else -> TODO()
                     }
