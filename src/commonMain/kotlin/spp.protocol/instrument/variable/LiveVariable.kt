@@ -15,9 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.instrument.breakpoint.event
+package spp.protocol.instrument.variable
 
-import kotlinx.datetime.Instant
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 
 /**
  * todo: description.
@@ -25,6 +26,12 @@ import kotlinx.datetime.Instant
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-interface TrackedLiveEvent {
-    val occurredAt: Instant
-}
+@Serializable
+data class LiveVariable(
+    val name: String,
+    @Contextual val value: Any,
+    val lineNumber: Int = -1,
+    val scope: LiveVariableScope? = null,
+    val liveClazz: String? = null,
+    val liveIdentity: String? = null
+)

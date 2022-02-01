@@ -15,9 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.instrument
+package spp.protocol.instrument.event
 
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.Serializers
+import spp.protocol.artifact.exception.LiveStackTrace
 
 /**
  * todo: description.
@@ -26,11 +29,14 @@ import kotlinx.serialization.Serializable
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-data class InstrumentThrottle(
-    val limit: Int,
-    val step: ThrottleStep,
-) {
-    companion object {
-        val DEFAULT: InstrumentThrottle = InstrumentThrottle(1, ThrottleStep.SECOND)
-    }
+data class LiveBreakpointHit(
+    val breakpointId: String,
+    val traceId: String,
+    @Serializable(with = Serializers.InstantKSerializer::class)
+    override val occurredAt: Instant,
+    val serviceInstance: String,
+    val service: String,
+    val stackTrace: LiveStackTrace
+) : TrackedLiveEvent {
+    val eventType: LiveInstrumentEventType = LiveInstrumentEventType.BREAKPOINT_HIT
 }

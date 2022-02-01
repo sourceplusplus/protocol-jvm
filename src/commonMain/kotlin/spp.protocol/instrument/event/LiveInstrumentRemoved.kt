@@ -15,23 +15,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.instrument
+package spp.protocol.instrument.event
 
-import kotlinx.serialization.Contextual
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.Serializers
+import spp.protocol.artifact.exception.LiveStackTrace
+import spp.protocol.instrument.LiveInstrument
 
 /**
  * todo: description.
  *
- * @since 0.3.0
+ * @since 0.3.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-data class LiveVariable(
-    val name: String,
-    @Contextual val value: Any,
-    val lineNumber: Int = -1,
-    val scope: LiveVariableScope? = null,
-    val liveClazz: String? = null,
-    val liveIdentity: String? = null
-)
+data class LiveInstrumentRemoved(
+    val liveInstrument: LiveInstrument,
+    @Serializable(with = Serializers.InstantKSerializer::class)
+    override val occurredAt: Instant,
+    val cause: LiveStackTrace? = null
+) : TrackedLiveEvent

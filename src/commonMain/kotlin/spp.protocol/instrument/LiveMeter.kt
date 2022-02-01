@@ -21,6 +21,7 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import spp.protocol.instrument.meter.MeterType
 import spp.protocol.instrument.meter.MetricValue
+import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**
  * A live meter represents a metric that is measured continuously over time.

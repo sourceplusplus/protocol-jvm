@@ -37,7 +37,8 @@ import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.developer.SelfInfo
 import spp.protocol.general.Service
 import spp.protocol.instrument.*
-import spp.protocol.instrument.breakpoint.event.LiveBreakpointHit
+import spp.protocol.instrument.event.LiveBreakpointHit
+import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.probe.command.CommandType
 import spp.protocol.probe.command.LiveInstrumentCommand
 import spp.protocol.probe.command.LiveInstrumentContext

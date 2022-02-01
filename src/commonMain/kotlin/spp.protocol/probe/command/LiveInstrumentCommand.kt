@@ -20,7 +20,7 @@ package spp.protocol.probe.command
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LiveInstrumentCommand constructor(
+data class LiveInstrumentCommand(
     var commandType: CommandType,
     var context: LiveInstrumentContext
 )

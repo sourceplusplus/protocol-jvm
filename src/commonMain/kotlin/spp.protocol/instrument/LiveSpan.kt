@@ -19,6 +19,7 @@ package spp.protocol.instrument
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**
  * A live span represents a single unit of work in a program.

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.instrument
+package spp.protocol.instrument.throttle
 
 import kotlinx.serialization.Serializable
 
@@ -26,10 +26,11 @@ import kotlinx.serialization.Serializable
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-enum class LiveVariableScope {
-    LOCAL_VARIABLE,
-    GLOBAL_VARIABLE,
-    INSTANCE_FIELD,
-    STATIC_FIELD,
-    GENERATED_METHOD
+data class InstrumentThrottle(
+    val limit: Int,
+    val step: ThrottleStep,
+) {
+    companion object {
+        val DEFAULT: InstrumentThrottle = InstrumentThrottle(1, ThrottleStep.SECOND)
+    }
 }

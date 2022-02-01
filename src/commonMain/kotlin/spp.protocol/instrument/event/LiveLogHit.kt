@@ -15,9 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.instrument
+package spp.protocol.instrument.event
 
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.Serializers
+import spp.protocol.artifact.log.LogResult
 
 /**
  * todo: description.
@@ -26,7 +29,13 @@ import kotlinx.serialization.Serializable
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-data class LiveInstrumentEvent(
-    val eventType: LiveInstrumentEventType,
-    val data: String //todo: type out
-)
+data class LiveLogHit(
+    val logId: String,
+    @Serializable(with = Serializers.InstantKSerializer::class)
+    override val occurredAt: Instant,
+    val serviceInstance: String,
+    val service: String,
+    val logResult: LogResult
+) : TrackedLiveEvent {
+    val eventType: LiveInstrumentEventType = LiveInstrumentEventType.LOG_HIT
+}
