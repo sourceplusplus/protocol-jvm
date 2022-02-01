@@ -99,6 +99,7 @@ tasks.register<Exec>("unrestrictDeletionOfJsonMappers"){
     commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
 }
 tasks.getByName("build").dependsOn("unrestrictDeletionOfJsonMappers")
+tasks.getByName("clean").dependsOn("unrestrictDeletionOfJsonMappers")
 
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
     annotation("kotlinx.serialization.Serializable")
