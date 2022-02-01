@@ -257,10 +257,18 @@ object ProtocolMarshaller {
             CommandType.valueOf(value.getString("commandType")),
             LiveInstrumentContext(
                 value.getJsonObject("context").getJsonArray("instruments").list.map {
-                    deserializeLiveInstrument(it as JsonObject)
+                    if (it is JsonObject) {
+                        deserializeLiveInstrument(it)
+                    } else {
+                        deserializeLiveInstrument(JsonObject.mapFrom(it))
+                    }
                 }.toSet(),
                 value.getJsonObject("context").getJsonArray("locations").list.map {
-                    deserializeLiveSourceLocation(it as JsonObject)
+                    if (it is JsonObject) {
+                        deserializeLiveSourceLocation(it)
+                    } else {
+                        deserializeLiveSourceLocation(JsonObject.mapFrom(it))
+                    }
                 }.toSet()
             )
         )
