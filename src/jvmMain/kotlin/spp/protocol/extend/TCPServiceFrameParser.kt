@@ -23,7 +23,6 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyException
 import io.vertx.core.eventbus.ReplyFailure
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.net.NetSocket
 import io.vertx.ext.bridge.BridgeEventType
@@ -59,40 +58,15 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                     deliveryOptions.addHeader(it, frame.getJsonObject("headers").getString(it))
                 }
                 vertx.eventBus().request<Any>(
-                    frame.getString("address"),
-                    frame.getJsonObject("body"),
-                    deliveryOptions
+                    frame.getString("address"), frame.getJsonObject("body"), deliveryOptions
                 ).onComplete {
                     if (it.succeeded()) {
-                        if (it.result().body() is JsonObject) {
-                            FrameHelper.sendFrame(
-                                BridgeEventType.SEND.name.lowercase(),
-                                frame.getString("replyAddress"),
-                                it.result().body(),
-                                socket
-                            )
-                        } else if (it.result().body() is JsonArray) {
-                            FrameHelper.sendFrame(
-                                BridgeEventType.SEND.name.lowercase(),
-                                frame.getString("replyAddress"),
-                                it.result().body(),
-                                socket
-                            )
-                        } else if (it.result().body() is Boolean) {
-                            FrameHelper.sendFrame(
-                                BridgeEventType.SEND.name.lowercase(),
-                                frame.getString("replyAddress"),
-                                it.result().body(),
-                                socket
-                            )
-                        } else {
-                            FrameHelper.sendFrame(
-                                BridgeEventType.SEND.name.lowercase(),
-                                frame.getString("replyAddress"),
-                                JsonObject.mapFrom(it.result().body()),
-                                socket
-                            )
-                        }
+                        FrameHelper.sendFrame(
+                            BridgeEventType.SEND.name.lowercase(),
+                            frame.getString("replyAddress"),
+                            it.result().body(),
+                            socket
+                        )
                     } else {
                         FrameHelper.sendFrame(
                             BridgeEventType.SEND.name.lowercase(),
@@ -108,12 +82,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                     if (body.getString("message")?.startsWith("EventBusException:") == true) {
                         handleErrorFrame(body.put("address", frame.getString("address")))
                     } else {
-                        if (body.fieldNames().size == 1 && body.containsKey("value")) {
-                            //todo: understand why can't just re-send body like below
-                            vertx.eventBus().send(frame.getString("address"), body.getValue("value"))
-                        } else {
-                            vertx.eventBus().send(frame.getString("address"), body)
-                        }
+                        vertx.eventBus().send(frame.getString("address"), body)
                     }
                 } else {
                     vertx.eventBus().send(frame.getString("address"), body)
