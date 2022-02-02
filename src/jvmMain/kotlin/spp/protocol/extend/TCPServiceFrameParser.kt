@@ -110,16 +110,13 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                     } else {
                         if (body.fieldNames().size == 1 && body.containsKey("value")) {
                             //todo: understand why can't just re-send body like below
-                            vertx.eventBus()
-                                .send(frame.getString("address"), body.getValue("value"))
+                            vertx.eventBus().send(frame.getString("address"), body.getValue("value"))
                         } else {
-                            vertx.eventBus()
-                                .send(frame.getString("address"), body)
+                            vertx.eventBus().send(frame.getString("address"), body)
                         }
                     }
                 } else {
-                    vertx.eventBus()
-                        .send(frame.getString("address"), body)
+                    vertx.eventBus().send(frame.getString("address"), body)
                 }
             }
         } else if ("err" == frame.getString("type")) {
@@ -155,8 +152,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                 )
                 else -> TODO()
             }
-            vertx.eventBus()
-                .send(frame.getString("address"), error)
+            vertx.eventBus().send(frame.getString("address"), error)
         } else {
             //i think these are service exceptions
             val error = ReplyException(
@@ -200,8 +196,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                     TODO()
                 }
             }
-            vertx.eventBus()
-                .send(frame.getString("address"), error)
+            vertx.eventBus().send(frame.getString("address"), error)
         }
     }
 }
