@@ -28,6 +28,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.core.net.NetSocket
 import io.vertx.ext.bridge.BridgeEventType
 import io.vertx.ext.eventbus.bridge.tcp.impl.protocol.FrameHelper
+import org.slf4j.LoggerFactory
 import spp.protocol.auth.RolePermission
 import spp.protocol.error.JWTVerificationException
 import spp.protocol.error.MissingRemoteException
@@ -38,17 +39,17 @@ import spp.protocol.service.error.PermissionAccessDenied
 
 class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<AsyncResult<JsonObject>> {
 
-//    companion object {
-//        private val log = LoggerFactory.getLogger(TCPServiceFrameParser::class.java)
-//    }
+    companion object {
+        private val log = LoggerFactory.getLogger(TCPServiceFrameParser::class.java)
+    }
 
     override fun handle(event: AsyncResult<JsonObject>) {
         if (event.failed()) {
-            //log.error("Failed to receive frame", event.cause())
+            log.error("Failed to receive frame", event.cause())
             return
         }
         val frame = event.result()
-        //log.trace("Received frame: {}", frame)
+        log.trace("Received frame: {}", frame)
 
         //todo: revisit this || after fixing below todo
         if ("message" == frame.getString("type") || "send" == frame.getString("type")) {
@@ -65,28 +66,28 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                     if (it.succeeded()) {
                         if (it.result().body() is JsonObject) {
                             FrameHelper.sendFrame(
-                                BridgeEventType.SEND.name.toLowerCase(),
+                                BridgeEventType.SEND.name.lowercase(),
                                 frame.getString("replyAddress"),
                                 it.result().body(),
                                 socket
                             )
                         } else if (it.result().body() is JsonArray) {
                             FrameHelper.sendFrame(
-                                BridgeEventType.SEND.name.toLowerCase(),
+                                BridgeEventType.SEND.name.lowercase(),
                                 frame.getString("replyAddress"),
                                 it.result().body(),
                                 socket
                             )
                         } else if (it.result().body() is Boolean) {
                             FrameHelper.sendFrame(
-                                BridgeEventType.SEND.name.toLowerCase(),
+                                BridgeEventType.SEND.name.lowercase(),
                                 frame.getString("replyAddress"),
                                 it.result().body(),
                                 socket
                             )
                         } else {
                             FrameHelper.sendFrame(
-                                BridgeEventType.SEND.name.toLowerCase(),
+                                BridgeEventType.SEND.name.lowercase(),
                                 frame.getString("replyAddress"),
                                 JsonObject.mapFrom(it.result().body()),
                                 socket
@@ -94,7 +95,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                         }
                     } else {
                         FrameHelper.sendFrame(
-                            BridgeEventType.SEND.name.toLowerCase(),
+                            BridgeEventType.SEND.name.lowercase(),
                             frame.getString("replyAddress"),
                             JsonObject.mapFrom(it.cause()),
                             socket
