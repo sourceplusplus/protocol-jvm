@@ -19,8 +19,8 @@ package spp.protocol
 
 import spp.protocol.SourceServices.Utilize.LIVE_INSTRUMENT
 import spp.protocol.SourceServices.Utilize.LIVE_VIEW
-import spp.protocol.service.LiveService
 import spp.protocol.service.LiveInstrumentService
+import spp.protocol.service.LiveService
 import spp.protocol.service.LiveViewService
 import spp.protocol.service.LogCountIndicatorService
 
@@ -49,5 +49,8 @@ object SourceServices {
     object Provide {
         const val LIVE_INSTRUMENT_SUBSCRIBER = "$LIVE_INSTRUMENT.subscriber"
         const val LIVE_VIEW_SUBSCRIBER = "$LIVE_VIEW.subscriber"
+
+        fun toLiveInstrumentSubscriberAddress(selfId: String): String = "$LIVE_INSTRUMENT_SUBSCRIBER:$selfId"
+        fun toLiveViewSubscriberAddress(selfId: String): String = "$LIVE_VIEW_SUBSCRIBER:$selfId"
     }
 }
