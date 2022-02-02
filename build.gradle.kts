@@ -90,15 +90,19 @@ tasks.register<Copy>("setupJsonMappers") {
 }
 tasks.getByName("compileKotlinJvm").dependsOn("setupJsonMappers")
 
-tasks.register<Exec>("restrictDeletionOfJsonMappers"){
+tasks.register<Exec>("restrictDeletionOfJsonMappers") {
     mustRunAfter("setupJsonMappers")
     commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
 }
 tasks.getByName("compileKotlinJvm").dependsOn("restrictDeletionOfJsonMappers")
 
-tasks.register<Exec>("unrestrictDeletionOfJsonMappers"){
+tasks.register<Exec>("unrestrictDeletionOfJsonMappers") {
     mustRunAfter("compileKotlinJvm")
-    commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+    if (file("$buildDir/generated/source/kapt/main/META-INF/vertx").exists()) {
+        commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+    } else {
+        commandLine("true") //no-op
+    }
 }
 tasks.getByName("jvmJar").dependsOn("unrestrictDeletionOfJsonMappers")
 tasks.getByName("clean").dependsOn("unrestrictDeletionOfJsonMappers")
