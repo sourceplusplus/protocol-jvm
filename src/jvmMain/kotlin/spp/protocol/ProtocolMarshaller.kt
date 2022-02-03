@@ -42,7 +42,7 @@ import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.probe.command.CommandType
 import spp.protocol.probe.command.LiveInstrumentCommand
 import spp.protocol.probe.command.LiveInstrumentContext
-import spp.protocol.status.ActiveProbe
+import spp.protocol.status.ActiveInstance
 import spp.protocol.view.LiveViewSubscription
 import java.util.*
 
@@ -217,13 +217,13 @@ object ProtocolMarshaller {
     }
 
     @JvmStatic
-    fun serializeActiveProbe(value: ActiveProbe): JsonObject {
+    fun serializeActiveInstance(value: ActiveInstance): JsonObject {
         return JsonObject(Json.encode(value))
     }
 
     @JvmStatic
-    fun deserializeActiveProbe(value: JsonObject): ActiveProbe {
-        return value.mapTo(ActiveProbe::class.java)
+    fun deserializeActiveInstance(value: JsonObject): ActiveInstance {
+        return value.mapTo(ActiveInstance::class.java)
     }
 
     @JvmStatic

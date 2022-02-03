@@ -22,7 +22,7 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import spp.protocol.developer.SelfInfo
 import spp.protocol.general.Service
-import spp.protocol.status.ActiveProbe
+import spp.protocol.status.ActiveInstance
 
 /**
  * todo: description.
@@ -35,5 +35,5 @@ interface LiveService {
 
     fun getSelf(): Future<SelfInfo>
     fun getServices(): Future<List<Service>>
-    fun getActiveProbes(): Future<List<ActiveProbe>>
+    fun getActiveProbes(): Future<List<ActiveInstance>>
 }
