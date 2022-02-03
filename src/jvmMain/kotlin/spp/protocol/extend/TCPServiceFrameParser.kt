@@ -68,10 +68,14 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                             socket
                         )
                     } else {
-                        FrameHelper.sendFrame(
-                            BridgeEventType.SEND.name.lowercase(),
-                            frame.getString("replyAddress"),
-                            JsonObject.mapFrom(it.cause()),
+                        val replyException = it.cause() as ReplyException
+                        FrameHelper.writeFrame(
+                            JsonObject()
+                                .put("type", BridgeEventType.SEND.name.lowercase())
+                                .put("address", frame.getString("replyAddress"))
+                                .put("failureCode", replyException.failureCode())
+                                .put("failureType", replyException.failureType().name)
+                                .put("message", replyException.message),
                             socket
                         )
                     }
