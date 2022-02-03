@@ -21,9 +21,8 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ActiveMarker(
-    val markerId: String,
+data class ActiveInstance(
+    val instanceId: String,
     val connectedAt: Long,
-    val developerId: String,
-    val meta: Map<String, @Contextual Any> = emptyMap()
+    val meta: MutableMap<String, @Contextual Any> = mutableMapOf()
 )
