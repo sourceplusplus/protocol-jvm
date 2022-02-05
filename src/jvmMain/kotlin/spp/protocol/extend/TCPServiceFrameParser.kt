@@ -29,8 +29,6 @@ import io.vertx.ext.bridge.BridgeEventType
 import io.vertx.ext.eventbus.bridge.tcp.impl.protocol.FrameHelper
 import org.slf4j.LoggerFactory
 import spp.protocol.platform.auth.RolePermission
-import spp.protocol.platform.error.JWTVerificationException
-import spp.protocol.platform.error.MissingRemoteException
 import spp.protocol.service.error.InstrumentAccessDenied
 import spp.protocol.service.error.LiveInstrumentException
 import spp.protocol.service.error.LiveInstrumentException.ErrorType
@@ -94,7 +92,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
             }
         } else if ("err" == frame.getString("type")) {
             //directly thrown event bus exceptions
-            handleErrorFrame(frame)
+            throw ReplyException(ReplyFailure.ERROR, frame.getString("message"))
         } else {
             throw UnsupportedOperationException(frame.toString())
         }
@@ -127,49 +125,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
             }
             vertx.eventBus().send(frame.getString("address"), error)
         } else {
-            //i think these are service exceptions
-            val error = ReplyException(
-                ReplyFailure.RECIPIENT_FAILURE,
-                frame.getInteger("failureCode"),
-                frame.getString("rawFailure")
-            )
-            var debugInfo = JsonObject(frame.getString("rawFailure")).getJsonObject("debugInfo")
-            if (frame.getString("message").contains("JWT")) {
-                error.initCause(JWTVerificationException(frame.getString("message")))
-            } else if (debugInfo == null) {
-                debugInfo = JsonObject().put(
-                    "causeMessage", JsonObject(frame.getString("message")).getString("message")
-                )
-            }
-
-            if (debugInfo.getString("causeName") == MissingRemoteException::class.java.name) {
-                error.initCause(MissingRemoteException(debugInfo.getString("causeMessage")))
-            } else {
-                val causeMessage = debugInfo.getString("causeMessage")
-                if (causeMessage?.startsWith("EventBusException:") == true) {
-                    val exceptionType = causeMessage.substringAfter("EventBusException:")
-                        .substringBefore("[")
-                    val exceptionParams = causeMessage.substringAfter("[").substringBefore("]")
-                    val exceptionMessage = causeMessage.substringAfter("]: ").trimEnd()
-                    when (exceptionType) {
-                        LiveInstrumentException::class.simpleName -> {
-                            error.initCause(
-                                LiveInstrumentException(
-                                    ErrorType.valueOf(exceptionParams),
-                                    exceptionMessage
-                                )
-                            )
-                        }
-                        InstrumentAccessDenied::class.simpleName -> {
-                            error.initCause(InstrumentAccessDenied(exceptionParams))
-                        }
-                        else -> TODO()
-                    }
-                } else {
-                    TODO()
-                }
-            }
-            vertx.eventBus().send(frame.getString("address"), error)
+            throw UnsupportedOperationException(frame.toString())
         }
     }
 }
