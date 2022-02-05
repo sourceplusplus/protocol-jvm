@@ -22,8 +22,8 @@ object PlatformAddress {
     const val PROCESSOR_DISCONNECTED = "spp.platform.status.processor-disconnected"
     const val PROBE_CONNECTED = "spp.platform.status.probe-connected"
     const val PROBE_DISCONNECTED = "spp.platform.status.probe-disconnected"
-    const val MARKER_CONNECTED = "spp.status.marker-connected"
+    const val MARKER_CONNECTED = "spp.platform.status.marker-connected"
     const val MARKER_DISCONNECTED = "spp.platform.status.marker-disconnected"
 
-    const val GENERATE_PROBE = "spp.platform.generate-probe"
+    const val GENERATE_PROBE = "spp.platform.action.generate-probe"
 }
