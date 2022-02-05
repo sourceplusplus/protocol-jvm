@@ -18,5 +18,8 @@
 package spp.protocol.platform
 
 object ProcessorAddress {
-    const val SET_LOG_PUBLISH_RATE_LIMIT = "spp.provider.setting.log-publish-rate-limit"
+    const val LIVE_INSTRUMENT_REMOVED = "spp.processor.status.live-instrument-removed"
+    const val LIVE_INSTRUMENT_APPLIED = "spp.processor.status.live-instrument-applied"
+
+    const val SET_LOG_PUBLISH_RATE_LIMIT = "spp.processor.setting.log-publish-rate-limit"
 }
