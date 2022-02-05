@@ -25,7 +25,5 @@ object PlatformAddress {
     const val MARKER_CONNECTED = "spp.status.marker-connected"
     const val MARKER_DISCONNECTED = "spp.platform.status.marker-disconnected"
 
-    const val LIVE_INSTRUMENT_REMOVED = "spp.platform.status.live-instrument-removed"
-    const val LIVE_INSTRUMENT_APPLIED = "spp.platform.status.live-instrument-applied"
     const val GENERATE_PROBE = "spp.platform.generate-probe"
 }
