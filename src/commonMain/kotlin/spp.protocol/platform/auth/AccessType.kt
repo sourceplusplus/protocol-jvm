@@ -15,14 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.probe.command
+package spp.protocol.platform.auth
 
-import kotlinx.serialization.Serializable
-import spp.protocol.instrument.LiveInstrument
-import spp.protocol.instrument.LiveSourceLocation
-
-@Serializable
-data class LiveInstrumentContext(
-    var instruments: Set<LiveInstrument> = emptySet(),
-    var locations: Set<LiveSourceLocation> = emptySet()
-)
+enum class AccessType {
+    BLACK_LIST,
+    WHITE_LIST
+}

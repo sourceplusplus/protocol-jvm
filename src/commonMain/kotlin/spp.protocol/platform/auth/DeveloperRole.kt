@@ -15,8 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.processor
+package spp.protocol.platform.auth
 
-enum class ProcessorAddress(val address: String) {
-    SET_LOG_PUBLISH_RATE_LIMIT("spp.provider.setting.log-publish-rate-limit");
+enum class DeveloperRole(var roleName: String, var nativeRole: Boolean) {
+    ROLE_MANAGER("role_manager", true),
+    ROLE_USER("role_user", true),
+    USER("*", false);
+
+    companion object {
+        fun fromString(roleName: String): DeveloperRole {
+            val nativeRole = values().find { it.name.lowercase() == roleName.lowercase() }
+            return if (nativeRole != null) {
+                nativeRole
+            } else {
+                val user = USER
+                user.roleName = roleName.toLowerCase().replace(' ', '_').trim()
+                user
+            }
+        }
+    }
 }

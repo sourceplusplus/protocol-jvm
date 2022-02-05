@@ -15,23 +15,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.auth
+package spp.protocol.platform.error
 
-enum class DeveloperRole(var roleName: String, var nativeRole: Boolean) {
-    ROLE_MANAGER("role_manager", true),
-    ROLE_USER("role_user", true),
-    USER("*", false);
+/**
+ * todo: description.
+ *
+ * @since 0.3.0
+ * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
+ */
+class JWTVerificationException : RuntimeException {
 
-    companion object {
-        fun fromString(roleName: String): DeveloperRole {
-            val nativeRole = values().find { it.name.lowercase() == roleName.lowercase() }
-            return if (nativeRole != null) {
-                nativeRole
-            } else {
-                val user = USER
-                user.roleName = roleName.toLowerCase().replace(' ', '_').trim()
-                user
-            }
-        }
+    private val reason: String
+
+    constructor(reason: String) : this(reason, "JWT verification exception: $reason")
+
+    private constructor(reason: String, message: String) : super(message) {
+        this.reason = reason
+    }
+
+    fun toEventBusException(): JWTVerificationException {
+        return JWTVerificationException(
+            reason, "EventBusException:JWTVerificationException[$reason]"
+        )
     }
 }

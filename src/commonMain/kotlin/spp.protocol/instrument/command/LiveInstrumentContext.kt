@@ -15,27 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.error
+package spp.protocol.instrument.command
 
-/**
- * todo: description.
- *
- * @since 0.3.0
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-class JWTVerificationException : RuntimeException {
+import kotlinx.serialization.Serializable
+import spp.protocol.instrument.LiveInstrument
+import spp.protocol.instrument.LiveSourceLocation
 
-    private val reason: String
-
-    constructor(reason: String) : this(reason, "JWT verification exception: $reason")
-
-    private constructor(reason: String, message: String) : super(message) {
-        this.reason = reason
-    }
-
-    fun toEventBusException(): JWTVerificationException {
-        return JWTVerificationException(
-            reason, "EventBusException:JWTVerificationException[$reason]"
-        )
-    }
-}
+@Serializable
+data class LiveInstrumentContext(
+    var instruments: Set<LiveInstrument> = emptySet(),
+    var locations: Set<LiveSourceLocation> = emptySet()
+)

@@ -15,20 +15,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.status
+package spp.protocol.platform.general
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 /**
- * todo: description.
+ * Represents a service.
  *
- * @since 0.3.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @Serializable
-data class InstanceConnection(
-    var instanceId: String,
-    var connectionTime: Long,
-    val meta: MutableMap<String, @Contextual Any> = mutableMapOf()
+data class Service(
+    val id: String,
+    val name: String,
+    val group: String? = null
 )

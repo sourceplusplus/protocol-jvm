@@ -15,13 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.auth
+package spp.protocol.platform.developer
 
 import kotlinx.serialization.Serializable
+import spp.protocol.platform.auth.AccessPermission
+import spp.protocol.platform.auth.DeveloperRole
+import spp.protocol.platform.auth.RolePermission
 
 @Serializable
-data class AccessPermission(
-    val id: String,
-    val locationPatterns: List<String>,
-    val type: AccessType
+data class SelfInfo(
+    val developer: Developer,
+    val roles: List<DeveloperRole>,
+    val permissions: List<RolePermission>,
+    val access: List<AccessPermission>
 )

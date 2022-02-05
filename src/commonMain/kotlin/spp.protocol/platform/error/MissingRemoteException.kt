@@ -15,9 +15,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.auth
+package spp.protocol.platform.error
 
-data class DataRedaction(
-    val id: String,
-    val redactionPattern: String
-)
+/**
+ * todo: description.
+ *
+ * @since 0.3.0
+ * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
+ */
+class MissingRemoteException : RuntimeException {
+
+    private val remote: String
+
+    constructor(remote: String) : this(remote, "Missing remote: $remote")
+
+    private constructor(remote: String, message: String) : super(message) {
+        this.remote = remote
+    }
+
+    fun toEventBusException(): MissingRemoteException {
+        return MissingRemoteException(
+            remote, "EventBusException:MissingRemoteException[$remote]"
+        )
+    }
+}

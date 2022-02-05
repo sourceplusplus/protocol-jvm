@@ -18,7 +18,7 @@
 package spp.protocol.service.error
 
 import io.vertx.serviceproxy.ServiceException
-import spp.protocol.auth.RolePermission
+import spp.protocol.platform.auth.RolePermission
 
 /**
  * todo: description.

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.probe
+package spp.protocol.platform
 
 enum class ProbeAddress(val address: String) {
     REMOTE_REGISTERED("spp.probe.status.remote-registered"),

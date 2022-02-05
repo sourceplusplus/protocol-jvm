@@ -15,9 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.probe.command
+package spp.protocol.platform.status
 
-enum class CommandType {
-    ADD_LIVE_INSTRUMENT,
-    REMOVE_LIVE_INSTRUMENT
-}
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
+
+/**
+ * todo: description.
+ *
+ * @since 0.3.1
+ * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
+ */
+@Serializable
+data class InstanceConnection(
+    var instanceId: String,
+    var connectionTime: Long,
+    val meta: MutableMap<String, @Contextual Any> = mutableMapOf()
+)

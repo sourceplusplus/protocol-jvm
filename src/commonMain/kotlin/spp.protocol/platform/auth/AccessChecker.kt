@@ -15,10 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.utils
-
-import spp.protocol.auth.AccessPermission
-import spp.protocol.auth.AccessType
+package spp.protocol.platform.auth
 
 object AccessChecker {
 

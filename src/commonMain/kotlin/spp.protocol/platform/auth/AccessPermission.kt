@@ -15,9 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.auth
+package spp.protocol.platform.auth
 
-enum class AccessType {
-    BLACK_LIST,
-    WHITE_LIST
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class AccessPermission(
+    val id: String,
+    val locationPatterns: List<String>,
+    val type: AccessType
+)

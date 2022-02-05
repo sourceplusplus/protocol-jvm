@@ -15,27 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.error
+package spp.protocol.instrument.command
 
-/**
- * todo: description.
- *
- * @since 0.3.0
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-class MissingRemoteException : RuntimeException {
-
-    private val remote: String
-
-    constructor(remote: String) : this(remote, "Missing remote: $remote")
-
-    private constructor(remote: String, message: String) : super(message) {
-        this.remote = remote
-    }
-
-    fun toEventBusException(): MissingRemoteException {
-        return MissingRemoteException(
-            remote, "EventBusException:MissingRemoteException[$remote]"
-        )
-    }
+enum class CommandType {
+    ADD_LIVE_INSTRUMENT,
+    REMOVE_LIVE_INSTRUMENT
 }

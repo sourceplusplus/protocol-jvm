@@ -34,15 +34,15 @@ import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
-import spp.protocol.developer.SelfInfo
-import spp.protocol.general.Service
 import spp.protocol.instrument.*
+import spp.protocol.instrument.command.CommandType
+import spp.protocol.instrument.command.LiveInstrumentCommand
+import spp.protocol.instrument.command.LiveInstrumentContext
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
-import spp.protocol.probe.command.CommandType
-import spp.protocol.probe.command.LiveInstrumentCommand
-import spp.protocol.probe.command.LiveInstrumentContext
-import spp.protocol.status.ActiveInstance
+import spp.protocol.platform.developer.SelfInfo
+import spp.protocol.platform.general.Service
+import spp.protocol.platform.status.ActiveInstance
 import spp.protocol.view.LiveViewSubscription
 import java.util.*
 

@@ -15,18 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.general
+package spp.protocol.platform
 
-import kotlinx.serialization.Serializable
-
-/**
- * Represents a service.
- *
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-@Serializable
-data class Service(
-    val id: String,
-    val name: String,
-    val group: String? = null
-)
+enum class ProcessorAddress(val address: String) {
+    SET_LOG_PUBLISH_RATE_LIMIT("spp.provider.setting.log-publish-rate-limit");
+}

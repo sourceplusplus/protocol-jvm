@@ -15,14 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.status
+package spp.protocol.platform.developer
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
+/**
+ * Represents a developer.
+ *
+ * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
+ */
 @Serializable
-data class ActiveInstance(
-    val instanceId: String,
-    val connectedAt: Long,
-    val meta: MutableMap<String, @Contextual Any> = mutableMapOf()
+data class Developer(
+    val id: String,
+    val accessToken: String? = null
 )

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.auth
+package spp.protocol.platform.auth
 
 enum class RolePermission(val manager: Boolean = true) {
     RESET(true),

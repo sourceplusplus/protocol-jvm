@@ -20,9 +20,9 @@ package spp.protocol.service
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
-import spp.protocol.developer.SelfInfo
-import spp.protocol.general.Service
-import spp.protocol.status.ActiveInstance
+import spp.protocol.platform.developer.SelfInfo
+import spp.protocol.platform.general.Service
+import spp.protocol.platform.status.ActiveInstance
 
 /**
  * todo: description.
