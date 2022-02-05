@@ -48,53 +48,46 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
         val frame = event.result()
         log.trace("Received frame: {}", frame)
 
-        //todo: revisit this || after fixing below todo
-        if ("message" == frame.getString("type") || "send" == frame.getString("type")) {
-            if (frame.getString("replyAddress") != null) {
-                val deliveryOptions = DeliveryOptions()
-                frame.getJsonObject("headers").fieldNames().forEach {
-                    deliveryOptions.addHeader(it, frame.getJsonObject("headers").getString(it))
-                }
-                vertx.eventBus().request<Any>(
-                    frame.getString("address"), frame.getJsonObject("body"), deliveryOptions
-                ).onComplete {
-                    if (it.succeeded()) {
-                        FrameHelper.sendFrame(
-                            BridgeEventType.SEND.name.lowercase(),
-                            frame.getString("replyAddress"),
-                            it.result().body(),
-                            socket
-                        )
-                    } else {
-                        val replyException = it.cause() as ReplyException
-                        FrameHelper.writeFrame(
-                            JsonObject()
-                                .put("type", BridgeEventType.SEND.name.lowercase())
-                                .put("address", frame.getString("replyAddress"))
-                                .put("failureCode", replyException.failureCode())
-                                .put("failureType", replyException.failureType().name)
-                                .put("message", replyException.message),
-                            socket
-                        )
-                    }
-                }
-            } else {
-                val body = frame.getValue("body")
-                if (body is JsonObject) {
-                    if (body.getString("message")?.startsWith("EventBusException:") == true) {
-                        handleErrorFrame(body.put("address", frame.getString("address")))
-                    } else {
-                        vertx.eventBus().send(frame.getString("address"), body)
-                    }
+        if (frame.getString("replyAddress") != null) {
+            val deliveryOptions = DeliveryOptions()
+            frame.getJsonObject("headers").fieldNames().forEach {
+                deliveryOptions.addHeader(it, frame.getJsonObject("headers").getString(it))
+            }
+            vertx.eventBus().request<Any>(
+                frame.getString("address"), frame.getJsonObject("body"), deliveryOptions
+            ).onComplete {
+                if (it.succeeded()) {
+                    FrameHelper.sendFrame(
+                        BridgeEventType.SEND.name.lowercase(),
+                        frame.getString("replyAddress"),
+                        it.result().body(),
+                        socket
+                    )
                 } else {
-                    vertx.eventBus().send(frame.getString("address"), body)
+                    val replyException = it.cause() as ReplyException
+                    FrameHelper.writeFrame(
+                        JsonObject()
+                            .put("type", BridgeEventType.SEND.name.lowercase())
+                            .put("address", frame.getString("replyAddress"))
+                            .put("failureCode", replyException.failureCode())
+                            .put("failureType", replyException.failureType().name)
+                            .put("message", replyException.message),
+                        socket
+                    )
                 }
             }
-        } else if ("err" == frame.getString("type")) {
+        } else if (frame.getString("address") != null) {
+            val body = frame.getValue("body")
+            if (body == null && frame.getString("message")?.startsWith("EventBusException:") == true) {
+                handleErrorFrame(frame)
+            } else if (body is JsonObject && body.getString("message")?.startsWith("EventBusException:") == true) {
+                handleErrorFrame(body.put("address", frame.getString("address")))
+            } else {
+                vertx.eventBus().send(frame.getString("address"), body)
+            }
+        } else {
             //directly thrown event bus exceptions
             throw ReplyException(ReplyFailure.ERROR, frame.getString("message"))
-        } else {
-            throw UnsupportedOperationException(frame.toString())
         }
     }
 

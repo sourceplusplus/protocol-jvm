@@ -37,7 +37,6 @@ import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.instrument.*
 import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
-import spp.protocol.instrument.command.LiveInstrumentContext
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.platform.developer.SelfInfo
@@ -235,22 +234,20 @@ object ProtocolMarshaller {
     fun deserializeLiveInstrumentCommand(value: JsonObject): LiveInstrumentCommand {
         return LiveInstrumentCommand(
             CommandType.valueOf(value.getString("commandType")),
-            LiveInstrumentContext(
-                value.getJsonObject("context").getJsonArray("instruments").list.map {
-                    if (it is JsonObject) {
-                        deserializeLiveInstrument(it)
-                    } else {
-                        deserializeLiveInstrument(JsonObject.mapFrom(it))
-                    }
-                }.toSet(),
-                value.getJsonObject("context").getJsonArray("locations").list.map {
-                    if (it is JsonObject) {
-                        deserializeLiveSourceLocation(it)
-                    } else {
-                        deserializeLiveSourceLocation(JsonObject.mapFrom(it))
-                    }
-                }.toSet()
-            )
+            value.getJsonArray("instruments").list.map {
+                if (it is JsonObject) {
+                    deserializeLiveInstrument(it)
+                } else {
+                    deserializeLiveInstrument(JsonObject.mapFrom(it))
+                }
+            }.toSet(),
+            value.getJsonArray("locations").list.map {
+                if (it is JsonObject) {
+                    deserializeLiveSourceLocation(it)
+                } else {
+                    deserializeLiveSourceLocation(JsonObject.mapFrom(it))
+                }
+            }.toSet()
         )
     }
 

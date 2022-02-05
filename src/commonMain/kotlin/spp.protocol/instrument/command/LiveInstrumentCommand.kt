@@ -18,9 +18,12 @@
 package spp.protocol.instrument.command
 
 import kotlinx.serialization.Serializable
+import spp.protocol.instrument.LiveInstrument
+import spp.protocol.instrument.LiveSourceLocation
 
 @Serializable
 data class LiveInstrumentCommand(
     var commandType: CommandType,
-    var context: LiveInstrumentContext
+    var instruments: Set<LiveInstrument> = emptySet(),
+    var locations: Set<LiveSourceLocation> = emptySet()
 )
