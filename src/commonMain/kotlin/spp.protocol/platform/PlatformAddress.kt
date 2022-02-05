@@ -17,16 +17,15 @@
  */
 package spp.protocol.platform
 
-enum class PlatformAddress(val address: String) {
-    PROCESSOR_CONNECTED("spp.platform.status.processor-connected"),
-    PROCESSOR_DISCONNECTED("spp.platform.status.processor-disconnected"),
-    PROBE_CONNECTED("spp.platform.status.probe-connected"),
-    PROBE_DISCONNECTED("spp.platform.status.probe-disconnected"),
+object PlatformAddress {
+    const val PROCESSOR_CONNECTED = "spp.platform.status.processor-connected"
+    const val PROCESSOR_DISCONNECTED = "spp.platform.status.processor-disconnected"
+    const val PROBE_CONNECTED = "spp.platform.status.probe-connected"
+    const val PROBE_DISCONNECTED = "spp.platform.status.probe-disconnected"
+    const val MARKER_CONNECTED = "spp.status.marker-connected"
+    const val MARKER_DISCONNECTED = "spp.platform.status.marker-disconnected"
 
-    LIVE_INSTRUMENT_REMOVED("spp.platform.status.live-instrument-removed"),
-    LIVE_INSTRUMENT_APPLIED("spp.platform.status.live-instrument-applied"),
-
-    MARKER_CONNECTED("spp.status.marker-connected"),
-    MARKER_DISCONNECTED("spp.platform.status.marker-disconnected"),
-    GENERATE_PROBE("spp.platform.generate-probe");
+    const val LIVE_INSTRUMENT_REMOVED = "spp.platform.status.live-instrument-removed"
+    const val LIVE_INSTRUMENT_APPLIED = "spp.platform.status.live-instrument-applied"
+    const val GENERATE_PROBE = "spp.platform.generate-probe"
 }

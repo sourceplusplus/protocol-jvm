@@ -17,6 +17,6 @@
  */
 package spp.protocol.platform
 
-enum class ProcessorAddress(val address: String) {
-    SET_LOG_PUBLISH_RATE_LIMIT("spp.provider.setting.log-publish-rate-limit");
+object ProcessorAddress {
+    const val SET_LOG_PUBLISH_RATE_LIMIT = "spp.provider.setting.log-publish-rate-limit"
 }

@@ -17,7 +17,7 @@
  */
 package spp.protocol.platform
 
-enum class ProbeAddress(val address: String) {
-    REMOTE_REGISTERED("spp.probe.status.remote-registered"),
-    LIVE_INSTRUMENT_REMOTE("spp.probe.command.live-instrument-remote")
+object ProbeAddress {
+    const val REMOTE_REGISTERED = "spp.probe.status.remote-registered"
+    const val LIVE_INSTRUMENT_REMOTE = "spp.probe.command.live-instrument-remote"
 }
