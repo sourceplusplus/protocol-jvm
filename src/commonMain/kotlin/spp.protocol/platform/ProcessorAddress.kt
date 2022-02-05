@@ -18,8 +18,9 @@
 package spp.protocol.platform
 
 object ProcessorAddress {
-    const val LIVE_INSTRUMENT_REMOVED = "spp.processor.status.live-instrument-removed"
+    const val REMOTE_REGISTERED = "spp.processor.status.remote-registered"
     const val LIVE_INSTRUMENT_APPLIED = "spp.processor.status.live-instrument-applied"
+    const val LIVE_INSTRUMENT_REMOVED = "spp.processor.status.live-instrument-removed"
 
     const val SET_LOG_PUBLISH_RATE_LIMIT = "spp.processor.setting.log-publish-rate-limit"
 }

@@ -18,6 +18,5 @@
 package spp.protocol.platform
 
 object ProbeAddress {
-    const val REMOTE_REGISTERED = "spp.probe.status.remote-registered"
     const val LIVE_INSTRUMENT_REMOTE = "spp.probe.command.live-instrument-remote"
 }
