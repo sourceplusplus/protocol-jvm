@@ -18,8 +18,14 @@
 package spp.protocol.service.error
 
 import io.vertx.serviceproxy.ServiceException
-import spp.protocol.auth.RolePermission
+import spp.protocol.platform.auth.RolePermission
 
+/**
+ * todo: description.
+ *
+ * @since 0.3.0
+ * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
+ */
 class PermissionAccessDenied(val permission: RolePermission, message: String? = null) : ServiceException(500, message) {
 
     fun toEventBusException(): PermissionAccessDenied {

@@ -17,9 +17,9 @@
  */
 package spp.protocol.artifact.trace
 
-import spp.protocol.Serializers
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.Serializers
 import spp.protocol.artifact.ArtifactQualifiedName
 
 /**

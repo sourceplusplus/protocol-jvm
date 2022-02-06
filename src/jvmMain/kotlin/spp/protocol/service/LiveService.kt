@@ -19,11 +19,10 @@ package spp.protocol.service
 
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
-import io.vertx.core.AsyncResult
-import io.vertx.core.Handler
-import spp.protocol.developer.SelfInfo
-import spp.protocol.general.Service
-import spp.protocol.platform.client.ActiveProbe
+import io.vertx.core.Future
+import spp.protocol.platform.developer.SelfInfo
+import spp.protocol.platform.general.Service
+import spp.protocol.platform.status.ActiveInstance
 
 /**
  * todo: description.
@@ -34,7 +33,7 @@ import spp.protocol.platform.client.ActiveProbe
 @VertxGen
 interface LiveService {
 
-    fun getSelf(handler: Handler<AsyncResult<SelfInfo>>)
-    fun getServices(handler: Handler<AsyncResult<List<Service>>>)
-    fun getActiveProbes(handler: Handler<AsyncResult<List<ActiveProbe>>>)
+    fun getSelf(): Future<SelfInfo>
+    fun getServices(): Future<List<Service>>
+    fun getActiveProbes(): Future<List<ActiveInstance>>
 }

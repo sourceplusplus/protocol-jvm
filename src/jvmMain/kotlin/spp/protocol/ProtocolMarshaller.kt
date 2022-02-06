@@ -31,20 +31,17 @@ import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
 import kotlinx.datetime.Instant
 import spp.protocol.artifact.ArtifactQualifiedName
+import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
-import spp.protocol.developer.SelfInfo
-import spp.protocol.general.Service
-import spp.protocol.instrument.LiveInstrument
-import spp.protocol.instrument.LiveInstrumentBatch
-import spp.protocol.instrument.LiveInstrumentType
-import spp.protocol.instrument.LiveSourceLocation
-import spp.protocol.instrument.breakpoint.LiveBreakpoint
-import spp.protocol.instrument.breakpoint.event.LiveBreakpointHit
-import spp.protocol.instrument.log.LiveLog
-import spp.protocol.instrument.meter.LiveMeter
-import spp.protocol.instrument.span.LiveSpan
-import spp.protocol.platform.client.ActiveProbe
+import spp.protocol.instrument.*
+import spp.protocol.instrument.command.CommandType
+import spp.protocol.instrument.command.LiveInstrumentCommand
+import spp.protocol.instrument.event.LiveBreakpointHit
+import spp.protocol.instrument.event.LiveInstrumentRemoved
+import spp.protocol.platform.developer.SelfInfo
+import spp.protocol.platform.general.Service
+import spp.protocol.platform.status.ActiveInstance
 import spp.protocol.view.LiveViewSubscription
 import java.util.*
 
@@ -189,11 +186,6 @@ object ProtocolMarshaller {
     }
 
     @JvmStatic
-    fun serializeLiveInstrumentBatch(value: LiveInstrumentBatch): JsonObject {
-        return JsonObject(Json.encode(value))
-    }
-
-    @JvmStatic
     fun serializeLiveViewSubscription(value: LiveViewSubscription): JsonObject {
         return JsonObject(Json.encode(value))
     }
@@ -224,23 +216,53 @@ object ProtocolMarshaller {
     }
 
     @JvmStatic
-    fun serializeActiveProbe(value: ActiveProbe): JsonObject {
+    fun serializeActiveInstance(value: ActiveInstance): JsonObject {
         return JsonObject(Json.encode(value))
     }
 
     @JvmStatic
-    fun deserializeActiveProbe(value: JsonObject): ActiveProbe {
-        return value.mapTo(ActiveProbe::class.java)
+    fun deserializeActiveInstance(value: JsonObject): ActiveInstance {
+        return value.mapTo(ActiveInstance::class.java)
     }
 
     @JvmStatic
-    fun deserializeLiveInstrumentBatch(value: JsonObject): LiveInstrumentBatch {
-        val rawInstruments = value.getJsonArray("instruments")
-        val typedInstruments = mutableListOf<LiveInstrument>()
-        for (i in rawInstruments.list.indices) {
-            typedInstruments.add(deserializeLiveInstrument(rawInstruments.getJsonObject(i)))
-        }
-        return LiveInstrumentBatch(typedInstruments)
+    fun serializeLiveInstrumentCommand(value: LiveInstrumentCommand): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveInstrumentCommand(value: JsonObject): LiveInstrumentCommand {
+        return LiveInstrumentCommand(
+            CommandType.valueOf(value.getString("commandType")),
+            value.getJsonArray("instruments").list.map {
+                if (it is JsonObject) {
+                    deserializeLiveInstrument(it)
+                } else {
+                    deserializeLiveInstrument(JsonObject.mapFrom(it))
+                }
+            }.toSet(),
+            value.getJsonArray("locations").list.map {
+                if (it is JsonObject) {
+                    deserializeLiveSourceLocation(it)
+                } else {
+                    deserializeLiveSourceLocation(JsonObject.mapFrom(it))
+                }
+            }.toSet()
+        )
+    }
+
+    @JvmStatic
+    fun serializeLiveInstrumentRemoved(value: LiveInstrumentRemoved): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveInstrumentRemoved(value: JsonObject): LiveInstrumentRemoved {
+        return LiveInstrumentRemoved(
+            deserializeLiveInstrument(value.getJsonObject("liveInstrument")),
+            Instant.fromEpochMilliseconds(value.getLong("occurredAt")),
+            value.getJsonObject("cause")?.let { Json.decodeValue(it.toString(), LiveStackTrace::class.java) }
+        )
     }
 
     @JvmStatic

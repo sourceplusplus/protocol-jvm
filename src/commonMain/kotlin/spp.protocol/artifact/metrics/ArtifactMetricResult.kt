@@ -17,11 +17,11 @@
  */
 package spp.protocol.artifact.metrics
 
-import spp.protocol.Serializers
-import spp.protocol.artifact.QueryTimeFrame
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import spp.protocol.Serializers
 import spp.protocol.artifact.ArtifactQualifiedName
+import spp.protocol.artifact.QueryTimeFrame
 
 /**
  * todo: description.

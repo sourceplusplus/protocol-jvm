@@ -17,9 +17,9 @@
  */
 package spp.protocol.artifact.exception
 
-import spp.protocol.instrument.LiveVariable
-import spp.protocol.utils.ArtifactNameUtils.getShortQualifiedClassName
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactNameUtils.getShortQualifiedClassName
+import spp.protocol.instrument.variable.LiveVariable
 
 /**
  * todo: description.

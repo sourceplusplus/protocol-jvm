@@ -11,6 +11,7 @@ val vertxVersion: String by project
 val kotlinVersion: String by project
 val projectVersion: String by project
 val jacksonVersion: String by project
+val slf4jVersion: String by project
 
 group = "spp.protocol"
 version = projectVersion
@@ -49,10 +50,11 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("org.slf4j:slf4j-api:$slf4jVersion")
                 implementation("io.vertx:vertx-core:$vertxVersion")
                 implementation("io.vertx:vertx-codegen:$vertxVersion")
                 implementation("io.vertx:vertx-tcp-eventbus-bridge:$vertxVersion")
-                implementation("io.vertx:vertx-service-proxy:4.1.5")
+                implementation("io.vertx:vertx-service-proxy:$vertxVersion")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
@@ -79,14 +81,31 @@ kotlin {
 }
 
 dependencies {
-    "kapt"("io.vertx:vertx-codegen:4.1.5:processor")
+    "kapt"("io.vertx:vertx-codegen:$vertxVersion:processor")
 }
 
 tasks.register<Copy>("setupJsonMappers") {
     from(file("$projectDir/src/jvmMain/resources/META-INF/vertx/json-mappers.properties"))
-    into(file("$buildDir/tmp/kapt3/src/main/resources/META-INF/vertx"))
+    into(file("$buildDir/generated/source/kapt/main/META-INF/vertx"))
 }
 tasks.getByName("compileKotlinJvm").dependsOn("setupJsonMappers")
+
+tasks.register<Exec>("restrictDeletionOfJsonMappers") {
+    mustRunAfter("setupJsonMappers")
+    commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+}
+tasks.getByName("compileKotlinJvm").dependsOn("restrictDeletionOfJsonMappers")
+
+tasks.register<Exec>("unrestrictDeletionOfJsonMappers") {
+    mustRunAfter("compileKotlinJvm")
+    if (file("$buildDir/generated/source/kapt/main/META-INF/vertx").exists()) {
+        commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+    } else {
+        commandLine("true") //no-op
+    }
+}
+tasks.getByName("jvmJar").dependsOn("unrestrictDeletionOfJsonMappers")
+tasks.getByName("clean").dependsOn("unrestrictDeletionOfJsonMappers")
 
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
     annotation("kotlinx.serialization.Serializable")
