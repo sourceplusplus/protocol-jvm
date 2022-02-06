@@ -33,5 +33,6 @@ data class LiveVariable(
     val lineNumber: Int = -1,
     val scope: LiveVariableScope? = null,
     val liveClazz: String? = null,
-    val liveIdentity: String? = null
+    val liveIdentity: String? = null,
+    val presentation: String? = null
 )
