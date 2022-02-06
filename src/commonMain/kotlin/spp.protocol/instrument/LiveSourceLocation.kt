@@ -30,7 +30,7 @@ import kotlin.jvm.JvmOverloads
 data class LiveSourceLocation @JvmOverloads constructor(
     val source: String,
     val line: Int = -1,
-    val service: String? = null,
+    val service: String? = null, //todo: can use Service
     val serviceInstance: String? = null, //todo: fully impl
     val commitId: String? = null, //todo: impl
     val fileChecksum: String? = null //todo: impl

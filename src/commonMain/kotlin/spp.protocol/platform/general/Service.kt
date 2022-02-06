@@ -28,5 +28,5 @@ import kotlinx.serialization.Serializable
 data class Service(
     val id: String,
     val name: String,
-    val group: String? = null
+    val group: String? = null //todo: add ServiceInstance?
 )
