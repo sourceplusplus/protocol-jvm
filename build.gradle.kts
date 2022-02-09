@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -92,16 +94,34 @@ tasks.getByName("compileKotlinJvm").dependsOn("setupJsonMappers")
 
 tasks.register<Exec>("restrictDeletionOfJsonMappers") {
     mustRunAfter("setupJsonMappers")
-    commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+    doFirst {
+        if (!Os.isFamily(Os.FAMILY_UNIX)) {
+            ProcessBuilder(
+                "cmd.exe", "/C",
+                "start \"\" notepad >> $buildDir\\generated\\source\\kapt\\main\\META-INF\\vertx\\json-mappers.properties"
+            ).start()
+        }
+    }
+    if (Os.isFamily(Os.FAMILY_UNIX)) {
+        commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+    } else {
+        executable("cmd.exe")
+        args("/C") //no-op
+    }
 }
 tasks.getByName("compileKotlinJvm").dependsOn("restrictDeletionOfJsonMappers")
 
 tasks.register<Exec>("unrestrictDeletionOfJsonMappers") {
     mustRunAfter("compileKotlinJvm")
-    if (file("$buildDir/generated/source/kapt/main/META-INF/vertx").exists()) {
-        commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+    if (Os.isFamily(Os.FAMILY_UNIX)) {
+        if (file("$buildDir/generated/source/kapt/main/META-INF/vertx").exists()) {
+            commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+        } else {
+            commandLine("true") //no-op
+        }
     } else {
-        commandLine("true") //no-op
+        executable("cmd.exe")
+        args("/C") //no-op
     }
 }
 tasks.getByName("jvmJar").dependsOn("unrestrictDeletionOfJsonMappers")
