@@ -103,7 +103,11 @@ tasks.register<Exec>("restrictDeletionOfJsonMappers") {
         }
     }
     if (Os.isFamily(Os.FAMILY_UNIX)) {
-        commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+        if (System.getProperty("user.name") == "root") {
+            commandLine("chattr", "+i", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+        } else {
+            commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+        }
     } else {
         executable("cmd.exe")
         args("/C") //no-op
@@ -115,7 +119,11 @@ tasks.register<Exec>("unrestrictDeletionOfJsonMappers") {
     mustRunAfter("compileKotlinJvm")
     if (Os.isFamily(Os.FAMILY_UNIX)) {
         if (file("$buildDir/generated/source/kapt/main/META-INF/vertx").exists()) {
-            commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+            if (System.getProperty("user.name") == "root") {
+                commandLine("chattr", "-i", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+            } else {
+                commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+            }
         } else {
             commandLine("true") //no-op
         }
