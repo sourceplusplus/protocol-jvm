@@ -34,5 +34,5 @@ data class LiveVariable(
     val scope: LiveVariableScope? = null,
     val liveClazz: String? = null,
     val liveIdentity: String? = null,
-    val presentation: String? = null
+    var presentation: String? = null
 )
