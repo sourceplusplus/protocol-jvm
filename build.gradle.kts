@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -60,7 +62,7 @@ kotlin {
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
                 implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
                 implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
-                implementation("org.jooq:jooq:3.16.3")
+                implementation("org.jooq:jooq:3.16.4")
             }
         }
         val jvmTest by getting {
@@ -92,16 +94,42 @@ tasks.getByName("compileKotlinJvm").dependsOn("setupJsonMappers")
 
 tasks.register<Exec>("restrictDeletionOfJsonMappers") {
     mustRunAfter("setupJsonMappers")
-    commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+    doFirst {
+        if (!Os.isFamily(Os.FAMILY_UNIX)) {
+            ProcessBuilder(
+                "cmd.exe", "/C",
+                "start \"\" notepad >> $buildDir\\generated\\source\\kapt\\main\\META-INF\\vertx\\json-mappers.properties"
+            ).start()
+        }
+    }
+    if (Os.isFamily(Os.FAMILY_UNIX)) {
+        if (System.getProperty("user.name") == "root") {
+            commandLine("chattr", "+i", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+        } else {
+            commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+        }
+    } else {
+        executable("cmd.exe")
+        args("/C") //no-op
+    }
 }
 tasks.getByName("compileKotlinJvm").dependsOn("restrictDeletionOfJsonMappers")
 
 tasks.register<Exec>("unrestrictDeletionOfJsonMappers") {
     mustRunAfter("compileKotlinJvm")
-    if (file("$buildDir/generated/source/kapt/main/META-INF/vertx").exists()) {
-        commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+    if (Os.isFamily(Os.FAMILY_UNIX)) {
+        if (file("$buildDir/generated/source/kapt/main/META-INF/vertx").exists()) {
+            if (System.getProperty("user.name") == "root") {
+                commandLine("chattr", "-i", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+            } else {
+                commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
+            }
+        } else {
+            commandLine("true") //no-op
+        }
     } else {
-        commandLine("true") //no-op
+        executable("cmd.exe")
+        args("/C") //no-op
     }
 }
 tasks.getByName("jvmJar").dependsOn("unrestrictDeletionOfJsonMappers")
