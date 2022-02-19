@@ -42,9 +42,19 @@ data class Log(
     fun toFormattedMessage(): String {
         var arg = 0
         var formattedMessage = content
-        while (formattedMessage.contains("{}")) {
-            formattedMessage = formattedMessage.replaceFirst("{}", arguments[arg++])
+        while (formattedMessage.contains("{}") or formattedMessage.contains("[]")) {
+            formattedMessage = formattedMessage.replaceFirst(findFirstPattern(formattedMessage), arguments[arg++])
         }
         return formattedMessage
+    }
+
+    private fun findFirstPattern(message: String): String {
+        val indexOfSquareB = message.indexOf("[]")
+        if (indexOfSquareB == -1)
+            return "{}"
+        val indexOfCurlyB = message.indexOf("{}")
+        if (indexOfCurlyB == -1)
+            return "[]"
+        return if (indexOfSquareB < indexOfCurlyB) "[]" else "{}"
     }
 }
