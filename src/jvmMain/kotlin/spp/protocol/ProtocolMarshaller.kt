@@ -107,17 +107,7 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun serializeLiveInstrument(value: LiveInstrument): JsonObject {
-        val valueObject = JsonObject(Json.encode(value))
-        //todo: don't use graalvm anymore, remove this
-        //force persistence of "type" as graalvm's native-image drops it for some reason
-        when (value) {
-            is LiveBreakpoint -> valueObject.put("type", LiveInstrumentType.BREAKPOINT.name)
-            is LiveLog -> valueObject.put("type", LiveInstrumentType.LOG.name)
-            is LiveMeter -> valueObject.put("type", LiveInstrumentType.METER.name)
-            is LiveSpan -> valueObject.put("type", LiveInstrumentType.SPAN.name)
-            else -> throw UnsupportedOperationException("Live instrument: $value")
-        }
-        return valueObject
+        return JsonObject(Json.encode(value))
     }
 
     @JvmStatic
@@ -260,7 +250,16 @@ object ProtocolMarshaller {
     fun deserializeLiveInstrumentRemoved(value: JsonObject): LiveInstrumentRemoved {
         return LiveInstrumentRemoved(
             deserializeLiveInstrument(value.getJsonObject("liveInstrument")),
-            Instant.fromEpochMilliseconds(value.getLong("occurredAt")),
+            value.let {
+                if (it.getValue("occurredAt") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("occurredAt").getLong("epochSeconds"),
+                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
             value.getJsonObject("cause")?.let { Json.decodeValue(it.toString(), LiveStackTrace::class.java) }
         )
     }
