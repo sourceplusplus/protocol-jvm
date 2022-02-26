@@ -19,10 +19,6 @@ package spp.protocol.marshall
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.guava.GuavaModule
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.eventbus.MessageCodec
@@ -54,10 +50,6 @@ import java.util.*
 object ProtocolMarshaller {
     init {
         try {
-            DatabindCodec.mapper().registerModule(GuavaModule())
-            DatabindCodec.mapper().registerModule(Jdk8Module())
-            DatabindCodec.mapper().registerModule(JavaTimeModule())
-            DatabindCodec.mapper().registerModule(KotlinModule())
             DatabindCodec.mapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
