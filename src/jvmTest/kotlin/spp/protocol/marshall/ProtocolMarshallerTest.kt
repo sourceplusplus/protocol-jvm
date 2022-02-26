@@ -1,4 +1,4 @@
-package spp.protocol
+package spp.protocol.marshall
 
 import kotlinx.datetime.Clock
 import org.junit.Assert.assertEquals
