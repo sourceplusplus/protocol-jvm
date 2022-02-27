@@ -19,7 +19,6 @@ package spp.protocol.artifact.trace
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import spp.protocol.Serializers
 
 /**
  * todo: description.
@@ -32,7 +31,6 @@ data class Trace(
     val key: String? = null,
     val operationNames: List<String>,
     val duration: Int,
-    @Serializable(with = Serializers.InstantKSerializer::class)
     val start: Instant,
     val error: Boolean? = null,
     val traceIds: List<String>,
