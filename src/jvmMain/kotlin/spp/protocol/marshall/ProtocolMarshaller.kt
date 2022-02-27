@@ -19,15 +19,13 @@ package spp.protocol.marshall
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
-import io.vertx.core.Vertx
-import io.vertx.core.buffer.Buffer
-import io.vertx.core.eventbus.MessageCodec
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
 import kotlinx.datetime.Instant
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.exception.LiveStackTrace
+import spp.protocol.artifact.exception.LiveStackTraceElement
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.instrument.*
@@ -35,11 +33,11 @@ import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
+import spp.protocol.instrument.variable.LiveVariable
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.ActiveInstance
 import spp.protocol.view.LiveViewSubscription
-import java.util.*
 
 /**
  * Used for marshalling and unmarshalling protocol messages.
@@ -257,30 +255,58 @@ object ProtocolMarshaller {
     }
 
     @JvmStatic
-    fun setupCodecs(vertx: Vertx) {
-        vertx.eventBus().registerDefaultCodec(LiveBreakpointHit::class.java, ProtocolMessageCodec())
+    fun serializeLiveVariable(value: LiveVariable): JsonObject {
+        return JsonObject(Json.encode(value))
     }
 
-    class ProtocolMessageCodec<T> : MessageCodec<T, T> {
-        override fun encodeToWire(buffer: Buffer?, s: T?) {
-            val value = Json.encode(s).toByteArray()
-            buffer?.appendInt(value.size)
-            buffer?.appendBytes(value)
-        }
+    @JvmStatic
+    fun deserializeLiveVariable(value: JsonObject): LiveVariable {
+        return value.mapTo(LiveVariable::class.java)
+    }
 
-        override fun decodeFromWire(pos: Int, buffer: Buffer?): T? {
-            val len = buffer?.getInt(pos) ?: return null
-            val bytes = buffer.getBytes(pos + 4, pos + 4 + len)
-            return cast(Json.decodeValue(String(bytes)))
-        }
+    @JvmStatic
+    fun serializeLiveStackTraceElement(value: LiveStackTraceElement): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
 
-        @Suppress("UNCHECKED_CAST")
-        private fun <T> cast(obj: Any?): T? {
-            return obj as? T
-        }
+    @JvmStatic
+    fun deserializeLiveStackTraceElement(value: JsonObject): LiveStackTraceElement {
+        return value.mapTo(LiveStackTraceElement::class.java)
+    }
 
-        override fun transform(o: T): T = o
-        override fun name(): String = UUID.randomUUID().toString()
-        override fun systemCodecID(): Byte = -1
+    @JvmStatic
+    fun serializeLiveStackTrace(value: LiveStackTrace): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveStackTrace(value: JsonObject): LiveStackTrace {
+        return value.mapTo(LiveStackTrace::class.java)
+    }
+
+    @JvmStatic
+    fun serializeLiveBreakpointHit(value: LiveBreakpointHit): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveBreakpointHit(value: JsonObject): LiveBreakpointHit {
+        return LiveBreakpointHit(
+            value.getString("breakpointId"),
+            value.getString("traceId"),
+            value.let {
+                if (it.getValue("occurredAt") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("occurredAt").getLong("epochSeconds"),
+                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getString("serviceInstance"),
+            value.getString("service"),
+            deserializeLiveStackTrace(value.getJsonObject("stackTrace"))
+        )
     }
 }
