@@ -6,18 +6,22 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import spp.protocol.artifact.exception.LiveStackTrace
+import spp.protocol.artifact.exception.LiveStackTraceElement
 import spp.protocol.instrument.LiveBreakpoint
 import spp.protocol.instrument.LiveLog
 import spp.protocol.instrument.LiveMeter
 import spp.protocol.instrument.LiveSourceLocation
 import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
+import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.instrument.meter.MeterType
 import spp.protocol.instrument.meter.MetricValue
 import spp.protocol.instrument.meter.MetricValueType
 import spp.protocol.instrument.throttle.InstrumentThrottle
 import spp.protocol.instrument.throttle.ThrottleStep
+import spp.protocol.instrument.variable.LiveVariable
+import spp.protocol.instrument.variable.LiveVariableScope
 
 @RunWith(JUnit4::class)
 class ProtocolMarshallerTest {
@@ -97,5 +101,64 @@ class ProtocolMarshallerTest {
         val serialized = ProtocolMarshaller.serializeLiveInstrumentRemoved(liveInstrumentRemoved)
         val deserialized = ProtocolMarshaller.deserializeLiveInstrumentRemoved(serialized)
         assertEquals(liveInstrumentRemoved, deserialized)
+    }
+
+    @Test
+    fun testLiveBreakpointHit() {
+        val liveBreakpointHit = LiveBreakpointHit(
+            "breakpointId",
+            "traceId",
+            Clock.System.now(),
+            "serviceInstance",
+            "service",
+            LiveStackTrace(
+                "exception",
+                "message",
+                mutableListOf(
+                    LiveStackTraceElement(
+                        "method",
+                        "source",
+                        mutableListOf(
+                            LiveVariable(
+                                "name",
+                                "value",
+                                1,
+                                LiveVariableScope.GLOBAL_VARIABLE,
+                                "liveClazz",
+                                "liveIdentity",
+                                "presentation"
+                            )
+                        ),
+                        "sourceCode"
+                    )
+                ),
+                LiveStackTrace(
+                    "exception",
+                    "message",
+                    mutableListOf(
+                        LiveStackTraceElement(
+                            "method",
+                            "source",
+                            mutableListOf(
+                                LiveVariable(
+                                    "name",
+                                    "value",
+                                    1,
+                                    LiveVariableScope.GLOBAL_VARIABLE,
+                                    "liveClazz",
+                                    "liveIdentity",
+                                    "presentation"
+                                )
+                            ),
+                            "sourceCode"
+                        )
+                    )
+                )
+            )
+        )
+
+        val serialized = ProtocolMarshaller.serializeLiveBreakpointHit(liveBreakpointHit)
+        val deserialized = ProtocolMarshaller.deserializeLiveBreakpointHit(serialized)
+        assertEquals(liveBreakpointHit, deserialized)
     }
 }
