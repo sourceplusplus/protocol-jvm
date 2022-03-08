@@ -327,7 +327,7 @@ object ProtocolMarshaller {
             LogOrderType.valueOf(value.getString("orderType")),
             value.let {
                 if (it.getValue("timestamp") is Number) {
-                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                    Instant.fromEpochMilliseconds(value.getLong("timestamp"))
                 } else {
                     Instant.fromEpochSeconds(
                         value.getJsonObject("timestamp").getLong("epochSeconds"),
