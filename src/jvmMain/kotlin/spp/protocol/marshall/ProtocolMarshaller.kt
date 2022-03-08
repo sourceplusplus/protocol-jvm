@@ -28,6 +28,8 @@ import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.exception.LiveStackTraceElement
 import spp.protocol.artifact.log.Log
 import spp.protocol.artifact.log.LogCountSummary
+import spp.protocol.artifact.log.LogOrderType
+import spp.protocol.artifact.log.LogResult
 import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.instrument.*
 import spp.protocol.instrument.command.CommandType
@@ -313,13 +315,59 @@ object ProtocolMarshaller {
     }
 
     @JvmStatic
+    fun serializeLogResult(value: LogResult): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLogResult(value: JsonObject): LogResult {
+        return LogResult(
+            deserializeArtifactQualifiedName(value.getJsonObject("artifactQualifiedName")),
+            LogOrderType.valueOf(value.getString("orderType")),
+            value.let {
+                if (it.getValue("timestamp") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("timestamp").getLong("epochSeconds"),
+                        value.getJsonObject("timestamp").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getJsonArray("logs").list.map {
+                if (it is JsonObject) {
+                    deserializeLog(it)
+                } else {
+                    deserializeLog(JsonObject.mapFrom(it))
+                }
+            },
+            value.getInteger("total")
+        )
+    }
+
+    @JvmStatic
     fun serializeLiveLogHit(value: LiveLogHit): JsonObject {
         return JsonObject(Json.encode(value))
     }
 
     @JvmStatic
     fun deserializeLiveLogHit(value: JsonObject): LiveLogHit {
-        return value.mapTo(LiveLogHit::class.java)
+        return LiveLogHit(
+            value.getString("logId"),
+            value.let {
+                if (it.getValue("occurredAt") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("occurredAt").getLong("epochSeconds"),
+                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getString("serviceInstance"),
+            value.getString("service"),
+            deserializeLogResult(value.getJsonObject("logResult"))
+        )
     }
 
     @JvmStatic
