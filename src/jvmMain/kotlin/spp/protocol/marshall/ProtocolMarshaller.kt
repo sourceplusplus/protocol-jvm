@@ -252,7 +252,7 @@ object ProtocolMarshaller {
                     )
                 }
             },
-            value.getJsonObject("cause")?.let { Json.decodeValue(it.toString(), LiveStackTrace::class.java) }
+            value.getJsonObject("cause")?.let { deserializeLiveStackTrace(it) }
         )
     }
 
@@ -344,7 +344,7 @@ object ProtocolMarshaller {
             value.getString("level"),
             value.getString("logger"),
             value.getString("thread"),
-            deserializeLiveStackTrace(value.getJsonObject("exception")),
+            value.getJsonObject("exception")?.let { deserializeLiveStackTrace(it) },
             value.getJsonArray("arguments").list.map { it.toString() }
         )
     }
