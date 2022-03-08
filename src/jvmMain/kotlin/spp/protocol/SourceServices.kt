@@ -32,9 +32,15 @@ import spp.protocol.service.LiveViewService
 object SourceServices {
 
     object Instance {
-        lateinit var liveService: LiveService
+        var liveService: LiveService? = null
         var liveInstrument: LiveInstrumentService? = null
         var liveView: LiveViewService? = null
+
+        fun clearServices() {
+            liveService = null
+            liveInstrument = null
+            liveView = null
+        }
     }
 
     object Utilize {
