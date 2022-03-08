@@ -45,6 +45,7 @@ import spp.protocol.view.LiveViewSubscription
 
 /**
  * Used for marshalling and unmarshalling protocol messages.
+ * Avoids using annotations and Jackson modules to keep probe-jvm dependencies simple.
  *
  * @since 0.2.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
@@ -322,7 +323,7 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeLogResult(value: JsonObject): LogResult {
         return LogResult(
-            deserializeArtifactQualifiedName(value.getJsonObject("artifactQualifiedName")),
+            value.getJsonObject("artifactQualifiedName")?.let { deserializeArtifactQualifiedName(it) },
             LogOrderType.valueOf(value.getString("orderType")),
             value.let {
                 if (it.getValue("timestamp") is Number) {
