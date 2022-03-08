@@ -26,6 +26,7 @@ import kotlinx.datetime.Instant
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.exception.LiveStackTraceElement
+import spp.protocol.artifact.log.Log
 import spp.protocol.artifact.log.LogCountSummary
 import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.instrument.*
@@ -33,6 +34,7 @@ import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
+import spp.protocol.instrument.event.LiveLogHit
 import spp.protocol.instrument.variable.LiveVariable
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
@@ -307,6 +309,43 @@ object ProtocolMarshaller {
             value.getString("serviceInstance"),
             value.getString("service"),
             deserializeLiveStackTrace(value.getJsonObject("stackTrace"))
+        )
+    }
+
+    @JvmStatic
+    fun serializeLiveLogHit(value: LiveLogHit): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveLogHit(value: JsonObject): LiveLogHit {
+        return value.mapTo(LiveLogHit::class.java)
+    }
+
+    @JvmStatic
+    fun serializeLog(value: Log): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLog(value: JsonObject): Log {
+        return Log(
+            value.let {
+                if (it.getValue("timestamp") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("timestamp"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("timestamp").getLong("epochSeconds"),
+                        value.getJsonObject("timestamp").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getString("content"),
+            value.getString("level"),
+            value.getString("logger"),
+            value.getString("thread"),
+            deserializeLiveStackTrace(value.getJsonObject("exception")),
+            value.getJsonArray("arguments").list.map { it.toString() }
         )
     }
 }
