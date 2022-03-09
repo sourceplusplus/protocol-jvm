@@ -246,7 +246,9 @@ object ProtocolMarshaller {
         return LiveInstrumentRemoved(
             deserializeLiveInstrument(value.getJsonObject("liveInstrument")),
             value.let {
-                if (it.getValue("occurredAt") is Number) {
+                if (it.getValue("occurredAt") is String) {
+                    Instant.fromEpochMilliseconds(value.getString("occurredAt").toLong())
+                } else if (it.getValue("occurredAt") is Number) {
                     Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
                 } else {
                     Instant.fromEpochSeconds(
@@ -300,7 +302,9 @@ object ProtocolMarshaller {
             value.getString("breakpointId"),
             value.getString("traceId"),
             value.let {
-                if (it.getValue("occurredAt") is Number) {
+                if (it.getValue("occurredAt") is String) {
+                    Instant.fromEpochMilliseconds(value.getString("occurredAt").toLong())
+                } else if (it.getValue("occurredAt") is Number) {
                     Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
                 } else {
                     Instant.fromEpochSeconds(
@@ -326,7 +330,9 @@ object ProtocolMarshaller {
             value.getJsonObject("artifactQualifiedName")?.let { deserializeArtifactQualifiedName(it) },
             LogOrderType.valueOf(value.getString("orderType")),
             value.let {
-                if (it.getValue("timestamp") is Number) {
+                if (it.getValue("timestamp") is String) {
+                    Instant.fromEpochMilliseconds(value.getString("occurredAt").toLong())
+                } else if (it.getValue("timestamp") is Number) {
                     Instant.fromEpochMilliseconds(value.getLong("timestamp"))
                 } else {
                     Instant.fromEpochSeconds(
@@ -356,7 +362,9 @@ object ProtocolMarshaller {
         return LiveLogHit(
             value.getString("logId"),
             value.let {
-                if (it.getValue("occurredAt") is Number) {
+                if (it.getValue("occurredAt") is String) {
+                    Instant.fromEpochMilliseconds(value.getString("occurredAt").toLong())
+                } else if (it.getValue("occurredAt") is Number) {
                     Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
                 } else {
                     Instant.fromEpochSeconds(
@@ -380,7 +388,9 @@ object ProtocolMarshaller {
     fun deserializeLog(value: JsonObject): Log {
         return Log(
             value.let {
-                if (it.getValue("timestamp") is Number) {
+                if (it.getValue("timestamp") is String) {
+                    Instant.fromEpochMilliseconds(value.getString("occurredAt").toLong())
+                } else if (it.getValue("timestamp") is Number) {
                     Instant.fromEpochMilliseconds(value.getLong("timestamp"))
                 } else {
                     Instant.fromEpochSeconds(
