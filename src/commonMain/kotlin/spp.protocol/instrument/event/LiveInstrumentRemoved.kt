@@ -18,6 +18,7 @@
 package spp.protocol.instrument.event
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.serializers.InstantIso8601Serializer
 import kotlinx.serialization.Serializable
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.instrument.LiveInstrument
@@ -31,6 +32,7 @@ import spp.protocol.instrument.LiveInstrument
 @Serializable
 data class LiveInstrumentRemoved(
     val liveInstrument: LiveInstrument,
+    @Serializable(with = InstantIso8601Serializer::class)
     override val occurredAt: Instant,
     val cause: LiveStackTrace? = null
 ) : TrackedLiveEvent

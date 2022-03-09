@@ -18,6 +18,7 @@
 package spp.protocol.artifact.log
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.serializers.InstantIso8601Serializer
 import kotlinx.serialization.Serializable
 import spp.protocol.artifact.ArtifactQualifiedName
 
@@ -31,6 +32,7 @@ import spp.protocol.artifact.ArtifactQualifiedName
 data class LogResult(
     val artifactQualifiedName: ArtifactQualifiedName? = null,
     val orderType: LogOrderType,
+    @Serializable(with = InstantIso8601Serializer::class)
     val timestamp: Instant,
     val logs: List<Log> = emptyList(),
     val total: Int = 0
