@@ -30,11 +30,11 @@ import kotlinx.datetime.Instant
 object KSerializers {
     class KotlinInstantSerializer : JsonSerializer<Instant>() {
         override fun serialize(value: Instant, jgen: JsonGenerator, provider: SerializerProvider) =
-            jgen.writeString(value.toEpochMilliseconds().toString())
+            jgen.writeString(value.toString())
     }
 
     class KotlinInstantDeserializer : JsonDeserializer<Instant>() {
         override fun deserialize(p: JsonParser, p1: DeserializationContext): Instant =
-            Instant.fromEpochMilliseconds((p.codec.readTree(p) as JsonNode).asText().toLong())
+            Instant.parse((p.codec.readTree(p) as JsonNode).asText())
     }
 }
