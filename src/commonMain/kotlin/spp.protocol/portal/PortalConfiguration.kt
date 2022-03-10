@@ -28,7 +28,11 @@ data class PortalConfiguration(
     var external: Boolean = false,
     var config: MutableMap<String, @Contextual Any> = mutableMapOf()
 ) {
-    fun <T> fromConfig(key: String, default: T): T {
+    fun <T> get(key: String): T {
+        return config[key] as T
+    }
+
+    fun <T> get(key: String, default: T): T {
         return config[key] as T ?: default
     }
 }
