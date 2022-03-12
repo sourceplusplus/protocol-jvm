@@ -43,6 +43,18 @@ enum class MetricType {
                 || this == ResponseTime_75Percentile
                 || this == ResponseTime_50Percentile
 
+    val simpleName: String
+        get() = when (this) {
+            Throughput_Average -> "Throughput"
+            ResponseTime_Average -> "Response"
+            ServiceLevelAgreement_Average -> "SLA"
+            ResponseTime_99Percentile -> "Resp(99%)"
+            ResponseTime_95Percentile -> "Resp(95%)"
+            ResponseTime_90Percentile -> "Resp(90%)"
+            ResponseTime_75Percentile -> "Resp(75%)"
+            ResponseTime_50Percentile -> "Resp(50%)"
+        }
+
     companion object {
         //todo: remove
         fun realValueOf(name: String): MetricType {
