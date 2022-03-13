@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.util
+package spp.protocol.marshall
 
 import io.vertx.serviceproxy.ServiceException
 import spp.protocol.service.error.LiveInstrumentException

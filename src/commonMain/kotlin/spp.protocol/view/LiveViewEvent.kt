@@ -28,6 +28,7 @@ import spp.protocol.artifact.ArtifactQualifiedName
  */
 @Serializable
 data class LiveViewEvent(
+    val subscriptionId: String,
     val entityId: String,
     val artifactQualifiedName: ArtifactQualifiedName,
     val timeBucket: String,

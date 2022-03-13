@@ -18,8 +18,8 @@
 package spp.protocol.artifact.log
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.serializers.InstantIso8601Serializer
 import kotlinx.serialization.Serializable
-import spp.protocol.Serializers
 
 /**
  * todo: description.
@@ -29,7 +29,7 @@ import spp.protocol.Serializers
  */
 @Serializable
 data class LogCountSummary(
-    @Serializable(with = Serializers.InstantKSerializer::class)
+    @Serializable(with = InstantIso8601Serializer::class)
     val timestamp: Instant,
     val logCounts: Map<String, Int>
 )

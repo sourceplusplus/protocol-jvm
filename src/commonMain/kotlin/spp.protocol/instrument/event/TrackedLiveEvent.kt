@@ -18,6 +18,8 @@
 package spp.protocol.instrument.event
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.serializers.InstantIso8601Serializer
+import kotlinx.serialization.Serializable
 
 /**
  * todo: description.
@@ -26,5 +28,6 @@ import kotlinx.datetime.Instant
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 interface TrackedLiveEvent {
+    @Serializable(with = InstantIso8601Serializer::class)
     val occurredAt: Instant
 }

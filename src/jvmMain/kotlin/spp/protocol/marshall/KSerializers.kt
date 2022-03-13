@@ -15,25 +15,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.util
+package spp.protocol.marshall
 
-import io.vertx.core.buffer.Buffer
-import io.vertx.core.eventbus.MessageCodec
-import java.util.*
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.*
+import kotlinx.datetime.Instant
 
 /**
- * Used to transmit protocol messages.
+ * Used to serialize/deserialize Kotlin classes.
  *
  * @since 0.1.0
  */
-class LocalMessageCodec<T> : MessageCodec<T, T> {
-    override fun encodeToWire(buffer: Buffer, o: T): Unit =
-        throw UnsupportedOperationException("Not supported yet.")
+object KSerializers {
+    class KotlinInstantSerializer : JsonSerializer<Instant>() {
+        override fun serialize(value: Instant, jgen: JsonGenerator, provider: SerializerProvider) =
+            jgen.writeString(value.toString())
+    }
 
-    override fun decodeFromWire(pos: Int, buffer: Buffer): T =
-        throw UnsupportedOperationException("Not supported yet.")
-
-    override fun transform(o: T): T = o
-    override fun name(): String = UUID.randomUUID().toString()
-    override fun systemCodecID(): Byte = -1
+    class KotlinInstantDeserializer : JsonDeserializer<Instant>() {
+        override fun deserialize(p: JsonParser, p1: DeserializationContext): Instant =
+            Instant.parse((p.codec.readTree(p) as JsonNode).asText())
+    }
 }

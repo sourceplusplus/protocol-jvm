@@ -18,8 +18,8 @@
 package spp.protocol.artifact.log
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.serializers.InstantIso8601Serializer
 import kotlinx.serialization.Serializable
-import spp.protocol.Serializers
 import spp.protocol.artifact.exception.LiveStackTrace
 
 /**
@@ -30,7 +30,7 @@ import spp.protocol.artifact.exception.LiveStackTrace
  */
 @Serializable
 data class Log(
-    @Serializable(with = Serializers.InstantKSerializer::class)
+    @Serializable(with = InstantIso8601Serializer::class)
     val timestamp: Instant,
     val content: String,
     val level: String,

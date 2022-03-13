@@ -15,30 +15,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol.service
+package spp.protocol.portal
 
-import io.vertx.codegen.annotations.ProxyGen
-import io.vertx.codegen.annotations.VertxGen
-import io.vertx.core.Future
-import io.vertx.core.json.JsonObject
-import kotlinx.datetime.Instant
-import spp.protocol.instrument.DurationStep
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactQualifiedName
 
-/**
- * todo: description.
- *
- * @since 0.2.1
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-@ProxyGen
-@VertxGen
-interface LogCountIndicatorService {
+@Serializable
+data class PortalConfiguration(
+    var artifactQualifiedName: ArtifactQualifiedName,
+    var darkMode: Boolean = false,
+    var external: Boolean = false,
+    var config: MutableMap<String, @Contextual Any> = mutableMapOf()
+) {
+    fun <T> get(key: String): T {
+        return config[key] as T
+    }
 
-    fun getPatternOccurrences(
-        logPatterns: List<String>,
-        serviceName: String?,
-        start: Instant,
-        stop: Instant,
-        step: DurationStep
-    ): Future<JsonObject>
+    fun <T> get(key: String, default: T): T {
+        return config[key] as T ?: default
+    }
 }

@@ -22,7 +22,6 @@ import spp.protocol.SourceServices.Utilize.LIVE_VIEW
 import spp.protocol.service.LiveInstrumentService
 import spp.protocol.service.LiveService
 import spp.protocol.service.LiveViewService
-import spp.protocol.service.LogCountIndicatorService
 
 /**
  * todo: description.
@@ -36,14 +35,18 @@ object SourceServices {
         var liveService: LiveService? = null
         var liveInstrument: LiveInstrumentService? = null
         var liveView: LiveViewService? = null
-        var logCountIndicator: LogCountIndicatorService? = null
+
+        fun clearServices() {
+            liveService = null
+            liveInstrument = null
+            liveView = null
+        }
     }
 
     object Utilize {
         const val LIVE_SERVICE = "spp.service.live-service"
         const val LIVE_INSTRUMENT = "spp.service.live-instrument"
         const val LIVE_VIEW = "spp.service.live-view"
-        const val LOG_COUNT_INDICATOR = "spp.service.log-count-indicator"
     }
 
     object Provide {

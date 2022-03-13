@@ -18,7 +18,6 @@
 package spp.protocol.artifact
 
 import kotlinx.serialization.Serializable
-import spp.protocol.Serializers.ArtifactTypeSerializer
 
 /**
  * todo: description.
@@ -30,7 +29,6 @@ import spp.protocol.Serializers.ArtifactTypeSerializer
 data class ArtifactQualifiedName(
     val identifier: String,
     val commitId: String? = null,
-    @Serializable(with = ArtifactTypeSerializer::class)
     val type: ArtifactType,
     val lineNumber: Int? = null,
     val operationName: String? = null //todo: only method artifacts need

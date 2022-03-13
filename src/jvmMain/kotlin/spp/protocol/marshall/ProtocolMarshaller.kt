@@ -15,38 +15,37 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package spp.protocol
+package spp.protocol.marshall
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.guava.GuavaModule
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import io.vertx.core.Vertx
-import io.vertx.core.buffer.Buffer
-import io.vertx.core.eventbus.MessageCodec
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
 import kotlinx.datetime.Instant
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.exception.LiveStackTrace
+import spp.protocol.artifact.exception.LiveStackTraceElement
+import spp.protocol.artifact.log.Log
 import spp.protocol.artifact.log.LogCountSummary
+import spp.protocol.artifact.log.LogOrderType
+import spp.protocol.artifact.log.LogResult
 import spp.protocol.artifact.trace.TraceResult
 import spp.protocol.instrument.*
 import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
+import spp.protocol.instrument.event.LiveLogHit
+import spp.protocol.instrument.variable.LiveVariable
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.ActiveInstance
 import spp.protocol.view.LiveViewSubscription
-import java.util.*
 
 /**
  * Used for marshalling and unmarshalling protocol messages.
+ * Avoids using annotations and Jackson modules to keep probe-jvm dependencies simple.
  *
  * @since 0.2.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
@@ -54,10 +53,6 @@ import java.util.*
 object ProtocolMarshaller {
     init {
         try {
-            DatabindCodec.mapper().registerModule(GuavaModule())
-            DatabindCodec.mapper().registerModule(Jdk8Module())
-            DatabindCodec.mapper().registerModule(JavaTimeModule())
-            DatabindCodec.mapper().registerModule(KotlinModule())
             DatabindCodec.mapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
@@ -107,17 +102,7 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun serializeLiveInstrument(value: LiveInstrument): JsonObject {
-        val valueObject = JsonObject(Json.encode(value))
-        //todo: don't use graalvm anymore, remove this
-        //force persistence of "type" as graalvm's native-image drops it for some reason
-        when (value) {
-            is LiveBreakpoint -> valueObject.put("type", LiveInstrumentType.BREAKPOINT.name)
-            is LiveLog -> valueObject.put("type", LiveInstrumentType.LOG.name)
-            is LiveMeter -> valueObject.put("type", LiveInstrumentType.METER.name)
-            is LiveSpan -> valueObject.put("type", LiveInstrumentType.SPAN.name)
-            else -> throw UnsupportedOperationException("Live instrument: $value")
-        }
-        return valueObject
+        return JsonObject(Json.encode(value))
     }
 
     @JvmStatic
@@ -260,36 +245,166 @@ object ProtocolMarshaller {
     fun deserializeLiveInstrumentRemoved(value: JsonObject): LiveInstrumentRemoved {
         return LiveInstrumentRemoved(
             deserializeLiveInstrument(value.getJsonObject("liveInstrument")),
-            Instant.fromEpochMilliseconds(value.getLong("occurredAt")),
-            value.getJsonObject("cause")?.let { Json.decodeValue(it.toString(), LiveStackTrace::class.java) }
+            value.let {
+                if (it.getValue("occurredAt") is String) {
+                    Instant.parse(value.getString("occurredAt"))
+                } else if (it.getValue("occurredAt") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("occurredAt").getLong("epochSeconds"),
+                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getJsonObject("cause")?.let { deserializeLiveStackTrace(it) }
         )
     }
 
     @JvmStatic
-    fun setupCodecs(vertx: Vertx) {
-        vertx.eventBus().registerDefaultCodec(LiveBreakpointHit::class.java, ProtocolMessageCodec())
+    fun serializeLiveVariable(value: LiveVariable): JsonObject {
+        return JsonObject(Json.encode(value))
     }
 
-    class ProtocolMessageCodec<T> : MessageCodec<T, T> {
-        override fun encodeToWire(buffer: Buffer?, s: T?) {
-            val value = Json.encode(s).toByteArray()
-            buffer?.appendInt(value.size)
-            buffer?.appendBytes(value)
-        }
+    @JvmStatic
+    fun deserializeLiveVariable(value: JsonObject): LiveVariable {
+        return value.mapTo(LiveVariable::class.java)
+    }
 
-        override fun decodeFromWire(pos: Int, buffer: Buffer?): T? {
-            val len = buffer?.getInt(pos) ?: return null
-            val bytes = buffer.getBytes(pos + 4, pos + 4 + len)
-            return cast(Json.decodeValue(String(bytes)))
-        }
+    @JvmStatic
+    fun serializeLiveStackTraceElement(value: LiveStackTraceElement): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
 
-        @Suppress("UNCHECKED_CAST")
-        private fun <T> cast(obj: Any?): T? {
-            return obj as? T
-        }
+    @JvmStatic
+    fun deserializeLiveStackTraceElement(value: JsonObject): LiveStackTraceElement {
+        return value.mapTo(LiveStackTraceElement::class.java)
+    }
 
-        override fun transform(o: T): T = o
-        override fun name(): String = UUID.randomUUID().toString()
-        override fun systemCodecID(): Byte = -1
+    @JvmStatic
+    fun serializeLiveStackTrace(value: LiveStackTrace): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveStackTrace(value: JsonObject): LiveStackTrace {
+        return value.mapTo(LiveStackTrace::class.java)
+    }
+
+    @JvmStatic
+    fun serializeLiveBreakpointHit(value: LiveBreakpointHit): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveBreakpointHit(value: JsonObject): LiveBreakpointHit {
+        return LiveBreakpointHit(
+            value.getString("breakpointId"),
+            value.getString("traceId"),
+            value.let {
+                if (it.getValue("occurredAt") is String) {
+                    Instant.parse(value.getString("occurredAt"))
+                } else if (it.getValue("occurredAt") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("occurredAt").getLong("epochSeconds"),
+                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getString("serviceInstance"),
+            value.getString("service"),
+            deserializeLiveStackTrace(value.getJsonObject("stackTrace"))
+        )
+    }
+
+    @JvmStatic
+    fun serializeLogResult(value: LogResult): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLogResult(value: JsonObject): LogResult {
+        return LogResult(
+            value.getJsonObject("artifactQualifiedName")?.let { deserializeArtifactQualifiedName(it) },
+            LogOrderType.valueOf(value.getString("orderType")),
+            value.let {
+                if (it.getValue("timestamp") is String) {
+                    Instant.parse(value.getString("timestamp"))
+                } else if (it.getValue("timestamp") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("timestamp"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("timestamp").getLong("epochSeconds"),
+                        value.getJsonObject("timestamp").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getJsonArray("logs").list.map {
+                if (it is JsonObject) {
+                    deserializeLog(it)
+                } else {
+                    deserializeLog(JsonObject.mapFrom(it))
+                }
+            },
+            value.getInteger("total")
+        )
+    }
+
+    @JvmStatic
+    fun serializeLiveLogHit(value: LiveLogHit): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveLogHit(value: JsonObject): LiveLogHit {
+        return LiveLogHit(
+            value.getString("logId"),
+            value.let {
+                if (it.getValue("occurredAt") is String) {
+                    Instant.parse(value.getString("occurredAt"))
+                } else if (it.getValue("occurredAt") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("occurredAt").getLong("epochSeconds"),
+                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getString("serviceInstance"),
+            value.getString("service"),
+            deserializeLogResult(value.getJsonObject("logResult"))
+        )
+    }
+
+    @JvmStatic
+    fun serializeLog(value: Log): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLog(value: JsonObject): Log {
+        return Log(
+            value.let {
+                if (it.getValue("timestamp") is String) {
+                    Instant.parse(value.getString("timestamp"))
+                } else if (it.getValue("timestamp") is Number) {
+                    Instant.fromEpochMilliseconds(value.getLong("timestamp"))
+                } else {
+                    Instant.fromEpochSeconds(
+                        value.getJsonObject("timestamp").getLong("epochSeconds"),
+                        value.getJsonObject("timestamp").getInteger("nanosecondsOfSecond")
+                    )
+                }
+            },
+            value.getString("content"),
+            value.getString("level"),
+            value.getString("logger"),
+            value.getString("thread"),
+            value.getJsonObject("exception")?.let { deserializeLiveStackTrace(it) },
+            value.getJsonArray("arguments").list.map { it.toString() }
+        )
     }
 }
