@@ -29,5 +29,5 @@ import kotlinx.serialization.Serializable
 data class LiveViewConfig(
     val viewName: String,
     val viewMetrics: List<String>,
-    val refreshRateLimit: Int = 1000 //limit of once per X milliseconds
+    val refreshRateLimit: Int = -1 //limit of once per X milliseconds
 )
