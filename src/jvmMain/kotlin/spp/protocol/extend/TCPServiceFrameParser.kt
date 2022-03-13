@@ -83,7 +83,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
             } else if (body is JsonObject && body.getString("message")?.startsWith("EventBusException:") == true) {
                 handleErrorFrame(body.put("address", frame.getString("address")))
             } else {
-                vertx.eventBus().send(frame.getString("address"), body)
+                vertx.eventBus().publish(frame.getString("address"), body)
             }
         } else {
             //directly thrown event bus exceptions
@@ -116,7 +116,7 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                 )
                 else -> TODO()
             }
-            vertx.eventBus().send(frame.getString("address"), error)
+            vertx.eventBus().publish(frame.getString("address"), error)
         } else {
             throw UnsupportedOperationException(frame.toString())
         }
