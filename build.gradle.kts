@@ -62,13 +62,13 @@ kotlin {
                 implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
                 implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
                 implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
-                implementation("org.jooq:jooq:3.16.4")
+                implementation("org.jooq:jooq:3.16.5")
             }
         }
         val jvmTest by getting {
             dependencies {
                 implementation("io.vertx:vertx-core:$vertxVersion")
-                implementation("com.google.guava:guava:31.0.1-jre")
+                implementation("com.google.guava:guava:31.1-jre")
                 implementation("junit:junit:4.13.2")
                 implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
                 implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
