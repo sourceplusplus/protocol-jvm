@@ -49,22 +49,22 @@ fun Double.fromPerSecondToPrettyFrequency(translate: (String)->String = { it }):
     }
 }
 
-fun Long.toPrettyDuration(): String {
+fun Long.toPrettyDuration(translate: (String)->String = { it }): String {
     val days = this / 86400000.0
     if (days > 1) {
-        return "${days.toInt()}d"
+        return "${days.toInt()}" + translate("dys")
     }
     val hours = this / 3600000.0
     if (hours > 1) {
-        return "${hours.toInt()}h"
+        return "${hours.toInt()}" + translate("hrs")
     }
     val minutes = this / 60000.0
     if (minutes > 1) {
-        return "${minutes.toInt()}m"
+        return "${minutes.toInt()}" + translate("mins")
     }
     val seconds = this / 1000.0
     if (seconds > 1) {
-        return "${seconds.toInt()}s"
+        return "${seconds.toInt()}" + translate("secs")
     }
-    return "${this}ms"
+    return "$this" + translate("ms")
 }
