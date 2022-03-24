@@ -17,32 +17,35 @@
  */
 package spp.protocol.utils
 
-fun Int.toPrettyDuration(): String {
+import kotlin.jvm.JvmOverloads
+
+fun Int.toPrettyDuration(translate: (String)->String = { it }): String {
     val days = this / 86400000.0
     if (days > 1) {
-        return "${days.toInt()}dys"
+        return "${days.toInt()}" + translate("dys")
     }
     val hours = this / 3600000.0
     if (hours > 1) {
-        return "${hours.toInt()}hrs"
+        return "${hours.toInt()}" + translate("hrs")
     }
     val minutes = this / 60000.0
     if (minutes > 1) {
-        return "${minutes.toInt()}mins"
+        return "${minutes.toInt()}" + translate("mins")
     }
     val seconds = this / 1000.0
     if (seconds > 1) {
-        return "${seconds.toInt()}secs"
+        return "${seconds.toInt()}" + translate("secs")
     }
-    return "${this}ms"
+    return "$this" + translate("ms")
 }
 
-fun Double.fromPerSecondToPrettyFrequency(): String {
+@JvmOverloads
+fun Double.fromPerSecondToPrettyFrequency(translate: (String)->String = { it }): String {
     return when {
-        this > 1000000.0 -> "${this / 1000000.0.toInt()}M/sec"
-        this > 1000.0 -> "${this / 1000.0.toInt()}K/sec"
-        this > 1.0 -> "${this.toInt()}/sec"
-        else -> "${(this * 60.0).toInt()}/min"
+        this > 1000000.0 -> "${this / 1000000.0.toInt()}M/" + translate("sec")
+        this > 1000.0 -> "${this / 1000.0.toInt()}K/" + translate("sec")
+        this > 1.0 -> "${this.toInt()}/" + translate("sec")
+        else -> "${(this * 60.0).toInt()}/" + translate.invoke("min")
     }
 }
 
