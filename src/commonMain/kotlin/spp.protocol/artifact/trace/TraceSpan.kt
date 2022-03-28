@@ -70,7 +70,7 @@ data class TraceSpan(
         meta[tag] = value
     }
 
-    fun putMetaInt(tag: String): Int? {
+    fun getMetaInt(tag: String): Int? {
         return meta[tag]?.toIntOrNull()
     }
 
