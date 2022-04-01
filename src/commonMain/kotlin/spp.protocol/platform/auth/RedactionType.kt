@@ -17,19 +17,10 @@
  */
 package spp.protocol.platform.auth
 
-data class DataRedaction(
-    val id: String,
-    val type: RedactionType,
-    val lookup: String,
-    val replacement: String
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-        other as DataRedaction
-        if (id != other.id) return false
-        return true
-    }
-
-    override fun hashCode(): Int = id.hashCode()
+/**
+ * The type of redaction lookup to perform.
+ */
+enum class RedactionType {
+    IDENTIFIER_MATCH,
+    VALUE_REGEX
 }
