@@ -61,7 +61,7 @@ enum class MetricType {
             return (values().find { it.name == name }
                 ?: when (name) {
                     "endpoint_cpm" -> Throughput_Average
-                    "endpoint_avg" -> ResponseTime_Average
+                    "endpoint_avg", "endpoint_resp_time" -> ResponseTime_Average
                     "endpoint_sla" -> ServiceLevelAgreement_Average
                     "endpoint_percentile" -> ResponseTime_99Percentile
                     else -> throw UnsupportedOperationException(name)
