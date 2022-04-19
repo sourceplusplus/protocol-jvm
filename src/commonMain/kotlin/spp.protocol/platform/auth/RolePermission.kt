@@ -45,8 +45,7 @@ enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
     //instrument access
     GET_ACCESS_PERMISSIONS(true, LIVE_SERVICE),
     GET_DATA_REDACTIONS(true, LIVE_SERVICE),
-    ADD_DATA_REDACTION(true, LIVE_SERVICE), //todo: probably should just have one permission: UPDATE_DATE_REDACTION
-    REMOVE_DATA_REDACTION(true, LIVE_SERVICE),
+    UPDATE_DATA_REDACTION(true, LIVE_SERVICE),
     ADD_ACCESS_PERMISSION(true, LIVE_SERVICE),
     REMOVE_ACCESS_PERMISSION(true, LIVE_SERVICE),
 
