@@ -38,6 +38,8 @@ import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.instrument.event.LiveLogHit
 import spp.protocol.instrument.variable.LiveVariable
+import spp.protocol.platform.auth.DataRedaction
+import spp.protocol.platform.auth.RedactionType
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.ActiveInstance
@@ -405,6 +407,21 @@ object ProtocolMarshaller {
             value.getString("thread"),
             value.getJsonObject("exception")?.let { deserializeLiveStackTrace(it) },
             value.getJsonArray("arguments").list.map { it.toString() }
+        )
+    }
+
+    @JvmStatic
+    fun serializeDataRedaction(value: DataRedaction): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeDataRedaction(value: JsonObject): DataRedaction {
+        return DataRedaction(
+            value.getString("id"),
+            RedactionType.valueOf(value.getString("type")),
+            value.getString("lookup"),
+            value.getString("replacement")
         )
     }
 }
