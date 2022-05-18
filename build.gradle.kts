@@ -1,5 +1,3 @@
-import org.apache.tools.ant.taskdefs.condition.Os
-
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -86,54 +84,14 @@ dependencies {
     "kapt"("io.vertx:vertx-codegen:$vertxVersion:processor")
 }
 
-tasks.register<Copy>("setupJsonMappers") {
-    from(file("$projectDir/src/jvmMain/resources/META-INF/vertx/json-mappers.properties"))
-    into(file("$buildDir/generated/source/kapt/main/META-INF/vertx"))
-}
-tasks.getByName("compileKotlinJvm").dependsOn("setupJsonMappers")
-
-tasks.register<Exec>("restrictDeletionOfJsonMappers") {
-    mustRunAfter("setupJsonMappers")
-    doFirst {
-        if (!Os.isFamily(Os.FAMILY_UNIX)) {
-            ProcessBuilder(
-                "cmd.exe", "/C",
-                "start \"\" notepad >> $buildDir\\generated\\source\\kapt\\main\\META-INF\\vertx\\json-mappers.properties"
-            ).start()
+project.tasks.all {
+    copy {
+        doFirst {
+            file("$projectDir/src/jvmMain/resources/META-INF/vertx/json-mappers.properties")
+                .copyTo(file("$buildDir/generated/source/kapt/main/META-INF/vertx/json-mappers.properties"), overwrite = true)
         }
     }
-    if (Os.isFamily(Os.FAMILY_UNIX)) {
-        if (System.getProperty("user.name") == "root") {
-            commandLine("chattr", "+i", "$buildDir/generated/source/kapt/main/META-INF/vertx")
-        } else {
-            commandLine("chmod", "a-w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
-        }
-    } else {
-        executable("cmd.exe")
-        args("/C") //no-op
-    }
 }
-tasks.getByName("compileKotlinJvm").dependsOn("restrictDeletionOfJsonMappers")
-
-tasks.register<Exec>("unrestrictDeletionOfJsonMappers") {
-    mustRunAfter("compileKotlinJvm")
-    if (Os.isFamily(Os.FAMILY_UNIX)) {
-        if (file("$buildDir/generated/source/kapt/main/META-INF/vertx").exists()) {
-            if (System.getProperty("user.name") == "root") {
-                commandLine("chattr", "-i", "$buildDir/generated/source/kapt/main/META-INF/vertx")
-            } else {
-                commandLine("chmod", "a+w", "$buildDir/generated/source/kapt/main/META-INF/vertx")
-            }
-        } else {
-            commandLine("true") //no-op
-        }
-    } else {
-        executable("cmd.exe")
-        args("/C") //no-op
-    }
-}
-tasks.getByName("jvmJar").dependsOn("unrestrictDeletionOfJsonMappers")
-tasks.getByName("clean").dependsOn("unrestrictDeletionOfJsonMappers")
 
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
     annotation("kotlinx.serialization.Serializable")
