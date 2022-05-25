@@ -66,8 +66,8 @@ jobs:
       uses: smartsquaregmbh/delete-old-packages@v0.4.0
       with:
         keep: 0
-        version-pattern: "^\\d+\\.\\d+\\.\\d+-SNAPSHOT$" # The regex needs to be escaped!
-        names:
-          - 'spp.protocol.protocol'
-          - 'spp.protocol.protocol-jvm'
-          - 'spp.protocol.protocol-js'
+        version-pattern: "^\\d+\\.\\d+\\.\\d+-SNAPSHOT$"
+        names: |
+          spp.protocol.protocol
+          spp.protocol.protocol-jvm
+          spp.protocol.protocol-js
