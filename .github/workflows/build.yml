@@ -76,5 +76,5 @@ jobs:
 #      if: github.ref == 'refs/heads/master'
       run: ./gradlew publish
       env:
-        GH_PUBLISH_USERNAME: ${{ secrets.GH_PUBLISH_USERNAME }}
-        GH_PUBLISH_TOKEN: ${{ secrets.GH_PUBLISH_TOKEN }}
+        GH_PUBLISH_USERNAME: $GITHUB_ACTOR
+        GH_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
