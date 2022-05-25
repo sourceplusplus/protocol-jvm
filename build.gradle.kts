@@ -13,7 +13,7 @@ val projectVersion: String by project
 val jacksonVersion: String by project
 val slf4jVersion: String by project
 
-group = "spp"
+group = "plus.sourceplus"
 version = projectVersion
 
 repositories {
