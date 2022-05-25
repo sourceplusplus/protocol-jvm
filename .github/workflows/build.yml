@@ -72,6 +72,6 @@ jobs:
           spp.protocol.protocol-jvm
           spp.protocol.protocol-js
 
-     - name: Publish New Snapshot Package
+    - name: Publish New Snapshot Package
 #      if: github.ref == 'refs/heads/master'
-       run: ./gradlew publish
+      run: ./gradlew publish
