@@ -60,3 +60,12 @@ jobs:
         tag_name: ${{ env.SPP_PROTOCOL_VERSION }}
         release_name: v${{ env.SPP_PROTOCOL_VERSION }}
         draft: true
+
+    - name: Remove Old Snapshot Package
+#      if: github.ref == 'refs/heads/master'
+      uses: smartsquaregmbh/delete-old-packages@v0.4.0
+      with:
+        version-pattern: "^\\d+\\.\\d+\\.\\d+-SNAPSHOT$" # The regex needs to be escaped!
+        names: |
+          spp.protocol.protocol
+          spp.protocol.protocol-jvm 

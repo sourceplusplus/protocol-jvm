@@ -22,7 +22,14 @@ repositories {
 
 configure<PublishingExtension> {
     repositories {
-        maven("file://${System.getenv("HOME")}/.m2/repository")
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/sourceplusplus/protocol")
+            credentials {
+                username = (project.findProperty("gpr.user") ?: System.getenv("USERNAME"))?.toString()
+                password = (project.findProperty("gpr.key") ?: System.getenv("TOKEN"))?.toString()
+            }
+        }
     }
 }
 
