@@ -60,3 +60,21 @@ jobs:
         tag_name: ${{ env.SPP_PROTOCOL_VERSION }}
         release_name: v${{ env.SPP_PROTOCOL_VERSION }}
         draft: true
+
+    - name: Remove Old Snapshot Packages
+      if: github.ref == 'refs/heads/master'
+      uses: smartsquaregmbh/delete-old-packages@v0.4.0
+      with:
+        keep: 0
+        version-pattern: "^\\d+\\.\\d+\\.\\d+-SNAPSHOT$"
+        names: |
+          spp.protocol.protocol
+          spp.protocol.protocol-jvm
+          spp.protocol.protocol-js
+
+    - name: Publish New Snapshot Packages
+      if: github.ref == 'refs/heads/master'
+      run: ./gradlew publish
+      env:
+        GH_PUBLISH_USERNAME: $GITHUB_ACTOR
+        GH_PUBLISH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
