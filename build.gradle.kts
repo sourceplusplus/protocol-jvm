@@ -26,8 +26,8 @@ configure<PublishingExtension> {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/sourceplusplus/protocol")
             credentials {
-                username = (project.findProperty("gpr.user") ?: System.getenv("USERNAME"))?.toString()
-                password = (project.findProperty("gpr.key") ?: System.getenv("TOKEN"))?.toString()
+                username = System.getenv("GH_PUBLISH_USERNAME")?.toString()
+                password = System.getenv("GH_PUBLISH_TOKEN")?.toString()
             }
         }
     }
