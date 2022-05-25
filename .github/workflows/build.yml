@@ -75,3 +75,6 @@ jobs:
     - name: Publish New Snapshot Package
 #      if: github.ref == 'refs/heads/master'
       run: ./gradlew publish
+      env:
+        GH_PUBLISH_USERNAME: ${{ secrets.GH_PUBLISH_USERNAME }}
+        GH_PUBLISH_TOKEN: ${{ secrets.GH_PUBLISH_TOKEN }}
