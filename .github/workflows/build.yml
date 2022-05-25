@@ -74,4 +74,4 @@ jobs:
 
      - name: Publish New Snapshot Package
 #      if: github.ref == 'refs/heads/master'
-      run: ./gradlew publish
+       run: ./gradlew publish
