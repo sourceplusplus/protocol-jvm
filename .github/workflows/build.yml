@@ -73,7 +73,7 @@ jobs:
           spp.protocol.protocol-js
 
     - name: Publish New Snapshot Package
-#      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master'
       run: ./gradlew publish
       env:
         GH_PUBLISH_USERNAME: $GITHUB_ACTOR
