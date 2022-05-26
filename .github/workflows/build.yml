@@ -36,6 +36,7 @@ jobs:
         echo "::set-output name=version::$VERSION"
         echo "SPP_PROTOCOL_VERSION=$VERSION" >> $GITHUB_ENV
         SPP_RELEASE_VERSION="$(echo ${SPP_PROTOCOL_VERSION/-SNAPSHOT/})"
+        echo "SPP_RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Build with Gradle
       run: ./gradlew build
