@@ -14,7 +14,7 @@ val jacksonVersion: String by project
 val slf4jVersion: String by project
 
 group = "plus.sourceplus"
-version = projectVersion
+version = project.properties["protocolVersion"] as String? ?: projectVersion
 
 repositories {
     mavenCentral()
