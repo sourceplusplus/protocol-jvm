@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("app.cash.licensee:licensee-gradle-plugin:1.4.1")
+    }
+}
+
+apply(plugin = "app.cash.licensee")
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -12,12 +23,28 @@ val kotlinVersion: String by project
 val projectVersion: String by project
 val jacksonVersion: String by project
 val slf4jVersion: String by project
+val kotlinxDatetime: String by project
+val kotlinxSerializationJson: String by project
 
 group = "plus.sourceplus"
 version = project.properties["protocolVersion"] as String? ?: projectVersion
 
 repositories {
     mavenCentral()
+}
+
+configure<app.cash.licensee.LicenseeExtension> {
+    allowDependency("org.jetbrains.kotlinx", "kotlinx-datetime-js", kotlinxDatetime) {
+        because("Apache-2.0")
+    }
+    allowDependency("org.jetbrains.kotlinx", "kotlinx-serialization-core-js", kotlinxSerializationJson) {
+        because("Apache-2.0")
+    }
+    allowDependency("org.jetbrains.kotlinx", "kotlinx-serialization-json-js", kotlinxSerializationJson) {
+        because("Apache-2.0")
+    }
+    allow("Apache-2.0")
+    allow("MIT")
 }
 
 configure<PublishingExtension> {
@@ -45,8 +72,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetime")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationJson")
             }
         }
         val commonTest by getting {
