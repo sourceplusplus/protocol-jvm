@@ -17,20 +17,21 @@
  */
 package spp.protocol.platform.auth
 
-enum class DeveloperRole(var roleName: String, var nativeRole: Boolean) {
-    ROLE_MANAGER("role_manager", true),
-    ROLE_USER("role_user", true),
-    USER("*", false);
+import kotlinx.serialization.Serializable
 
+@Serializable
+data class DeveloperRole(val roleName: String, val nativeRole: Boolean) {
     companion object {
+        val ROLE_MANAGER = DeveloperRole("role_manager", true)
+        val ROLE_USER = DeveloperRole("role_user", true)
+
         fun fromString(roleName: String): DeveloperRole {
-            val nativeRole = values().find { it.name.lowercase() == roleName.lowercase() }
-            return if (nativeRole != null) {
-                nativeRole
+            return if (roleName.equals("role_manager", true)) {
+                ROLE_MANAGER
+            } else if (roleName.equals("role_user", true)) {
+                ROLE_USER
             } else {
-                val user = USER
-                user.roleName = roleName.toLowerCase().replace(' ', '_').trim()
-                user
+                DeveloperRole(roleName.toLowerCase().replace(' ', '_').trim(), false)
             }
         }
     }

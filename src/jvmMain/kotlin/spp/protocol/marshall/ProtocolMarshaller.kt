@@ -39,6 +39,7 @@ import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.instrument.event.LiveLogHit
 import spp.protocol.instrument.variable.LiveVariable
 import spp.protocol.platform.auth.DataRedaction
+import spp.protocol.platform.auth.DeveloperRole
 import spp.protocol.platform.auth.RedactionType
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
@@ -422,6 +423,19 @@ object ProtocolMarshaller {
             RedactionType.valueOf(value.getString("type")),
             value.getString("lookup"),
             value.getString("replacement")
+        )
+    }
+
+    @JvmStatic
+    fun serializeDeveloperRole(value: DeveloperRole): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeDeveloperRole(value: JsonObject): DeveloperRole {
+        return DeveloperRole(
+            value.getString("roleName"),
+            value.getBoolean("nativeRole")
         )
     }
 }
