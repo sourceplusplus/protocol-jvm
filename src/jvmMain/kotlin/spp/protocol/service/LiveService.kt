@@ -20,6 +20,7 @@ package spp.protocol.service
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
+import io.vertx.core.json.JsonObject
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.ActiveInstance
@@ -33,6 +34,8 @@ import spp.protocol.platform.status.ActiveInstance
 @VertxGen
 interface LiveService {
 
+    fun getClients(): Future<JsonObject>
+    fun getStats(): Future<JsonObject>
     fun getSelf(): Future<SelfInfo>
     fun getServices(): Future<List<Service>>
     fun getActiveProbes(): Future<List<ActiveInstance>>
