@@ -17,10 +17,14 @@
  */
 package spp.protocol.service
 
+import io.vertx.codegen.annotations.GenIgnore
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
+import io.vertx.core.Vertx
+import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
+import spp.protocol.SourceServices
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.ActiveInstance
@@ -33,6 +37,17 @@ import spp.protocol.platform.status.ActiveInstance
 @ProxyGen
 @VertxGen
 interface LiveService {
+
+    @GenIgnore
+    companion object {
+        @JvmStatic
+        fun createProxy(vertx: Vertx, authToken: String? = null): LiveService {
+            val deliveryOptions = DeliveryOptions().apply {
+                authToken?.let { addHeader("auth-token", it) }
+            }
+            return LiveServiceVertxEBProxy(vertx, SourceServices.Utilize.LIVE_SERVICE, deliveryOptions)
+        }
+    }
 
     fun getClients(): Future<JsonObject>
     fun getStats(): Future<JsonObject>

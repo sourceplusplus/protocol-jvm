@@ -17,10 +17,14 @@
  */
 package spp.protocol.service
 
+import io.vertx.codegen.annotations.GenIgnore
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
+import io.vertx.core.Vertx
+import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
+import spp.protocol.SourceServices
 import spp.protocol.view.LiveViewSubscription
 
 /**
@@ -32,6 +36,18 @@ import spp.protocol.view.LiveViewSubscription
 @ProxyGen
 @VertxGen
 interface LiveViewService {
+
+    @GenIgnore
+    companion object {
+        @JvmStatic
+        fun createProxy(vertx: Vertx, authToken: String? = null): LiveViewService {
+            val deliveryOptions = DeliveryOptions().apply {
+                authToken?.let { addHeader("auth-token", it) }
+            }
+            return LiveViewServiceVertxEBProxy(vertx, SourceServices.Utilize.LIVE_VIEW, deliveryOptions)
+        }
+    }
+
     fun addLiveViewSubscription(subscription: LiveViewSubscription): Future<LiveViewSubscription>
     fun removeLiveViewSubscription(subscriptionId: String): Future<LiveViewSubscription>
     fun getLiveViewSubscriptions(): Future<List<LiveViewSubscription>>

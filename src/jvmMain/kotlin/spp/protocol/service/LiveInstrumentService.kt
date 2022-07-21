@@ -17,11 +17,15 @@
  */
 package spp.protocol.service
 
+import io.vertx.codegen.annotations.GenIgnore
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
+import io.vertx.core.Vertx
+import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
 import kotlinx.datetime.Instant
+import spp.protocol.SourceServices
 import spp.protocol.instrument.*
 
 /**
@@ -33,6 +37,18 @@ import spp.protocol.instrument.*
 @ProxyGen
 @VertxGen
 interface LiveInstrumentService {
+
+    @GenIgnore
+    companion object {
+        @JvmStatic
+        fun createProxy(vertx: Vertx, authToken: String? = null): LiveInstrumentService {
+            val deliveryOptions = DeliveryOptions().apply {
+                authToken?.let { addHeader("auth-token", it) }
+            }
+            return LiveInstrumentServiceVertxEBProxy(vertx, SourceServices.Utilize.LIVE_INSTRUMENT, deliveryOptions)
+        }
+    }
+
     fun addLiveInstrument(instrument: LiveInstrument): Future<LiveInstrument>
 
     @JvmSuppressWildcards
