@@ -55,8 +55,9 @@ object ArtifactNameUtils {
         return if (qualifiedMethodName == null
             || qualifiedMethodName.isEmpty()
             || !qualifiedMethodName.contains(".")
+            || !qualifiedMethodName.contains("(")
         ) {
-            qualifiedMethodName
+            qualifiedMethodName?.substringAfterLast(".")
         } else {
             val qualifiedClassName = qualifiedMethodName.substring(
                 0, qualifiedMethodName.substring(
