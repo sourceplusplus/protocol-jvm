@@ -114,25 +114,9 @@ kotlin {
 }
 
 dependencies {
-    "kapt"("io.vertx:vertx-codegen:$vertxVersion:processor")
-}
-
-//todo: this is a hack to get json-mappers.properties working correctly
-project.tasks {
-    all {
-        copy {
-            doFirst {
-                file("$projectDir/src/jvmMain/resources/META-INF/vertx/json-mappers.properties")
-                    .copyTo(file("$buildDir/generated/source/kapt/main/META-INF/vertx/json-mappers.properties"), overwrite = true)
-            }
-        }
-    }
-    register("cleanProcessedResources") {
-        doFirst {
-            file("$buildDir/processedResources").deleteRecursively()
-        }
-    }
-    getByName("jvmProcessResources").dependsOn("cleanProcessedResources")
+    val kapt by configurations
+    kapt("io.vertx:vertx-codegen:$vertxVersion:processor")
+    kapt(findProject("codegen") ?: project(":protocol:codegen"))
 }
 
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
@@ -152,4 +136,8 @@ spotless {
         target("**/*.kt")
         licenseHeaderFile(file("LICENSE-HEADER.txt"))
     }
+}
+
+kapt {
+    annotationProcessor("spp.protocol.codegen.ProtocolCodeGenProcessor")
 }
