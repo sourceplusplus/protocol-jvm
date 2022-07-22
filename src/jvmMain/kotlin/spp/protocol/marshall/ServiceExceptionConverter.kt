@@ -18,11 +18,14 @@
 package spp.protocol.marshall
 
 import io.vertx.serviceproxy.ServiceException
+import spp.protocol.platform.auth.RolePermission
+import spp.protocol.service.error.InstrumentAccessDenied
 import spp.protocol.service.error.LiveInstrumentException
+import spp.protocol.service.error.PermissionAccessDenied
 
 object ServiceExceptionConverter {
 
-    fun fromEventBusException(exception: String): ServiceException {
+    fun fromEventBusException(exception: String, toEventBusException: Boolean = false): ServiceException {
         return if (exception.startsWith("EventBusException")) {
             var exceptionType = exception.substringAfter("EventBusException:")
             exceptionType = exceptionType.substringBefore("[")
@@ -32,6 +35,16 @@ object ServiceExceptionConverter {
             if (LiveInstrumentException::class.java.simpleName == exceptionType) {
                 LiveInstrumentException(
                     LiveInstrumentException.ErrorType.valueOf(exceptionParams),
+                    exceptionMessage
+                ).let { if (toEventBusException) it.toEventBusException() else it }
+            } else if (InstrumentAccessDenied::class.java.simpleName == exceptionType) {
+                InstrumentAccessDenied(
+                    exceptionParams,
+                    exceptionMessage
+                ).let { if (toEventBusException) it.toEventBusException() else it }
+            } else if (PermissionAccessDenied::class.java.simpleName == exceptionType) {
+                PermissionAccessDenied(
+                    RolePermission.valueOf(exceptionParams),
                     exceptionMessage
                 ).toEventBusException()
             } else {
