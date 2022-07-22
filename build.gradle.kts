@@ -117,13 +117,22 @@ dependencies {
     "kapt"("io.vertx:vertx-codegen:$vertxVersion:processor")
 }
 
-project.tasks.all {
-    copy {
-        doFirst {
-            file("$projectDir/src/jvmMain/resources/META-INF/vertx/json-mappers.properties")
-                .copyTo(file("$buildDir/generated/source/kapt/main/META-INF/vertx/json-mappers.properties"), overwrite = true)
+//todo: this is a hack to get json-mappers.properties working correctly
+project.tasks {
+    all {
+        copy {
+            doFirst {
+                file("$projectDir/src/jvmMain/resources/META-INF/vertx/json-mappers.properties")
+                    .copyTo(file("$buildDir/generated/source/kapt/main/META-INF/vertx/json-mappers.properties"), overwrite = true)
+            }
         }
     }
+    register("cleanProcessedResources") {
+        doFirst {
+            file("$buildDir/processedResources").deleteRecursively()
+        }
+    }
+    getByName("jvmProcessResources").dependsOn("cleanProcessedResources")
 }
 
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
