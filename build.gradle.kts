@@ -76,6 +76,10 @@ dependencies {
     kapt(findProject("codegen") ?: project(":protocol:codegen"))
 }
 
+tasks.withType<JavaCompile> {
+    options.release.set(8)
+    sourceCompatibility = "1.8"
+}
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
