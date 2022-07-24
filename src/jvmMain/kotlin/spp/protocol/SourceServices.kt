@@ -37,6 +37,7 @@ object SourceServices {
         var liveView: LiveViewService? = null
 
         fun clearServices() {
+            //todo: save services to project
             liveService = null
             liveInstrument = null
             liveView = null

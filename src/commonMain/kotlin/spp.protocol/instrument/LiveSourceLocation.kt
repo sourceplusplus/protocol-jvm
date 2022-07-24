@@ -18,6 +18,7 @@
 package spp.protocol.instrument
 
 import kotlinx.serialization.Serializable
+import spp.protocol.artifact.ArtifactLanguage
 import kotlin.jvm.JvmOverloads
 
 /**
@@ -33,7 +34,8 @@ data class LiveSourceLocation @JvmOverloads constructor(
     val service: String? = null, //todo: can use Service
     val serviceInstance: String? = null, //todo: fully impl
     val commitId: String? = null, //todo: impl
-    val fileChecksum: String? = null //todo: impl
+    val fileChecksum: String? = null, //todo: impl
+    //val language: ArtifactLanguage? = null, //todo: impl
 ) : Comparable<LiveSourceLocation> {
 
     override fun compareTo(other: LiveSourceLocation): Int {

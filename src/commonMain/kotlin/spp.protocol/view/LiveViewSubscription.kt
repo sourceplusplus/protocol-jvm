@@ -29,9 +29,9 @@ import spp.protocol.instrument.LiveSourceLocation
  */
 @Serializable
 data class LiveViewSubscription(
-    val subscriptionId: String? = null,
+    val subscriptionId: String? = null, //todo: actual bottom
     val entityIds: List<String>,
     val artifactQualifiedName: ArtifactQualifiedName, //todo: remove, use artifactLocation
-    val artifactLocation: LiveSourceLocation,
+    val artifactLocation: LiveSourceLocation, //todo: bottom?
     val liveViewConfig: LiveViewConfig
 )
