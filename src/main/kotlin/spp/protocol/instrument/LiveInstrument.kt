@@ -47,6 +47,4 @@ sealed class LiveInstrument {
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
     }
-
-
 }
