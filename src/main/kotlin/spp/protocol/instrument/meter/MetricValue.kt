@@ -17,6 +17,8 @@
  */
 package spp.protocol.instrument.meter
 
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
@@ -25,4 +27,16 @@ package spp.protocol.instrument.meter
 data class MetricValue(
     val valueType: MetricValueType, //todo: can put mode in here instead of LiveMeter.meta
     val value: String
-)
+) {
+    constructor(json: JsonObject) : this(
+        MetricValueType.valueOf(json.getString("valueType")),
+        json.getString("value")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("valueType", valueType.name)
+        json.put("value", value)
+        return json
+    }
+}

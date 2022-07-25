@@ -17,6 +17,8 @@
  */
 package spp.protocol.instrument.variable
 
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
@@ -31,4 +33,14 @@ data class LiveVariable(
     val liveClazz: String? = null,
     val liveIdentity: String? = null,
     val presentation: String? = null
-)
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("name"),
+        json.getValue("value"),
+        json.getInteger("lineNumber"),
+        json.getString("scope")?.let { LiveVariableScope.valueOf(it) },
+        json.getString("liveClazz"),
+        json.getString("liveIdentity"),
+        json.getString("presentation")
+    )
+}

@@ -17,6 +17,8 @@
  */
 package spp.protocol.instrument.throttle
 
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
@@ -29,5 +31,17 @@ data class InstrumentThrottle(
 ) {
     companion object {
         val DEFAULT: InstrumentThrottle = InstrumentThrottle(1, ThrottleStep.SECOND)
+    }
+
+    constructor(json: JsonObject) : this(
+        json.getInteger("limit"),
+        ThrottleStep.valueOf(json.getString("step"))
+    )
+
+    fun toJson(): JsonObject {
+        return JsonObject().apply {
+            put("limit", limit)
+            put("step", step.name)
+        }
     }
 }

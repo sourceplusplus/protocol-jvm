@@ -17,7 +17,7 @@
  */
 package spp.protocol.instrument
 
-import kotlin.jvm.JvmOverloads
+import io.vertx.core.json.JsonObject
 
 /**
  * todo: description.
@@ -34,6 +34,26 @@ data class LiveSourceLocation @JvmOverloads constructor(
     val fileChecksum: String? = null, //todo: impl
     //val language: ArtifactLanguage? = null, //todo: impl
 ) : Comparable<LiveSourceLocation> {
+
+    constructor(json: JsonObject) : this(
+        source = json.getString("source"),
+        line = json.getInteger("line"),
+        service = json.getString("service"),
+        serviceInstance = json.getString("serviceInstance"),
+        commitId = json.getString("commitId"),
+        fileChecksum = json.getString("fileChecksum")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("source", source)
+        json.put("line", line)
+        json.put("service", service)
+        json.put("serviceInstance", serviceInstance)
+        json.put("commitId", commitId)
+        json.put("fileChecksum", fileChecksum)
+        return json
+    }
 
     override fun compareTo(other: LiveSourceLocation): Int {
         val sourceCompare = source.compareTo(other.source)

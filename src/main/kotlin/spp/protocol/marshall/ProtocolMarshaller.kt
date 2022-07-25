@@ -111,13 +111,13 @@ object ProtocolMarshaller {
     @JvmStatic
     fun deserializeLiveInstrument(value: JsonObject): LiveInstrument {
         return if (value.getString("type") == "BREAKPOINT") {
-            value.mapTo(LiveBreakpoint::class.java)
+            LiveBreakpoint(value)
         } else if (value.getString("type") == "LOG") {
-            value.mapTo(LiveLog::class.java)
+            LiveLog(value)
         } else if (value.getString("type") == "METER") {
-            value.mapTo(LiveMeter::class.java)
+            LiveMeter(value)
         } else if (value.getString("type") == "SPAN") {
-            value.mapTo(LiveSpan::class.java)
+            LiveSpan(value)
         } else {
             throw UnsupportedOperationException("Live instrument type: " + value.getString("type"))
         }
@@ -170,7 +170,7 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun deserializeLiveSourceLocation(value: JsonObject): LiveSourceLocation {
-        return value.mapTo(LiveSourceLocation::class.java)
+        return LiveSourceLocation(value)
     }
 
     @JvmStatic
@@ -291,7 +291,7 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun deserializeLiveStackTrace(value: JsonObject): LiveStackTrace {
-        return value.mapTo(LiveStackTrace::class.java)
+        return LiveStackTrace(value)
     }
 
     @JvmStatic
