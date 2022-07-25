@@ -16,6 +16,8 @@
  */
 package spp.protocol.artifact.exception
 
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
@@ -28,6 +30,13 @@ class LiveStackTrace(
     val elements: MutableList<LiveStackTraceElement>,
     val causedBy: LiveStackTrace? = null
 ) : Iterable<LiveStackTraceElement> {
+
+    constructor(json: JsonObject) : this(
+        json.getString("exceptionType"),
+        json.getString("message"),
+        json.getJsonArray("elements").map { LiveStackTraceElement(JsonObject.mapFrom(it)) }.toMutableList(),
+        json.getJsonObject("causedBy")?.let { LiveStackTrace(it) }
+    )
 
     fun getElements(hideApacheSkywalking: Boolean): List<LiveStackTraceElement> {
         if (hideApacheSkywalking) {

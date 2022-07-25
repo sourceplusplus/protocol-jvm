@@ -16,6 +16,8 @@
  */
 package spp.protocol.instrument
 
+import io.vertx.core.json.JsonArray
+import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**
@@ -39,6 +41,38 @@ data class LiveLog(
     override val meta: Map<String, Any> = emptyMap()
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.LOG
+
+    constructor(json: JsonObject) : this(
+        logFormat = json.getString("logFormat"),
+        logArguments = json.getJsonArray("logArguments").map { it.toString() },
+        location = LiveSourceLocation(json.getJsonObject("location")),
+        condition = json.getString("condition"),
+        expiresAt = json.getLong("expiresAt"),
+        hitLimit = json.getInteger("hitLimit"),
+        id = json.getString("id"),
+        applyImmediately = json.getBoolean("applyImmediately"),
+        applied = json.getBoolean("applied"),
+        pending = json.getBoolean("pending"),
+        throttle = InstrumentThrottle(json.getJsonObject("throttle")),
+        meta = json.getJsonObject("meta").associate { it.key to it.value }
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("logFormat", logFormat)
+        json.put("logArguments", JsonArray().apply { logArguments.forEach { add(it) } })
+        json.put("location", location.toJson())
+        json.put("condition", condition)
+        json.put("expiresAt", expiresAt)
+        json.put("hitLimit", hitLimit)
+        json.put("id", id)
+        json.put("applyImmediately", applyImmediately)
+        json.put("applied", applied)
+        json.put("pending", pending)
+        json.put("throttle", throttle.toJson())
+        json.put("meta", JsonObject(meta))
+        return json
+    }
 
     /**
      * Specify explicitly so Kotlin doesn't override.

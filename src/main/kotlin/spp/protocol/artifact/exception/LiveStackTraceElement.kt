@@ -16,6 +16,7 @@
  */
 package spp.protocol.artifact.exception
 
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactNameUtils.getShortQualifiedClassName
 import spp.protocol.instrument.variable.LiveVariable
 
@@ -32,6 +33,14 @@ data class LiveStackTraceElement(
     val variables: MutableList<LiveVariable> = mutableListOf(),
     var sourceCode: String? = null
 ) {
+
+    constructor(json: JsonObject) : this(
+        json.getString("method"),
+        json.getString("source"),
+        json.getJsonArray("variables").map { LiveVariable(JsonObject.mapFrom(it)) }.toMutableList(),
+        json.getString("sourceCode")
+    )
+
     override fun toString(): String = toString(false)
 
     fun toString(shorten: Boolean): String {
