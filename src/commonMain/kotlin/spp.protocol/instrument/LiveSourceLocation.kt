@@ -18,7 +18,7 @@
 package spp.protocol.instrument
 
 import kotlinx.serialization.Serializable
-import spp.protocol.artifact.ArtifactLanguage
+//import spp.protocol.artifact.ArtifactLanguage
 import kotlin.jvm.JvmOverloads
 
 /**
