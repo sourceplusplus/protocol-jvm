@@ -22,6 +22,12 @@ import spp.protocol.platform.auth.CommandType.*
 enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
     RESET(true, LIVE_SERVICE),
 
+    //clients
+    ADD_CLIENT_ACCESS(true, LIVE_SERVICE),
+    REMOVE_CLIENT_ACCESS(true, LIVE_SERVICE),
+    GET_CLIENT_ACCESSORS(true, LIVE_SERVICE),
+    UPDATE_CLIENT_ACCESS(true, LIVE_SERVICE),
+
     //devs
     ADD_DEVELOPER(true, LIVE_SERVICE),
     REMOVE_DEVELOPER(true, LIVE_SERVICE),
