@@ -45,6 +45,7 @@ object SourceServices {
     }
 
     object Utilize {
+        const val LIVE_MANAGEMENT_SERVICE = "spp.service.live-management-service"
         const val LIVE_SERVICE = "spp.service.live-service"
         const val LIVE_INSTRUMENT = "spp.service.live-instrument"
         const val LIVE_VIEW = "spp.service.live-view"

@@ -38,6 +38,7 @@ import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.instrument.event.LiveLogHit
 import spp.protocol.instrument.variable.LiveVariable
+import spp.protocol.platform.auth.ClientAccess
 import spp.protocol.platform.auth.DataRedaction
 import spp.protocol.platform.auth.DeveloperRole
 import spp.protocol.platform.auth.RedactionType
@@ -436,6 +437,19 @@ object ProtocolMarshaller {
         return DeveloperRole(
             value.getString("roleName"),
             value.getBoolean("nativeRole")
+        )
+    }
+
+    @JvmStatic
+    fun serializeClientAccess(value: ClientAccess): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeClientAccess(value: JsonObject): ClientAccess {
+        return ClientAccess(
+            value.getString("id"),
+            value.getString("secret")
         )
     }
 }
