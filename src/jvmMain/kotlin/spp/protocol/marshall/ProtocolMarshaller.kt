@@ -37,10 +37,7 @@ import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.instrument.event.LiveLogHit
 import spp.protocol.instrument.variable.LiveVariable
-import spp.protocol.platform.auth.ClientAccess
-import spp.protocol.platform.auth.DataRedaction
-import spp.protocol.platform.auth.DeveloperRole
-import spp.protocol.platform.auth.RedactionType
+import spp.protocol.platform.auth.*
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.ActiveInstance
@@ -450,5 +447,15 @@ object ProtocolMarshaller {
             value.getString("id"),
             value.getString("secret")
         )
+    }
+
+    @JvmStatic
+    fun serializeRolePermission(value: RolePermission): String {
+        return value.name
+    }
+
+    @JvmStatic
+    fun deserializeRolePermission(value: String): RolePermission {
+        return RolePermission.valueOf(value)
     }
 }

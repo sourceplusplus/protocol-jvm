@@ -24,6 +24,7 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import spp.protocol.SourceServices.Utilize.LIVE_MANAGEMENT_SERVICE
 import spp.protocol.platform.auth.ClientAccess
+import spp.protocol.platform.auth.RolePermission
 
 
 /**
@@ -46,6 +47,7 @@ interface LiveManagementService {
         }
     }
 
+    fun getRolePermissions(role: String): Future<List<RolePermission>>
     fun getClientAccessors(): Future<List<ClientAccess>>
     fun getClientAccess(id: String): Future<ClientAccess?>
     fun addClientAccess(): Future<ClientAccess>
