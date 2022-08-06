@@ -77,13 +77,31 @@ class LiveStackTrace(
         private val pythonFrameRegex = Regex(
             " {2}File \"(.+)\", line ([0-9]+), in (.+)\\n {4}(.+)"
         )
+        private val nodeFrameRegex = Regex(
+            "at (.+) \\((.+):([0-9]+):([0-9]+)\\)"
+        )
 
         fun fromString(data: String): LiveStackTrace? {
             return when {
                 frameRegex.containsMatchIn(data) -> extractJvmStackTrace(data)
                 pythonFrameRegex.containsMatchIn(data) -> extractPythonStackTrace(data)
+                nodeFrameRegex.containsMatchIn(data) -> extractNodeStackTrace(data)
                 else -> null
             }
+        }
+
+        private fun extractNodeStackTrace(data: String): LiveStackTrace {
+            val elements = mutableListOf<LiveStackTraceElement>()
+            for (el in nodeFrameRegex.findAll(data)) {
+                val method = el.groupValues[1]
+
+                val file = el.groupValues[2]
+                val line = el.groupValues[3].toInt()
+                val column = el.groupValues[4].toInt()
+
+                elements.add(LiveStackTraceElement(method, "$file:$line"))
+            }
+            return LiveStackTrace("n/a", "n/a", elements)
         }
 
         private fun extractPythonStackTrace(data: String): LiveStackTrace {
