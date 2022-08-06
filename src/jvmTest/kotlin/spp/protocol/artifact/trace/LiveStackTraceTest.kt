@@ -43,4 +43,16 @@ class LiveStackTraceTest {
         assertEquals(23, stackTrace!!.elements.size)
         assertEquals(16, stackTrace.getElements(true).size)
     }
+
+    @Test
+    fun parseNodeJsStackTrace() {
+        val stackTrace = LiveStackTrace.fromString(
+            Resources.toString(Resources.getResource("nodejsStackTrace.txt"), Charsets.UTF_8)
+        )
+        assertNotNull(stackTrace)
+        assertEquals(stackTrace!!.exceptionType, "Error")
+        assertEquals(stackTrace.message, "Something unexpected has occurred.")
+        assertEquals(8, stackTrace.elements.size)
+        assertEquals(8, stackTrace.getElements(true).size)
+    }
 }

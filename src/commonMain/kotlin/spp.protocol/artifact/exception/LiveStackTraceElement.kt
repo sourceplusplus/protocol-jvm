@@ -30,6 +30,7 @@ import spp.protocol.instrument.variable.LiveVariable
 data class LiveStackTraceElement(
     val method: String,
     val source: String,
+    val column: Int? = null,
     val variables: MutableList<LiveVariable> = mutableListOf(),
     var sourceCode: String? = null
 ) {
