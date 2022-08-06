@@ -134,6 +134,7 @@ class ProtocolMarshallerTest {
                     LiveStackTraceElement(
                         "method",
                         "source",
+                        null,
                         mutableListOf(
                             LiveVariable(
                                 "name",
@@ -155,6 +156,7 @@ class ProtocolMarshallerTest {
                         LiveStackTraceElement(
                             "method",
                             "source",
+                            null,
                             mutableListOf(
                                 LiveVariable(
                                     "name",
