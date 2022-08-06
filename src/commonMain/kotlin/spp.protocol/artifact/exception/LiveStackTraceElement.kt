@@ -61,7 +61,7 @@ fun LiveStackTraceElement.sourceAsFilename(): String? {
 
 fun LiveStackTraceElement.sourceAsLineNumber(): Int? {
     return if (source.contains(":")) {
-        source.substring(source.indexOf(":") + 1).toInt()
+        source.substring(source.lastIndexOf(":") + 1).toInt()
     } else {
         null
     }

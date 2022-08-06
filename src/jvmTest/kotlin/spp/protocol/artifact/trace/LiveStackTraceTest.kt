@@ -22,6 +22,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import spp.protocol.artifact.exception.LiveStackTrace
+import spp.protocol.artifact.exception.sourceAsLineNumber
 
 class LiveStackTraceTest {
 
@@ -54,5 +55,14 @@ class LiveStackTraceTest {
         assertEquals(stackTrace.message, "Something unexpected has occurred.")
         assertEquals(8, stackTrace.elements.size)
         assertEquals(8, stackTrace.getElements(true).size)
+
+        assertEquals(9, stackTrace.elements[0].sourceAsLineNumber())
+        assertEquals(17, stackTrace.elements[1].sourceAsLineNumber())
+        assertEquals(460, stackTrace.elements[2].sourceAsLineNumber())
+        assertEquals(478, stackTrace.elements[3].sourceAsLineNumber())
+        assertEquals(355, stackTrace.elements[4].sourceAsLineNumber())
+        assertEquals(310, stackTrace.elements[5].sourceAsLineNumber())
+        assertEquals(501, stackTrace.elements[6].sourceAsLineNumber())
+        assertEquals(129, stackTrace.elements[7].sourceAsLineNumber())
     }
 }
