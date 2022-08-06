@@ -83,9 +83,9 @@ class LiveStackTrace(
 
         fun fromString(data: String): LiveStackTrace? {
             return when {
+                nodeFrameRegex.containsMatchIn(data) -> extractNodeStackTrace(data)
                 frameRegex.containsMatchIn(data) -> extractJvmStackTrace(data)
                 pythonFrameRegex.containsMatchIn(data) -> extractPythonStackTrace(data)
-                nodeFrameRegex.containsMatchIn(data) -> extractNodeStackTrace(data)
                 else -> null
             }
         }
@@ -99,9 +99,12 @@ class LiveStackTrace(
                 val line = el.groupValues[3].toInt()
                 val column = el.groupValues[4].toInt()
 
-                elements.add(LiveStackTraceElement(method, "$file:$line"))
+                elements.add(LiveStackTraceElement(method, "$file:$line", column))
             }
-            return LiveStackTrace("n/a", "n/a", elements)
+            val firstLine = data.split("\n").first()
+            val exceptionType = firstLine.split(":").firstOrNull() ?: "n/a"
+            val message = firstLine.split(": ").drop(1).firstOrNull() ?: "n/a"
+            return LiveStackTrace(exceptionType, message, elements)
         }
 
         private fun extractPythonStackTrace(data: String): LiveStackTrace {
