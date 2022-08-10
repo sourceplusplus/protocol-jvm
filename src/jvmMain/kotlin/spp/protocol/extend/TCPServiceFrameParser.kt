@@ -26,7 +26,6 @@ import io.vertx.core.json.JsonObject
 import io.vertx.core.net.NetSocket
 import io.vertx.ext.bridge.BridgeEventType
 import io.vertx.ext.eventbus.bridge.tcp.impl.protocol.FrameHelper
-import org.slf4j.LoggerFactory
 import spp.protocol.platform.auth.RolePermission
 import spp.protocol.service.error.InstrumentAccessDenied
 import spp.protocol.service.error.LiveInstrumentException
@@ -35,17 +34,11 @@ import spp.protocol.service.error.PermissionAccessDenied
 
 class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<AsyncResult<JsonObject>> {
 
-    companion object {
-        private val log = LoggerFactory.getLogger(TCPServiceFrameParser::class.java)
-    }
-
     override fun handle(event: AsyncResult<JsonObject>) {
         if (event.failed()) {
-            log.error("Failed to receive frame", event.cause())
             return
         }
         val frame = event.result()
-        log.trace("Received frame: {}", frame)
 
         if (frame.getString("replyAddress") != null) {
             val deliveryOptions = DeliveryOptions()

@@ -24,7 +24,6 @@ val vertxVersion: String by project
 val kotlinVersion: String by project
 val projectVersion: String by project
 val jacksonVersion: String by project
-val slf4jVersion: String by project
 val kotlinxDatetime: String by project
 val kotlinxSerializationJson: String by project
 
@@ -86,7 +85,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("org.slf4j:slf4j-api:$slf4jVersion")
                 implementation("io.vertx:vertx-core:$vertxVersion")
                 implementation("io.vertx:vertx-codegen:$vertxVersion")
                 implementation("io.vertx:vertx-tcp-eventbus-bridge:$vertxVersion")
