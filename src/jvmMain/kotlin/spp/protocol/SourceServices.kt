@@ -18,9 +18,6 @@ package spp.protocol
 
 import spp.protocol.SourceServices.Utilize.LIVE_INSTRUMENT
 import spp.protocol.SourceServices.Utilize.LIVE_VIEW
-import spp.protocol.service.LiveInstrumentService
-import spp.protocol.service.LiveService
-import spp.protocol.service.LiveViewService
 
 /**
  * todo: description.
@@ -29,19 +26,6 @@ import spp.protocol.service.LiveViewService
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 object SourceServices {
-
-    object Instance {
-        var liveService: LiveService? = null
-        var liveInstrument: LiveInstrumentService? = null
-        var liveView: LiveViewService? = null
-
-        fun clearServices() {
-            //todo: save services to project
-            liveService = null
-            liveInstrument = null
-            liveView = null
-        }
-    }
 
     object Utilize {
         const val LIVE_MANAGEMENT_SERVICE = "spp.service.live-management-service"
