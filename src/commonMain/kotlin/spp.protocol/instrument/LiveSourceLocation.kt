@@ -42,4 +42,14 @@ data class LiveSourceLocation @JvmOverloads constructor(
         if (sourceCompare != 0) return sourceCompare
         return line.compareTo(other.line)
     }
+
+    fun isSameLocation(other: LiveSourceLocation): Boolean {
+        if (source != other.source) return false
+        if (line != other.line && line != -1 && other.line != -1) return false //-1 is wildcard
+        if (service != other.service) return false
+        if (serviceInstance != other.serviceInstance) return false
+        if (commitId != other.commitId) return false
+        if (fileChecksum != other.fileChecksum) return false
+        return true
+    }
 }
