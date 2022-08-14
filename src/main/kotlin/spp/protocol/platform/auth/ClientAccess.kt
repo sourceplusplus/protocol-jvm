@@ -14,21 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.artifact.log
+package spp.protocol.platform.auth
 
-import kotlinx.datetime.Instant
-import kotlinx.datetime.serializers.InstantIso8601Serializer
-import kotlinx.serialization.Serializable
-
-/**
- * todo: description.
- *
- * @since 0.2.1
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-@Serializable
-data class LogCountSummary(
-    @Serializable(with = InstantIso8601Serializer::class)
-    val timestamp: Instant,
-    val logCounts: Map<String, Int>
+data class ClientAccess(
+    val id: String,
+    val secret: String
 )

@@ -37,6 +37,7 @@ data class LiveStackTraceElement(
     constructor(json: JsonObject) : this(
         json.getString("method"),
         json.getString("source"),
+        json.getInteger("column"),
         json.getJsonArray("variables").map { LiveVariable(JsonObject.mapFrom(it)) }.toMutableList(),
         json.getString("sourceCode")
     )

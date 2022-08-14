@@ -16,7 +16,6 @@
  */
 package spp.protocol.instrument
 
-import kotlinx.serialization.Serializable
 //import spp.protocol.artifact.ArtifactLanguage
 import io.vertx.core.json.JsonObject
 
