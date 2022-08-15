@@ -28,7 +28,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LiveVariable(
     val name: String,
-    @Contextual val value: Any,
+    @Contextual val value: Any?,
     val lineNumber: Int = -1,
     val scope: LiveVariableScope? = null,
     val liveClazz: String? = null,
