@@ -67,6 +67,14 @@ object ArtifactNameUtils {
         }
     }
 
+    fun hasFunctionSignature(artifactQualifiedName: ArtifactQualifiedName): Boolean {
+        return hasFunctionSignature(artifactQualifiedName.identifier)
+    }
+
+    fun hasFunctionSignature(qualifiedName: String): Boolean {
+        return qualifiedName.contains("(") && qualifiedName.contains(")")
+    }
+
     fun getShortFunctionSignature(qualifiedName: String): String {
         return getFunctionSignature(qualifiedName.substringBefore("#"))
             .replace("\\B\\w+(\\.)".toRegex(), "$1")
