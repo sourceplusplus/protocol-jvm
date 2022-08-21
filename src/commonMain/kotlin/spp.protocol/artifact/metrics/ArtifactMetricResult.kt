@@ -19,8 +19,6 @@ package spp.protocol.artifact.metrics
 import kotlinx.datetime.Instant
 import kotlinx.datetime.serializers.InstantIso8601Serializer
 import kotlinx.serialization.Serializable
-import spp.protocol.artifact.ArtifactQualifiedName
-import spp.protocol.artifact.QueryTimeFrame
 
 /**
  * todo: description.
@@ -30,9 +28,6 @@ import spp.protocol.artifact.QueryTimeFrame
  */
 @Serializable
 data class ArtifactMetricResult(
-    val artifactQualifiedName: ArtifactQualifiedName,
-    val timeFrame: QueryTimeFrame,
-    val focus: MetricType,
     @Serializable(with = InstantIso8601Serializer::class)
     val start: Instant,
     @Serializable(with = InstantIso8601Serializer::class)
