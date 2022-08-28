@@ -1,0 +1,22 @@
+query getLiveViewSubscriptions {
+    getLiveViewSubscriptions {
+        subscriptionId
+        entityIds
+        artifactQualifiedName {
+            identifier
+            commitId
+            artifactType
+            lineNumber
+            operationName
+        }
+        artifactLocation {
+            source
+            line
+        }
+        liveViewConfig {
+            viewName
+            viewMetrics
+            refreshRateLimit
+        }
+    }
+}
