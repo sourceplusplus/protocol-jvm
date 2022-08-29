@@ -143,9 +143,9 @@ spotless {
             "$startYear-$currentYear"
         }
 
-        val jetbrainsProject = findProject(":protocol") ?: rootProject
+        val protocolProject = findProject(":protocol") ?: rootProject
         val licenseHeader = Regex("( . Copyright [\\S\\s]+)")
-            .find(File(jetbrainsProject.projectDir, "LICENSE").readText())!!
+            .find(File(protocolProject.projectDir, "LICENSE").readText())!!
             .value.lines().joinToString("\n") {
                 if (it.trim().isEmpty()) {
                     " *"
