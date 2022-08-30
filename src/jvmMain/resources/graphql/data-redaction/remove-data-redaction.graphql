@@ -1,3 +1,3 @@
-mutation ($id: String!){
+mutation removeDataRedaction($id: String!){
     removeDataRedaction (id: $id)
 }

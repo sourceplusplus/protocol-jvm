@@ -1,4 +1,4 @@
-query ($developerId: String!){
+query getDeveloperDataRedactions($developerId: String!){
     getDeveloperDataRedactions (developerId: $developerId){
         id
         type
