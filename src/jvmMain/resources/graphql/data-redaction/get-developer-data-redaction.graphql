@@ -1,0 +1,8 @@
+query ($developerId: String!){
+    getDeveloperDataRedactions (developerId: $developerId){
+        id
+        type
+        lookup
+        replacement
+    }
+}
