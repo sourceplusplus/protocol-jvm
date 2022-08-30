@@ -1,4 +1,4 @@
-query getAccessPermissions ($id: String!){
+query getAccessPermission ($id: String!){
     getAccessPermission (id: $id){
         id
         locationPatterns
