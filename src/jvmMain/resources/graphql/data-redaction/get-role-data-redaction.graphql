@@ -1,0 +1,8 @@
+query ($role: String!){
+    getRoleDataRedactions (role: $role){
+        id
+        type
+        lookup
+        replacement
+    }
+}

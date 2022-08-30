@@ -1,0 +1,3 @@
+mutation ($role: String!, $dataRedactionId: String!){
+    removeRoleDataRedaction (role: $role, dataRedactionId: $dataRedactionId)
+}

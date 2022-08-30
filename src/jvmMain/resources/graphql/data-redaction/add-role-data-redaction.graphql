@@ -1,0 +1,3 @@
+mutation ($role: String!, $dataRedactionId: String!){
+    addRoleDataRedaction (role: $role, dataRedactionId: $dataRedactionId)
+}

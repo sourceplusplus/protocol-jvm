@@ -1,0 +1,8 @@
+mutation ($id: String!, $type: RedactionType!, $lookup: String!, $replacement: String!){
+    updateDataRedaction (id: $id, type: $type, lookup: $lookup, replacement: $replacement){
+        id
+        type
+        lookup
+        replacement
+    }
+}

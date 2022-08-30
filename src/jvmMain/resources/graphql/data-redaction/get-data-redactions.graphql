@@ -1,0 +1,8 @@
+query {
+    getDataRedactions {
+        id
+        type
+        lookup
+        replacement
+    }
+}
