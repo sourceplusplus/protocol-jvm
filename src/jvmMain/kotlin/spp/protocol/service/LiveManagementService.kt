@@ -22,9 +22,13 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.json.JsonObject
 import spp.protocol.SourceServices.Utilize.LIVE_MANAGEMENT_SERVICE
 import spp.protocol.platform.auth.ClientAccess
 import spp.protocol.platform.auth.RolePermission
+import spp.protocol.platform.developer.SelfInfo
+import spp.protocol.platform.general.Service
+import spp.protocol.platform.status.ActiveInstance
 
 
 /**
@@ -53,4 +57,10 @@ interface LiveManagementService {
     fun addClientAccess(): Future<ClientAccess>
     fun removeClientAccess(id: String): Future<Boolean>
     fun updateClientAccess(id: String): Future<ClientAccess>
+
+    fun getClients(): Future<JsonObject>
+    fun getStats(): Future<JsonObject>
+    fun getSelf(): Future<SelfInfo>
+    fun getServices(): Future<List<Service>>
+    fun getActiveProbes(): Future<List<ActiveInstance>>
 }

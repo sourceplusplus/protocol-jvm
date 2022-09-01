@@ -17,7 +17,7 @@
 package spp.protocol.platform.auth
 
 enum class CommandType {
-    LIVE_SERVICE,
+    LIVE_MANAGEMENT_SERVICE,
     LIVE_VIEW,
     LIVE_INSTRUMENT
 }
