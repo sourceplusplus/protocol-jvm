@@ -40,7 +40,7 @@ import spp.protocol.instrument.variable.LiveVariable
 import spp.protocol.platform.auth.*
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
-import spp.protocol.platform.status.ActiveInstance
+import spp.protocol.platform.status.InstanceConnection
 import spp.protocol.view.LiveViewSubscription
 
 /**
@@ -201,13 +201,13 @@ object ProtocolMarshaller {
     }
 
     @JvmStatic
-    fun serializeActiveInstance(value: ActiveInstance): JsonObject {
+    fun serializeInstanceConnection(value: InstanceConnection): JsonObject {
         return JsonObject(Json.encode(value))
     }
 
     @JvmStatic
-    fun deserializeActiveInstance(value: JsonObject): ActiveInstance {
-        return value.mapTo(ActiveInstance::class.java)
+    fun deserializeInstanceConnection(value: JsonObject): InstanceConnection {
+        return value.mapTo(InstanceConnection::class.java)
     }
 
     @JvmStatic

@@ -28,7 +28,7 @@ import spp.protocol.platform.auth.ClientAccess
 import spp.protocol.platform.auth.RolePermission
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
-import spp.protocol.platform.status.ActiveInstance
+import spp.protocol.platform.status.InstanceConnection
 
 
 /**
@@ -62,5 +62,5 @@ interface LiveManagementService {
     fun getStats(): Future<JsonObject>
     fun getSelf(): Future<SelfInfo>
     fun getServices(): Future<List<Service>>
-    fun getActiveProbes(): Future<List<ActiveInstance>>
+    fun getActiveProbes(): Future<List<InstanceConnection>>
 }
