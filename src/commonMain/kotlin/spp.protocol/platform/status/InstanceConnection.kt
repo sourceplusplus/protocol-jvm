@@ -20,7 +20,7 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 /**
- * todo: description.
+ * Initial message sent by probes and markers to the platform to identify themselves.
  *
  * @since 0.3.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
