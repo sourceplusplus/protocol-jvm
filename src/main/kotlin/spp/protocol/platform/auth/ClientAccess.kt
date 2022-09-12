@@ -16,10 +16,16 @@
  */
 package spp.protocol.platform.auth
 
-import kotlinx.serialization.Serializable
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 
-@Serializable
+@DataObject
 data class ClientAccess(
     val id: String,
     val secret: String
-)
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("id"),
+        json.getString("secret")
+    )
+}

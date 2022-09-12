@@ -23,8 +23,6 @@ val vertxVersion: String by project
 val kotlinVersion: String by project
 val projectVersion: String by project
 val jacksonVersion: String by project
-val kotlinxDatetime: String by project
-val kotlinxSerializationJson: String by project
 
 group = "plus.sourceplus"
 version = project.properties["protocolVersion"] as String? ?: projectVersion
@@ -34,15 +32,6 @@ repositories {
 }
 
 configure<app.cash.licensee.LicenseeExtension> {
-    allowDependency("org.jetbrains.kotlinx", "kotlinx-datetime-js", kotlinxDatetime) {
-        because("Apache-2.0")
-    }
-    allowDependency("org.jetbrains.kotlinx", "kotlinx-serialization-core-js", kotlinxSerializationJson) {
-        because("Apache-2.0")
-    }
-    allowDependency("org.jetbrains.kotlinx", "kotlinx-serialization-json-js", kotlinxSerializationJson) {
-        because("Apache-2.0")
-    }
     allow("Apache-2.0")
     allow("MIT")
 }

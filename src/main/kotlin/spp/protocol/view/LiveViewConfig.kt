@@ -16,15 +16,12 @@
  */
 package spp.protocol.view
 
-import kotlinx.serialization.Serializable
-
 /**
  * todo: description.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class LiveViewConfig(
     val viewName: String,
     val viewMetrics: List<String>,

@@ -16,9 +16,6 @@
  */
 package spp.protocol.platform.auth
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class AccessPermission(
     val id: String,
     val locationPatterns: List<String>,

@@ -16,8 +16,6 @@
  */
 package spp.protocol.instrument
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**
@@ -26,7 +24,6 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class LiveBreakpoint(
     override val location: LiveSourceLocation,
     override val condition: String? = null,
@@ -37,7 +34,7 @@ data class LiveBreakpoint(
     override val applied: Boolean = false,
     override val pending: Boolean = false,
     override val throttle: InstrumentThrottle = InstrumentThrottle.DEFAULT,
-    override val meta: Map<String, @Contextual Any> = emptyMap()
+    override val meta: Map<String, Any> = emptyMap()
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.BREAKPOINT
 

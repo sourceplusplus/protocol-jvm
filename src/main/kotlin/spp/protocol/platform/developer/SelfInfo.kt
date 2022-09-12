@@ -16,12 +16,10 @@
  */
 package spp.protocol.platform.developer
 
-import kotlinx.serialization.Serializable
 import spp.protocol.platform.auth.AccessPermission
 import spp.protocol.platform.auth.DeveloperRole
 import spp.protocol.platform.auth.RolePermission
 
-@Serializable
 data class SelfInfo(
     val developer: Developer,
     val roles: List<DeveloperRole>,

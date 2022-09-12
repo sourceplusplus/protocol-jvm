@@ -16,16 +16,13 @@
  */
 package spp.protocol.portal
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import spp.protocol.artifact.ArtifactQualifiedName
 
-@Serializable
 data class PortalConfiguration(
     var artifactQualifiedName: ArtifactQualifiedName,
     var darkMode: Boolean = false,
     var external: Boolean = false,
-    var config: MutableMap<String, @Contextual Any> = mutableMapOf()
+    var config: MutableMap<String, Any> = mutableMapOf()
 ) {
     fun <T> get(key: String): T {
         return config[key] as T

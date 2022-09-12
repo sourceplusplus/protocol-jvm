@@ -16,7 +16,6 @@
  */
 package spp.protocol.artifact.exception
 
-import kotlinx.serialization.Serializable
 import spp.protocol.artifact.ArtifactNameUtils.getShortQualifiedClassName
 import spp.protocol.instrument.variable.LiveVariable
 
@@ -26,7 +25,6 @@ import spp.protocol.instrument.variable.LiveVariable
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class LiveStackTraceElement(
     val method: String,
     val source: String,

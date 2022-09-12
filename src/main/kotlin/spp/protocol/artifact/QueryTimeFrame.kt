@@ -16,15 +16,12 @@
  */
 package spp.protocol.artifact
 
-import kotlinx.serialization.Serializable
-
 /**
  * todo: description.
  *
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 enum class QueryTimeFrame(val minutes: Int, val id: String) {
     //todo: support custom time frames
     LAST_MINUTE(1, "1_minute"),

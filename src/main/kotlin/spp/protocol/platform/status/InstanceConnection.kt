@@ -16,8 +16,8 @@
  */
 package spp.protocol.platform.status
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 
 /**
  * Initial message sent by probes and markers to the platform to identify themselves.
@@ -25,9 +25,15 @@ import kotlinx.serialization.Serializable
  * @since 0.3.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
+@DataObject
 data class InstanceConnection(
     var instanceId: String,
     var connectionTime: Long,
-    val meta: MutableMap<String, @Contextual Any> = mutableMapOf()
-)
+    val meta: MutableMap<String, Any> = mutableMapOf()
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("instanceId"),
+        json.getLong("connectionTime"),
+        json.getJsonObject("meta").map
+    )
+}

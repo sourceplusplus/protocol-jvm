@@ -16,8 +16,6 @@
  */
 package spp.protocol.instrument
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**
@@ -26,7 +24,6 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 sealed class LiveInstrument {
     abstract val location: LiveSourceLocation
     abstract val condition: String?
@@ -38,7 +35,7 @@ sealed class LiveInstrument {
     abstract val applied: Boolean
     abstract val pending: Boolean
     abstract val throttle: InstrumentThrottle?
-    abstract val meta: Map<String, @Contextual Any>
+    abstract val meta: Map<String, Any>
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

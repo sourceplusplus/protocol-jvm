@@ -16,10 +16,8 @@
  */
 package spp.protocol.instrument.event
 
-import kotlinx.datetime.Instant
-import kotlinx.datetime.serializers.InstantIso8601Serializer
-import kotlinx.serialization.Serializable
 import spp.protocol.artifact.exception.LiveStackTrace
+import java.time.Instant
 
 /**
  * todo: description.
@@ -27,11 +25,9 @@ import spp.protocol.artifact.exception.LiveStackTrace
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class LiveBreakpointHit(
     val breakpointId: String,
     val traceId: String,
-    @Serializable(with = InstantIso8601Serializer::class)
     override val occurredAt: Instant,
     val serviceInstance: String,
     val service: String,

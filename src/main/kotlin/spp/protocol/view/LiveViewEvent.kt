@@ -16,7 +16,6 @@
  */
 package spp.protocol.view
 
-import kotlinx.serialization.Serializable
 import spp.protocol.artifact.ArtifactQualifiedName
 
 /**
@@ -25,7 +24,6 @@ import spp.protocol.artifact.ArtifactQualifiedName
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class LiveViewEvent(
     val subscriptionId: String,
     val entityId: String,

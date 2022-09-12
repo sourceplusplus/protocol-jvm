@@ -16,7 +16,6 @@
  */
 package spp.protocol.marshall
 
-import kotlinx.datetime.Clock
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,6 +37,7 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
 import spp.protocol.instrument.throttle.ThrottleStep
 import spp.protocol.instrument.variable.LiveVariable
 import spp.protocol.instrument.variable.LiveVariableScope
+import java.time.Instant
 
 @RunWith(JUnit4::class)
 class ProtocolMarshallerTest {
@@ -110,7 +110,7 @@ class ProtocolMarshallerTest {
                 InstrumentThrottle(1, ThrottleStep.DAY),
                 mapOf("key2" to "value2")
             ),
-            Clock.System.now(),
+            Instant.now(),
             LiveStackTrace("exception", "message", mutableListOf())
         )
 
@@ -124,7 +124,7 @@ class ProtocolMarshallerTest {
         val liveBreakpointHit = LiveBreakpointHit(
             "breakpointId",
             "traceId",
-            Clock.System.now(),
+            Instant.now(),
             "serviceInstance",
             "service",
             LiveStackTrace(

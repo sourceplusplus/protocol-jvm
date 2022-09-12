@@ -16,9 +16,7 @@
  */
 package spp.protocol.artifact.trace
 
-import kotlinx.datetime.Instant
-import kotlinx.datetime.serializers.InstantIso8601Serializer
-import kotlinx.serialization.Serializable
+import java.time.Instant
 
 /**
  * todo: description.
@@ -26,9 +24,7 @@ import kotlinx.serialization.Serializable
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class TraceSpanLogEntry(
-    @Serializable(with = InstantIso8601Serializer::class)
     val time: Instant,
     val data: String
 )

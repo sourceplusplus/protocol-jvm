@@ -16,7 +16,6 @@
  */
 package spp.protocol.view
 
-import kotlinx.serialization.Serializable
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.instrument.LiveSourceLocation
 
@@ -26,7 +25,6 @@ import spp.protocol.instrument.LiveSourceLocation
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class LiveViewSubscription(
     val subscriptionId: String? = null, //todo: actual bottom
     val entityIds: List<String>,

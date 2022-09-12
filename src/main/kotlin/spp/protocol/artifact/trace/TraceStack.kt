@@ -16,7 +16,6 @@
  */
 package spp.protocol.artifact.trace
 
-import kotlinx.serialization.Serializable
 import spp.protocol.artifact.trace.TraceStack.Segment
 
 /**
@@ -25,7 +24,6 @@ import spp.protocol.artifact.trace.TraceStack.Segment
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class TraceStack(val traceSpans: List<TraceSpan>) : Iterable<Segment> {
     private val segmentMap: MutableMap<String, Segment> = mutableMapOf()
     val isEmpty: Boolean = traceSpans.isEmpty()
@@ -82,7 +80,6 @@ data class TraceStack(val traceSpans: List<TraceSpan>) : Iterable<Segment> {
         return segmentMap.values.iterator()
     }
 
-    @Serializable
     data class Segment(
         val segmentId: String,
         val traceSpans: List<TraceSpan>,

@@ -16,9 +16,6 @@
  */
 package spp.protocol.platform.auth
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class DeveloperRole(val roleName: String, val nativeRole: Boolean) {
     companion object {
         val ROLE_MANAGER = DeveloperRole("role_manager", true)

@@ -18,10 +18,10 @@ package spp.protocol.marshall
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
-import kotlinx.datetime.Instant
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.exception.LiveStackTraceElement
@@ -42,6 +42,7 @@ import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.InstanceConnection
 import spp.protocol.view.LiveViewSubscription
+import java.time.Instant
 
 /**
  * Used for marshalling and unmarshalling protocol messages.
@@ -56,6 +57,7 @@ object ProtocolMarshaller {
             DatabindCodec.mapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
+            DatabindCodec.mapper().registerModule(KotlinModule())
         } catch (ignore: Throwable) {
         }
     }
@@ -82,12 +84,12 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun serializeInstant(value: Instant): String {
-        return value.toEpochMilliseconds().toString()
+        return value.toEpochMilli().toString()
     }
 
     @JvmStatic
     fun deserializeInstant(value: String): Instant {
-        return Instant.fromEpochMilliseconds(value.toLong())
+        return Instant.ofEpochMilli(value.toLong())
     }
 
     @JvmStatic
@@ -249,11 +251,11 @@ object ProtocolMarshaller {
                 if (it.getValue("occurredAt") is String) {
                     Instant.parse(value.getString("occurredAt"))
                 } else if (it.getValue("occurredAt") is Number) {
-                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                    Instant.ofEpochMilli(value.getLong("occurredAt"))
                 } else {
-                    Instant.fromEpochSeconds(
+                    Instant.ofEpochSecond(
                         value.getJsonObject("occurredAt").getLong("epochSeconds"),
-                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                        value.getJsonObject("occurredAt").getLong("nanosecondsOfSecond")
                     )
                 }
             },
@@ -305,11 +307,11 @@ object ProtocolMarshaller {
                 if (it.getValue("occurredAt") is String) {
                     Instant.parse(value.getString("occurredAt"))
                 } else if (it.getValue("occurredAt") is Number) {
-                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                    Instant.ofEpochMilli(value.getLong("occurredAt"))
                 } else {
-                    Instant.fromEpochSeconds(
+                    Instant.ofEpochSecond(
                         value.getJsonObject("occurredAt").getLong("epochSeconds"),
-                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                        value.getJsonObject("occurredAt").getLong("nanosecondsOfSecond")
                     )
                 }
             },
@@ -333,11 +335,11 @@ object ProtocolMarshaller {
                 if (it.getValue("timestamp") is String) {
                     Instant.parse(value.getString("timestamp"))
                 } else if (it.getValue("timestamp") is Number) {
-                    Instant.fromEpochMilliseconds(value.getLong("timestamp"))
+                    Instant.ofEpochMilli(value.getLong("timestamp"))
                 } else {
-                    Instant.fromEpochSeconds(
+                    Instant.ofEpochSecond(
                         value.getJsonObject("timestamp").getLong("epochSeconds"),
-                        value.getJsonObject("timestamp").getInteger("nanosecondsOfSecond")
+                        value.getJsonObject("timestamp").getLong("nanosecondsOfSecond")
                     )
                 }
             },
@@ -365,11 +367,11 @@ object ProtocolMarshaller {
                 if (it.getValue("occurredAt") is String) {
                     Instant.parse(value.getString("occurredAt"))
                 } else if (it.getValue("occurredAt") is Number) {
-                    Instant.fromEpochMilliseconds(value.getLong("occurredAt"))
+                    Instant.ofEpochMilli(value.getLong("occurredAt"))
                 } else {
-                    Instant.fromEpochSeconds(
+                    Instant.ofEpochSecond(
                         value.getJsonObject("occurredAt").getLong("epochSeconds"),
-                        value.getJsonObject("occurredAt").getInteger("nanosecondsOfSecond")
+                        value.getJsonObject("occurredAt").getLong("nanosecondsOfSecond")
                     )
                 }
             },
@@ -391,11 +393,11 @@ object ProtocolMarshaller {
                 if (it.getValue("timestamp") is String) {
                     Instant.parse(value.getString("timestamp"))
                 } else if (it.getValue("timestamp") is Number) {
-                    Instant.fromEpochMilliseconds(value.getLong("timestamp"))
+                    Instant.ofEpochMilli(value.getLong("timestamp"))
                 } else {
-                    Instant.fromEpochSeconds(
+                    Instant.ofEpochSecond(
                         value.getJsonObject("timestamp").getLong("epochSeconds"),
-                        value.getJsonObject("timestamp").getInteger("nanosecondsOfSecond")
+                        value.getJsonObject("timestamp").getLong("nanosecondsOfSecond")
                     )
                 }
             },

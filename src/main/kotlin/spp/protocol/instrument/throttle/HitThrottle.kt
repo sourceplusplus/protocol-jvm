@@ -16,7 +16,6 @@
  */
 package spp.protocol.instrument.throttle
 
-import kotlinx.datetime.Clock
 import kotlin.jvm.Transient
 
 class HitThrottle(private val limit: Int, step: ThrottleStep) {
@@ -46,10 +45,10 @@ class HitThrottle(private val limit: Int, step: ThrottleStep) {
             totalHitCount++
             return false
         }
-        return if (Clock.System.now().toEpochMilliseconds() - lastReset > step.toMillis(1)) {
+        return if (System.currentTimeMillis() - lastReset > step.toMillis(1)) {
             hitCount = 1
             totalHitCount++
-            lastReset = Clock.System.now().toEpochMilliseconds()
+            lastReset = System.currentTimeMillis()
             false
         } else {
             totalLimitedCount++

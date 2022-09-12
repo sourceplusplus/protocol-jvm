@@ -16,7 +16,6 @@
  */
 package spp.protocol.instrument
 
-import kotlinx.serialization.Serializable
 //import spp.protocol.artifact.ArtifactLanguage
 import kotlin.jvm.JvmOverloads
 
@@ -26,7 +25,6 @@ import kotlin.jvm.JvmOverloads
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class LiveSourceLocation @JvmOverloads constructor(
     val source: String,
     val line: Int = -1,

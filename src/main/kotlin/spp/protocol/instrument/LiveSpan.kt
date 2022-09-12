@@ -16,8 +16,6 @@
  */
 package spp.protocol.instrument
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**
@@ -25,7 +23,6 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class LiveSpan(
     val operationName: String,
     override val location: LiveSourceLocation,
@@ -37,7 +34,7 @@ data class LiveSpan(
     override val applied: Boolean = false,
     override val pending: Boolean = false,
     override val throttle: InstrumentThrottle? = null,
-    override val meta: Map<String, @Contextual Any> = emptyMap()
+    override val meta: Map<String, Any> = emptyMap()
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.SPAN
 

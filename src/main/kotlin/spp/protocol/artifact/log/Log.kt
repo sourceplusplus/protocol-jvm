@@ -16,10 +16,8 @@
  */
 package spp.protocol.artifact.log
 
-import kotlinx.datetime.Instant
-import kotlinx.datetime.serializers.InstantIso8601Serializer
-import kotlinx.serialization.Serializable
 import spp.protocol.artifact.exception.LiveStackTrace
+import java.time.Instant
 
 /**
  * todo: description.
@@ -27,9 +25,7 @@ import spp.protocol.artifact.exception.LiveStackTrace
  * @since 0.2.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class Log(
-    @Serializable(with = InstantIso8601Serializer::class)
     val timestamp: Instant,
     val content: String,
     val level: String,

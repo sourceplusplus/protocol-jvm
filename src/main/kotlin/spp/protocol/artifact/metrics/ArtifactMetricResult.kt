@@ -16,9 +16,7 @@
  */
 package spp.protocol.artifact.metrics
 
-import kotlinx.datetime.Instant
-import kotlinx.datetime.serializers.InstantIso8601Serializer
-import kotlinx.serialization.Serializable
+import java.time.Instant
 
 /**
  * todo: description.
@@ -26,11 +24,8 @@ import kotlinx.serialization.Serializable
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-@Serializable
 data class ArtifactMetricResult(
-    @Serializable(with = InstantIso8601Serializer::class)
     val start: Instant,
-    @Serializable(with = InstantIso8601Serializer::class)
     val stop: Instant,
     val step: String,
     val artifactMetrics: List<ArtifactMetrics>,
