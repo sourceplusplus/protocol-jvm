@@ -36,4 +36,8 @@ data class InstanceConnection(
         json.getLong("connectionTime"),
         json.getJsonObject("meta").map
     )
+
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
 }

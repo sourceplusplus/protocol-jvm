@@ -28,4 +28,8 @@ data class ClientAccess(
         json.getString("id"),
         json.getString("secret")
     )
+
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
 }

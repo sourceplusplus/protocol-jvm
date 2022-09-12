@@ -16,6 +16,8 @@
  */
 package spp.protocol.view
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
 
 /**
@@ -24,6 +26,7 @@ import spp.protocol.artifact.ArtifactQualifiedName
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LiveViewEvent(
     val subscriptionId: String,
     val entityId: String,
@@ -31,4 +34,13 @@ data class LiveViewEvent(
     val timeBucket: String,
     val viewConfig: LiveViewConfig,
     val metricsData: String, //todo: type out
-)
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("subscriptionId"),
+        json.getString("entityId"),
+        ArtifactQualifiedName(json.getJsonObject("artifactQualifiedName")),
+        json.getString("timeBucket"),
+        LiveViewConfig(json.getJsonObject("viewConfig")),
+        json.getString("metricsData")
+    )
+}

@@ -16,12 +16,23 @@
  */
 package spp.protocol.platform.auth
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
+@DataObject
 data class DataRedaction(
     val id: String,
     val type: RedactionType,
     val lookup: String,
     val replacement: String
 ) {
+    constructor(json: JsonObject) : this(
+        json.getString("id"),
+        RedactionType.valueOf(json.getString("type")),
+        json.getString("lookup"),
+        json.getString("replacement")
+    )
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || this::class != other::class) return false

@@ -16,14 +16,32 @@
  */
 package spp.protocol.view
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LiveViewConfig(
     val viewName: String,
     val viewMetrics: List<String>,
     val refreshRateLimit: Int = -1 //limit of once per X milliseconds
-)
+) {
+    constructor(json: JsonObject) : this(
+        viewName = json.getString("viewName"),
+        viewMetrics = json.getJsonArray("viewMetrics").map { it.toString() },
+        refreshRateLimit = json.getInteger("refreshRateLimit")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("viewName", viewName)
+        json.put("viewMetrics", viewMetrics)
+        json.put("refreshRateLimit", refreshRateLimit)
+        return json
+    }
+}

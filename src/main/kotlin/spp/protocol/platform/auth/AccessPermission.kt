@@ -16,8 +16,22 @@
  */
 package spp.protocol.platform.auth
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
+@DataObject
 data class AccessPermission(
     val id: String,
     val locationPatterns: List<String>,
     val type: AccessType
-)
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("id"),
+        json.getJsonArray("locationPatterns").map { it.toString() },
+        AccessType.valueOf(json.getString("type"))
+    )
+
+    fun toJson(): JsonObject {
+        return JsonObject().put("id", id).put("locationPatterns", locationPatterns).put("type", type.name)
+    }
+}

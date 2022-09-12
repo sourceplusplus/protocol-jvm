@@ -80,6 +80,12 @@ enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
 
     companion object {
         fun fromString(s: String): RolePermission? {
+            val exactMatch = values().firstOrNull { it.name.equals(s, true) }
+            if (exactMatch != null) {
+                return exactMatch
+            }
+
+            //convert function names to permissions (e.g. addLiveBreakpoint -> ADD_LIVE_BREAKPOINT)
             val sb = StringBuilder()
             for (i in s.indices) {
                 val c = s[i]

@@ -16,6 +16,8 @@
  */
 package spp.protocol.instrument.event
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.instrument.LiveInstrument
 import java.time.Instant
@@ -26,8 +28,23 @@ import java.time.Instant
  * @since 0.3.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LiveInstrumentRemoved(
     val liveInstrument: LiveInstrument,
     override val occurredAt: Instant,
     val cause: LiveStackTrace? = null
-) : TrackedLiveEvent
+) : TrackedLiveEvent {
+    constructor(json: JsonObject) : this(
+        liveInstrument = LiveInstrument.fromJson(json.getJsonObject("liveInstrument")),
+        occurredAt = Instant.parse(json.getString("occurredAt")),
+        cause = json.getJsonObject("cause")?.let { LiveStackTrace(it) }
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("liveInstrument", liveInstrument.toJson())
+        json.put("occurredAt", occurredAt.toString())
+        json.put("cause", cause?.toJson())
+        return json
+    }
+}

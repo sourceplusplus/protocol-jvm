@@ -16,6 +16,8 @@
  */
 package spp.protocol.artifact.log
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import java.time.Instant
 
 /**
@@ -24,7 +26,13 @@ import java.time.Instant
  * @since 0.2.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LogCountSummary(
     val timestamp: Instant,
     val logCounts: Map<String, Int>
-)
+) {
+    constructor(json: JsonObject) : this(
+        timestamp = Instant.parse(json.getString("timestamp")),
+        logCounts = json.getJsonObject("logCounts").associate { it.key.toString() to it.value as Int }
+    )
+}

@@ -88,8 +88,8 @@ class ProtocolMarshallerTest {
             )
         )
 
-        val serialized = ProtocolMarshaller.serializeLiveInstrumentCommand(liveInstrumentCommand)
-        val deserialized = ProtocolMarshaller.deserializeLiveInstrumentCommand(serialized)
+        val serialized = liveInstrumentCommand.toJson()
+        val deserialized = LiveInstrumentCommand(serialized)
         assertEquals(liveInstrumentCommand, deserialized)
     }
 
@@ -114,8 +114,8 @@ class ProtocolMarshallerTest {
             LiveStackTrace("exception", "message", mutableListOf())
         )
 
-        val serialized = ProtocolMarshaller.serializeLiveInstrumentRemoved(liveInstrumentRemoved)
-        val deserialized = ProtocolMarshaller.deserializeLiveInstrumentRemoved(serialized)
+        val serialized = liveInstrumentRemoved.toJson()
+        val deserialized = LiveInstrumentRemoved(serialized)
         assertEquals(liveInstrumentRemoved, deserialized)
     }
 
@@ -175,8 +175,8 @@ class ProtocolMarshallerTest {
             )
         )
 
-        val serialized = ProtocolMarshaller.serializeLiveBreakpointHit(liveBreakpointHit)
-        val deserialized = ProtocolMarshaller.deserializeLiveBreakpointHit(serialized)
+        val serialized = liveBreakpointHit.toJson()
+        val deserialized = LiveBreakpointHit(serialized)
         assertEquals(liveBreakpointHit, deserialized)
     }
 }

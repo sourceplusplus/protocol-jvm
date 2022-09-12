@@ -16,6 +16,8 @@
  */
 package spp.protocol.artifact.trace
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import java.time.Instant
 
 /**
@@ -24,6 +26,7 @@ import java.time.Instant
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class Trace(
     val key: String? = null,
     val operationNames: List<String>,
@@ -35,6 +38,19 @@ data class Trace(
     val segmentId: String? = null,
     val meta: MutableMap<String, String> = mutableMapOf()
 ) {
+
+    constructor(json: JsonObject) : this(
+        json.getString("key"),
+        json.getJsonArray("operationNames").map { it.toString() },
+        json.getInteger("duration"),
+        Instant.parse(json.getString("start")),
+        json.getBoolean("error"),
+        json.getJsonArray("traceIds").map { it.toString() },
+        json.getBoolean("partial"),
+        json.getString("segmentId"),
+        json.getJsonObject("meta").associate { it.key.toString() to it.value.toString() }.toMutableMap()
+    )
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Trace) return false

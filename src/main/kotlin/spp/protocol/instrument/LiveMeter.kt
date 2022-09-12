@@ -16,6 +16,8 @@
  */
 package spp.protocol.instrument
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.meter.MeterType
 import spp.protocol.instrument.meter.MetricValue
 import spp.protocol.instrument.throttle.InstrumentThrottle
@@ -25,6 +27,7 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LiveMeter(
     val meterName: String,
     val meterType: MeterType,
@@ -41,6 +44,40 @@ data class LiveMeter(
     override val meta: Map<String, Any> = emptyMap()
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.METER
+
+    constructor(json: JsonObject) : this(
+        json.getString("meterName"),
+        MeterType.valueOf(json.getString("meterType")),
+        MetricValue(json.getJsonObject("metricValue")),
+        LiveSourceLocation(json.getJsonObject("location")),
+        json.getString("condition"),
+        json.getLong("expiresAt"),
+        json.getInteger("hitLimit"),
+        json.getString("id"),
+        json.getBoolean("applyImmediately"),
+        json.getBoolean("applied"),
+        json.getBoolean("pending"),
+        json.getJsonObject("throttle")?.let { InstrumentThrottle(it) },
+        json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
+    )
+
+    override fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("meterName", meterName)
+        json.put("meterType", meterType.name)
+        json.put("metricValue", metricValue.toJson())
+        json.put("location", location.toJson())
+        json.put("condition", condition)
+        json.put("expiresAt", expiresAt)
+        json.put("hitLimit", hitLimit)
+        json.put("id", id)
+        json.put("applyImmediately", applyImmediately)
+        json.put("applied", applied)
+        json.put("pending", pending)
+        json.put("throttle", throttle?.toJson())
+        json.put("meta", JsonObject(meta))
+        return json
+    }
 
     fun toMetricIdWithoutPrefix(): String = meterType.name.lowercase() + "_" + id!!.replace("-", "_")
     fun toMetricId(): String = "spp_" + toMetricIdWithoutPrefix()

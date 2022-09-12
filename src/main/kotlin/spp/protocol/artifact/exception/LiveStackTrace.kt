@@ -16,18 +16,33 @@
  */
 package spp.protocol.artifact.exception
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 class LiveStackTrace(
     var exceptionType: String,
     var message: String?,
     val elements: MutableList<LiveStackTraceElement>,
     val causedBy: LiveStackTrace? = null
 ) : Iterable<LiveStackTraceElement> {
+
+    constructor(json: JsonObject) : this(
+        json.getString("exceptionType"),
+        json.getString("message"),
+        json.getJsonArray("elements").map { LiveStackTraceElement(JsonObject.mapFrom(it)) }.toMutableList(),
+        json.getJsonObject("causedBy")?.let { LiveStackTrace(it) }
+    )
+
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
 
     fun getElements(hideApacheSkywalking: Boolean): List<LiveStackTraceElement> {
         if (hideApacheSkywalking) {

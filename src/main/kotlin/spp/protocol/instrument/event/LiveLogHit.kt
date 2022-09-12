@@ -16,6 +16,8 @@
  */
 package spp.protocol.instrument.event
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.log.LogResult
 import java.time.Instant
 
@@ -25,6 +27,7 @@ import java.time.Instant
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LiveLogHit(
     val logId: String,
     override val occurredAt: Instant,
@@ -33,4 +36,12 @@ data class LiveLogHit(
     val logResult: LogResult
 ) : TrackedLiveEvent {
     val eventType: LiveInstrumentEventType = LiveInstrumentEventType.LOG_HIT
+
+    constructor(json: JsonObject) : this(
+        json.getString("logId"),
+        Instant.parse(json.getString("occurredAt")),
+        json.getString("serviceInstance"),
+        json.getString("service"),
+        LogResult(json.getJsonObject("logResult"))
+    )
 }

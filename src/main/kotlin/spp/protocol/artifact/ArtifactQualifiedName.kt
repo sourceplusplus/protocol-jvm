@@ -16,12 +16,16 @@
  */
 package spp.protocol.artifact
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class ArtifactQualifiedName(
     val identifier: String,
     val commitId: String? = null,
@@ -29,6 +33,24 @@ data class ArtifactQualifiedName(
     val lineNumber: Int? = null,
     val operationName: String? = null //todo: only method artifacts need
 ) {
+
+    constructor(json: JsonObject) : this(
+        json.getString("identifier"),
+        json.getString("commitId"),
+        ArtifactType.valueOf(json.getString("type")),
+        json.getInteger("lineNumber"),
+        json.getString("operationName")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("identifier", identifier)
+        json.put("commitId", commitId)
+        json.put("type", type.name)
+        json.put("lineNumber", lineNumber)
+        json.put("operationName", operationName)
+        return json
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

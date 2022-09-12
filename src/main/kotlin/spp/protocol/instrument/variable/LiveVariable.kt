@@ -16,12 +16,16 @@
  */
 package spp.protocol.instrument.variable
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LiveVariable(
     val name: String,
     val value: Any?,
@@ -30,4 +34,14 @@ data class LiveVariable(
     val liveClazz: String? = null,
     val liveIdentity: String? = null,
     val presentation: String? = null
-)
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("name"),
+        json.getValue("value"),
+        json.getInteger("lineNumber"),
+        json.getString("scope")?.let { LiveVariableScope.valueOf(it) },
+        json.getString("liveClazz"),
+        json.getString("liveIdentity"),
+        json.getString("presentation")
+    )
+}

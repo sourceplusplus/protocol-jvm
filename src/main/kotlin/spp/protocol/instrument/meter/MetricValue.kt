@@ -16,12 +16,28 @@
  */
 package spp.protocol.instrument.meter
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class MetricValue(
     val valueType: MetricValueType, //todo: can put mode in here instead of LiveMeter.meta
     val value: String
-)
+) {
+    constructor(json: JsonObject) : this(
+        MetricValueType.valueOf(json.getString("valueType")),
+        json.getString("value")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("valueType", valueType.name)
+        json.put("value", value)
+        return json
+    }
+}

@@ -16,7 +16,16 @@
  */
 package spp.protocol.platform.auth
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
+@DataObject
 data class DeveloperRole(val roleName: String, val nativeRole: Boolean) {
+    constructor(json: JsonObject) : this(
+        json.getString("roleName"),
+        json.getBoolean("nativeRole")
+    )
+
     companion object {
         val ROLE_MANAGER = DeveloperRole("role_manager", true)
         val ROLE_USER = DeveloperRole("role_user", true)

@@ -16,6 +16,8 @@
  */
 package spp.protocol.artifact.trace
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
 import java.time.Instant
 
@@ -25,6 +27,7 @@ import java.time.Instant
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class TraceResult(
     val artifactQualifiedName: ArtifactQualifiedName,
     val artifactSimpleName: String? = null,
@@ -35,6 +38,18 @@ data class TraceResult(
     val traces: List<Trace>,
     val total: Int
 ) {
+
+    constructor(json: JsonObject) : this(
+        artifactQualifiedName = ArtifactQualifiedName(json.getJsonObject("artifactQualifiedName")),
+        artifactSimpleName = json.getString("artifactSimpleName"),
+        orderType = TraceOrderType.valueOf(json.getString("orderType")),
+        start = Instant.parse(json.getString("start")),
+        stop = Instant.parse(json.getString("stop")),
+        step = json.getString("step"),
+        traces = json.getJsonArray("traces").map { Trace(JsonObject.mapFrom(it)) },
+        total = json.getInteger("total")
+    )
+
     fun mergeWith(traceResult: TraceResult): TraceResult {
         var result: TraceResult = traceResult
         require(artifactQualifiedName == result.artifactQualifiedName) { "Mismatching artifact qualified name" }

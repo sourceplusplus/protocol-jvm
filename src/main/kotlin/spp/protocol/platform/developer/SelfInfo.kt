@@ -16,13 +16,34 @@
  */
 package spp.protocol.platform.developer
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonArray
+import io.vertx.core.json.JsonObject
 import spp.protocol.platform.auth.AccessPermission
 import spp.protocol.platform.auth.DeveloperRole
 import spp.protocol.platform.auth.RolePermission
 
+@DataObject
 data class SelfInfo(
     val developer: Developer,
     val roles: List<DeveloperRole>,
     val permissions: List<RolePermission>,
     val access: List<AccessPermission>
-)
+) {
+    constructor(json: JsonObject) : this(
+        developer = Developer(json.getJsonObject("developer")),
+        roles = json.getJsonArray("roles").map { DeveloperRole.fromString(it.toString()) },
+        permissions = json.getJsonArray("permissions")
+            .map { RolePermission.fromString(it.toString()) ?: error("Invalid permission: $it") },
+        access = json.getJsonArray("access").map { AccessPermission(JsonObject.mapFrom(it)) }
+    )
+
+    fun toJson(): JsonObject {
+        return JsonObject().apply {
+            put("developer", developer.toJson())
+            put("roles", JsonArray(roles.map { it.toString() }))
+            put("permissions", JsonArray(permissions.map { it.toString() }))
+            put("access", JsonArray(access.map { it.toJson() }))
+        }
+    }
+}

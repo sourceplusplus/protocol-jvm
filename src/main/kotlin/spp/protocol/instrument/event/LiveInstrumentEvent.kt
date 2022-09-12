@@ -16,6 +16,8 @@
  */
 package spp.protocol.instrument.event
 
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
@@ -25,4 +27,9 @@ package spp.protocol.instrument.event
 data class LiveInstrumentEvent(
     val eventType: LiveInstrumentEventType,
     val data: String //todo: type out
-)
+) {
+    constructor(json: JsonObject) : this(
+        LiveInstrumentEventType.valueOf(json.getString("eventType")),
+        json.getString("data")
+    )
+}

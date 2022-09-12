@@ -16,12 +16,28 @@
  */
 package spp.protocol.platform.developer
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
 /**
  * Represents a developer.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class Developer(
     val id: String,
     val accessToken: String? = null
-)
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("id"),
+        json.getString("accessToken")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("id", id)
+        json.put("accessToken", accessToken)
+        return json
+    }
+}

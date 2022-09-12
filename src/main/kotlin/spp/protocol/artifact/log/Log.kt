@@ -16,6 +16,8 @@
  */
 package spp.protocol.artifact.log
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.exception.LiveStackTrace
 import java.time.Instant
 
@@ -25,6 +27,7 @@ import java.time.Instant
  * @since 0.2.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class Log(
     val timestamp: Instant,
     val content: String,
@@ -34,6 +37,17 @@ data class Log(
     val exception: LiveStackTrace? = null,
     val arguments: List<String> = listOf()
 ) {
+
+    constructor(json: JsonObject) : this(
+        Instant.parse(json.getString("timestamp")),
+        json.getString("content"),
+        json.getString("level"),
+        json.getString("logger"),
+        json.getString("thread"),
+        if (json.getValue("exception") != null) LiveStackTrace(json.getJsonObject("exception")) else null,
+        json.getJsonArray("arguments").map { it.toString() }
+    )
+
     fun toFormattedMessage(): String {
         var arg = 0
         var formattedMessage = content

@@ -16,6 +16,7 @@
  */
 package spp.protocol.instrument
 
+import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**
@@ -46,5 +47,26 @@ sealed class LiveInstrument {
 
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
+    }
+
+    open fun toJson(): JsonObject {
+        return when (this) {
+            is LiveBreakpoint -> this.toJson()
+            is LiveLog -> this.toJson()
+            is LiveSpan -> this.toJson()
+            is LiveMeter -> this.toJson()
+            else -> throw IllegalStateException("Unknown live instrument type: $this")
+        }
+    }
+
+    companion object {
+        fun fromJson(json: JsonObject): LiveInstrument {
+            return when (LiveInstrumentType.valueOf(json.getString("type"))) {
+                LiveInstrumentType.BREAKPOINT -> LiveBreakpoint(json)
+                LiveInstrumentType.LOG -> LiveLog(json)
+                LiveInstrumentType.SPAN -> LiveSpan(json)
+                LiveInstrumentType.METER -> LiveMeter(json)
+            }
+        }
     }
 }

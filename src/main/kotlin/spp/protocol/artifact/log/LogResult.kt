@@ -16,6 +16,8 @@
  */
 package spp.protocol.artifact.log
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
 import java.time.Instant
 
@@ -25,6 +27,7 @@ import java.time.Instant
  * @since 0.2.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LogResult(
     val artifactQualifiedName: ArtifactQualifiedName? = null,
     val orderType: LogOrderType,
@@ -32,6 +35,19 @@ data class LogResult(
     val logs: List<Log> = emptyList(),
     val total: Int = 0
 ) {
+
+    constructor(json: JsonObject) : this(
+        artifactQualifiedName = if (json.getValue("artifactQualifiedName") != null) {
+            ArtifactQualifiedName(json.getJsonObject("artifactQualifiedName"))
+        } else {
+            null
+        },
+        orderType = LogOrderType.valueOf(json.getString("orderType")),
+        timestamp = Instant.parse(json.getString("timestamp")),
+        logs = json.getJsonArray("logs").map { Log(JsonObject.mapFrom(it)) },
+        total = json.getInteger("total")
+    )
+
     fun mergeWith(logResult: LogResult): LogResult {
         val result: LogResult = logResult
         val combinedLogs: MutableSet<Log> = HashSet(logs)

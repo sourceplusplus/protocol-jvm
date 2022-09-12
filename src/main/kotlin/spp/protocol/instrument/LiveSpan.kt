@@ -16,6 +16,8 @@
  */
 package spp.protocol.instrument
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**
@@ -23,6 +25,7 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LiveSpan(
     val operationName: String,
     override val location: LiveSourceLocation,
@@ -37,6 +40,36 @@ data class LiveSpan(
     override val meta: Map<String, Any> = emptyMap()
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.SPAN
+
+    constructor(json: JsonObject) : this(
+        operationName = json.getString("operationName"),
+        location = LiveSourceLocation(json.getJsonObject("location")),
+        condition = json.getString("condition"),
+        expiresAt = json.getLong("expiresAt"),
+        hitLimit = json.getInteger("hitLimit"),
+        id = json.getString("id"),
+        applyImmediately = json.getBoolean("applyImmediately"),
+        applied = json.getBoolean("applied"),
+        pending = json.getBoolean("pending"),
+        throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) },
+        meta = json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
+    )
+
+    override fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("operationName", operationName)
+        json.put("location", location.toJson())
+        json.put("condition", condition)
+        json.put("expiresAt", expiresAt)
+        json.put("hitLimit", hitLimit)
+        json.put("id", id)
+        json.put("applyImmediately", applyImmediately)
+        json.put("applied", applied)
+        json.put("pending", pending)
+        json.put("throttle", throttle?.toJson())
+        json.put("meta", JsonObject(meta))
+        return json
+    }
 
     /**
      * Specify explicitly so Kotlin doesn't override.

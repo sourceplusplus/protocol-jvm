@@ -16,6 +16,8 @@
  */
 package spp.protocol.view
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.instrument.LiveSourceLocation
 
@@ -25,10 +27,29 @@ import spp.protocol.instrument.LiveSourceLocation
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class LiveViewSubscription(
     val subscriptionId: String? = null, //todo: actual bottom
     val entityIds: List<String>,
     val artifactQualifiedName: ArtifactQualifiedName, //todo: remove, use artifactLocation
     val artifactLocation: LiveSourceLocation, //todo: bottom?
     val liveViewConfig: LiveViewConfig
-)
+) {
+    constructor(json: JsonObject) : this(
+        subscriptionId = json.getString("subscriptionId"),
+        entityIds = json.getJsonArray("entityIds").map { it as String },
+        artifactQualifiedName = ArtifactQualifiedName(json.getJsonObject("artifactQualifiedName")),
+        artifactLocation = LiveSourceLocation(json.getJsonObject("artifactLocation")),
+        liveViewConfig = LiveViewConfig(json.getJsonObject("liveViewConfig"))
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("subscriptionId", subscriptionId)
+        json.put("entityIds", entityIds)
+        json.put("artifactQualifiedName", artifactQualifiedName.toJson())
+        json.put("artifactLocation", artifactLocation.toJson())
+        json.put("liveViewConfig", liveViewConfig.toJson())
+        return json
+    }
+}
