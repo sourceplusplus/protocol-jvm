@@ -74,7 +74,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
 
     annotationProcessor("io.vertx:vertx-codegen:$vertxVersion:processor")
-    kapt(findProject("codegen") ?: project(":protocol:codegen"))
 }
 
 tasks.withType<JavaCompile> {
@@ -123,8 +122,4 @@ spotless {
         }
         licenseHeader(formattedLicenseHeader)
     }
-}
-
-kapt {
-    annotationProcessor("spp.protocol.codegen.ProtocolCodeGenProcessor")
 }
