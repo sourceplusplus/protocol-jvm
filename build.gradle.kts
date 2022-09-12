@@ -47,6 +47,18 @@ configure<PublishingExtension> {
             }
         }
     }
+
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = project.group.toString()
+                artifactId = "protocol"
+                version = project.version.toString()
+
+                from(components["kotlin"])
+            }
+        }
+    }
 }
 
 dependencies {
