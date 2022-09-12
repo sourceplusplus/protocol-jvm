@@ -61,6 +61,7 @@ data class LiveLog(
 
     override fun toJson(): JsonObject {
         val json = JsonObject()
+        json.put("type", type.name)
         json.put("logFormat", logFormat)
         json.put("logArguments", JsonArray().apply { logArguments.forEach { add(it) } })
         json.put("location", location.toJson())

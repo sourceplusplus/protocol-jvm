@@ -57,6 +57,7 @@ data class LiveSpan(
 
     override fun toJson(): JsonObject {
         val json = JsonObject()
+        json.put("type", type.name)
         json.put("operationName", operationName)
         json.put("location", location.toJson())
         json.put("condition", condition)

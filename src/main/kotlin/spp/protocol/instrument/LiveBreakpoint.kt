@@ -56,6 +56,7 @@ data class LiveBreakpoint(
 
     override fun toJson(): JsonObject {
         val json = JsonObject()
+        json.put("type", type.name)
         json.put("location", location.toJson())
         json.put("condition", condition)
         json.put("expiresAt", expiresAt)

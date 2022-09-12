@@ -63,6 +63,7 @@ data class LiveMeter(
 
     override fun toJson(): JsonObject {
         val json = JsonObject()
+        json.put("type", type.name)
         json.put("meterName", meterName)
         json.put("meterType", meterType.name)
         json.put("metricValue", metricValue.toJson())
