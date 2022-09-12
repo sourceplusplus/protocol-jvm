@@ -54,9 +54,9 @@ data class LiveMeter(
         json.getLong("expiresAt"),
         json.getInteger("hitLimit"),
         json.getString("id"),
-        json.getBoolean("applyImmediately"),
-        json.getBoolean("applied"),
-        json.getBoolean("pending"),
+        json.getBoolean("applyImmediately") ?: false,
+        json.getBoolean("applied") ?: false,
+        json.getBoolean("pending") ?: false,
         json.getJsonObject("throttle")?.let { InstrumentThrottle(it) },
         json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
     )

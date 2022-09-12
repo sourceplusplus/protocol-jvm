@@ -48,9 +48,9 @@ data class LiveSpan(
         expiresAt = json.getLong("expiresAt"),
         hitLimit = json.getInteger("hitLimit"),
         id = json.getString("id"),
-        applyImmediately = json.getBoolean("applyImmediately"),
-        applied = json.getBoolean("applied"),
-        pending = json.getBoolean("pending"),
+        applyImmediately = json.getBoolean("applyImmediately") ?: false,
+        applied = json.getBoolean("applied") ?: false,
+        pending = json.getBoolean("pending") ?: false,
         throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) },
         meta = json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
     )

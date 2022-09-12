@@ -47,9 +47,9 @@ data class LiveBreakpoint(
         expiresAt = json.getLong("expiresAt"),
         hitLimit = json.getInteger("hitLimit"),
         id = json.getString("id"),
-        applyImmediately = json.getBoolean("applyImmediately"),
-        applied = json.getBoolean("applied"),
-        pending = json.getBoolean("pending"),
+        applyImmediately = json.getBoolean("applyImmediately") ?: false,
+        applied = json.getBoolean("applied") ?: false,
+        pending = json.getBoolean("pending") ?: false,
         throttle = InstrumentThrottle(json.getJsonObject("throttle")),
         meta = json.getJsonObject("meta").associate { it.key to it.value }
     )
