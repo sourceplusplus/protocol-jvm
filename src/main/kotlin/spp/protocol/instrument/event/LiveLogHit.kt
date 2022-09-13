@@ -44,4 +44,8 @@ data class LiveLogHit(
         json.getString("service"),
         LogResult(json.getJsonObject("logResult"))
     )
+
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
 }

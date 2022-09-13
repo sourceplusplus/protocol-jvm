@@ -23,6 +23,7 @@ val vertxVersion: String by project
 val kotlinVersion: String by project
 val projectVersion: String by project
 val jacksonVersion: String by project
+val jupiterVersion: String by project
 
 group = "plus.sourceplus"
 version = project.properties["protocolVersion"] as String? ?: projectVersion
@@ -71,7 +72,9 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
-    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
+    testImplementation("io.vertx:vertx-junit5:$vertxVersion")
+    testImplementation("io.vertx:vertx-core:$vertxVersion")
 
     annotationProcessor("io.vertx:vertx-codegen:$vertxVersion:processor")
     kapt(findProject("codegen") ?: project(":protocol:codegen"))
@@ -83,6 +86,12 @@ tasks.withType<JavaCompile> {
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.freeCompilerArgs = listOf("-Xjvm-default=all")
+}
+
+tasks.getByName<Test>("test") {
+    failFast = true
+    useJUnitPlatform()
 }
 
 spotless {

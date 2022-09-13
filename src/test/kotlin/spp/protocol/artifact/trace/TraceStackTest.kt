@@ -19,15 +19,12 @@ package spp.protocol.artifact.trace
 import com.google.common.io.Resources
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonArray
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Ignore
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 
-@Ignore
-@RunWith(JUnit4::class)
+@Disabled
 class TraceStackTest {
 
     @Test
