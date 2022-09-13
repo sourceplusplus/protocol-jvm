@@ -18,9 +18,9 @@ package spp.protocol.artifact.trace
 
 import com.google.common.io.Resources
 import io.vertx.core.json.JsonObject
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Test
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.exception.sourceAsLineNumber
 

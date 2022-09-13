@@ -16,10 +16,8 @@
  */
 package spp.protocol.marshall
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.exception.LiveStackTraceElement
 import spp.protocol.instrument.LiveBreakpoint
@@ -39,7 +37,6 @@ import spp.protocol.instrument.variable.LiveVariable
 import spp.protocol.instrument.variable.LiveVariableScope
 import java.time.Instant
 
-@RunWith(JUnit4::class)
 class ProtocolMarshallerTest {
 
     @Test
