@@ -16,11 +16,22 @@
  */
 package spp.protocol.service.listen
 
+import io.vertx.core.Future
+import io.vertx.core.Promise
 import io.vertx.core.Vertx
 
 fun Vertx.addLiveInstrumentListener(
     developerId: String,
     instrumentListener: LiveInstrumentListener
-): LiveInstrumentListenerImpl {
-    return LiveInstrumentListenerImpl(this, developerId, instrumentListener)
+): Future<LiveInstrumentListenerImpl> {
+    val promise = Promise.promise<LiveInstrumentListenerImpl>()
+    val instrumentListenerImpl = LiveInstrumentListenerImpl(this, developerId, instrumentListener)
+    instrumentListenerImpl.consumer.completionHandler {
+        if (it.succeeded()) {
+            promise.complete(instrumentListenerImpl)
+        } else {
+            promise.fail(it.cause())
+        }
+    }
+    return promise.future()
 }

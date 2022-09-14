@@ -31,7 +31,7 @@ class LiveInstrumentListenerImpl(
     private val instrumentListener: LiveInstrumentListener
 ) {
 
-    private var consumer: MessageConsumer<JsonObject>? = null
+    internal var consumer: MessageConsumer<JsonObject>
 
     init {
         consumer = vertx.eventBus().consumer(toLiveInstrumentSubscriberAddress(developerId)) {
@@ -61,11 +61,7 @@ class LiveInstrumentListenerImpl(
     }
 
     fun unregister(): Future<Void> {
-        return if (consumer == null) {
-            Future.succeededFuture()
-        } else {
-            consumer!!.unregister()
-        }
+        return consumer.unregister()
     }
 
     private fun onLogHitEvent(liveEvent: LiveInstrumentEvent) {
