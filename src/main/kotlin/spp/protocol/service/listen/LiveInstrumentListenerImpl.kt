@@ -16,14 +16,13 @@
  */
 package spp.protocol.service.listen
 
+import io.vertx.core.Future
 import io.vertx.core.Vertx
+import io.vertx.core.eventbus.MessageConsumer
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.SourceServices.Provide.toLiveInstrumentSubscriberAddress
-import spp.protocol.instrument.LiveBreakpoint
-import spp.protocol.instrument.LiveLog
-import spp.protocol.instrument.LiveMeter
-import spp.protocol.instrument.LiveSpan
+import spp.protocol.instrument.*
 import spp.protocol.instrument.event.*
 
 class LiveInstrumentListenerImpl(
@@ -32,8 +31,10 @@ class LiveInstrumentListenerImpl(
     private val instrumentListener: LiveInstrumentListener
 ) {
 
+    private var consumer: MessageConsumer<JsonObject>? = null
+
     init {
-        vertx.eventBus().consumer<JsonObject>(toLiveInstrumentSubscriberAddress(developerId)) {
+        consumer = vertx.eventBus().consumer(toLiveInstrumentSubscriberAddress(developerId)) {
             val liveEvent = LiveInstrumentEvent(it.body())
             instrumentListener.onInstrumentEvent(liveEvent)
 
@@ -54,6 +55,16 @@ class LiveInstrumentListenerImpl(
                 LiveInstrumentEventType.SPAN_APPLIED -> onInstrumentAppliedEvent(liveEvent)
                 LiveInstrumentEventType.SPAN_REMOVED -> onInstrumentRemovedEvent(liveEvent)
             }
+
+            instrumentListener.afterInstrumentEvent(liveEvent)
+        }
+    }
+
+    fun unregister(): Future<Void> {
+        return if (consumer == null) {
+            Future.succeededFuture()
+        } else {
+            consumer!!.unregister()
         }
     }
 
@@ -91,8 +102,8 @@ class LiveInstrumentListenerImpl(
     }
 
     private fun onInstrumentAppliedEvent(liveEvent: LiveInstrumentEvent) {
-//        val instrumentApplied = LiveInstrumentApplied(JsonObject(liveEvent.data))
-//        handleInstrumentAppliedEvent(instrumentApplied)
+        val instrumentApplied = LiveInstrument.fromJson(JsonObject(liveEvent.data))
+        instrumentListener.onInstrumentAppliedEvent(instrumentApplied)
     }
 
     private fun onMeterAddedEvent(liveEvent: LiveInstrumentEvent) {

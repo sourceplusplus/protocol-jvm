@@ -18,6 +18,9 @@ package spp.protocol.service.listen
 
 import io.vertx.core.Vertx
 
-fun Vertx.addLiveInstrumentListener(developerId: String, instrumentListener: LiveInstrumentListener) {
-    LiveInstrumentListenerImpl(this, developerId, instrumentListener)
+fun Vertx.addLiveInstrumentListener(
+    developerId: String,
+    instrumentListener: LiveInstrumentListener
+): LiveInstrumentListenerImpl {
+    return LiveInstrumentListenerImpl(this, developerId, instrumentListener)
 }
