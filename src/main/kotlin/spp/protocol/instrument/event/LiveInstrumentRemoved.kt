@@ -20,6 +20,7 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.instrument.LiveInstrument
+import spp.protocol.instrument.LiveInstrumentType
 import java.time.Instant
 
 /**
@@ -34,6 +35,16 @@ data class LiveInstrumentRemoved(
     override val occurredAt: Instant,
     val cause: LiveStackTrace? = null
 ) : TrackedLiveEvent {
+    override val eventType: LiveInstrumentEventType
+        get() {
+            return when (liveInstrument.type) {
+                LiveInstrumentType.BREAKPOINT -> LiveInstrumentEventType.BREAKPOINT_REMOVED
+                LiveInstrumentType.LOG -> LiveInstrumentEventType.LOG_REMOVED
+                LiveInstrumentType.METER -> LiveInstrumentEventType.METER_REMOVED
+                LiveInstrumentType.SPAN -> LiveInstrumentEventType.SPAN_REMOVED
+            }
+        }
+
     constructor(json: JsonObject) : this(
         liveInstrument = LiveInstrument.fromJson(json.getJsonObject("liveInstrument")),
         occurredAt = Instant.parse(json.getString("occurredAt")),

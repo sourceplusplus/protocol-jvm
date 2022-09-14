@@ -26,4 +26,5 @@ import java.time.Instant
  */
 interface TrackedLiveEvent {
     val occurredAt: Instant
+    val eventType: LiveInstrumentEventType
 }

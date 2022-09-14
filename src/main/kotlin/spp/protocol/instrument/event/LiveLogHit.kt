@@ -35,7 +35,7 @@ data class LiveLogHit(
     val service: String,
     val logResult: LogResult
 ) : TrackedLiveEvent {
-    val eventType: LiveInstrumentEventType = LiveInstrumentEventType.LOG_HIT
+    override val eventType: LiveInstrumentEventType = LiveInstrumentEventType.LOG_HIT
 
     constructor(json: JsonObject) : this(
         json.getString("logId"),
