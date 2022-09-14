@@ -14,17 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.instrument.event
+package spp.protocol.service.listen
 
-import java.time.Instant
+import io.vertx.core.Vertx
 
-/**
- * todo: description.
- *
- * @since 0.3.0
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-interface TrackedLiveEvent {
-    val occurredAt: Instant
-    val eventType: LiveInstrumentEventType
+fun Vertx.addLiveInstrumentListener(developerId: String, instrumentListener: LiveInstrumentListener) {
+    LiveInstrumentListenerImpl(this, developerId, instrumentListener)
 }

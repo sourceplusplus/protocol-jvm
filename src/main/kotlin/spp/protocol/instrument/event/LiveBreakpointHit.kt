@@ -36,7 +36,7 @@ data class LiveBreakpointHit(
     val service: String,
     val stackTrace: LiveStackTrace
 ) : TrackedLiveEvent {
-    val eventType: LiveInstrumentEventType = LiveInstrumentEventType.BREAKPOINT_HIT
+    override val eventType: LiveInstrumentEventType = LiveInstrumentEventType.BREAKPOINT_HIT
 
     constructor(json: JsonObject) : this(
         json.getString("breakpointId"),

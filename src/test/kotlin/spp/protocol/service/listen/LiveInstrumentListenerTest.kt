@@ -54,14 +54,14 @@ class LiveInstrumentListenerTest {
                 Instant.now(),
             )
         )
-        object : AbstractLiveInstrumentListener(vertx, "system") {
+        vertx.addLiveInstrumentListener("system", object : LiveInstrumentListener {
             override fun onLogHitEvent(event: LiveLogHit) {
                 testContext.verify {
                     assertEquals(logHit, event)
                 }
                 testContext.completeNow()
             }
-        }
+        })
         //todo: DataObjectMessageCodec
         val event = LiveInstrumentEvent(LiveInstrumentEventType.LOG_HIT, logHit.toJson().toString())
         vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"), JsonObject.mapFrom(event))
@@ -91,14 +91,14 @@ class LiveInstrumentListenerTest {
                 mutableListOf()
             )
         )
-        object : AbstractLiveInstrumentListener(vertx, "system") {
+        vertx.addLiveInstrumentListener("system", object : LiveInstrumentListener {
             override fun onBreakpointHitEvent(event: LiveBreakpointHit) {
                 testContext.verify {
                     assertEquals(bpHit, event)
                 }
                 testContext.completeNow()
             }
-        }
+        })
         //todo: DataObjectMessageCodec
         val event = LiveInstrumentEvent(LiveInstrumentEventType.BREAKPOINT_HIT, bpHit.toJson().toString())
         vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"), JsonObject.mapFrom(event))
@@ -132,7 +132,7 @@ class LiveInstrumentListenerTest {
             .add(bpRemoved1.toJson())
             .add(bpRemoved2.toJson())
 
-        object : AbstractLiveInstrumentListener(vertx, "system") {
+        vertx.addLiveInstrumentListener("system", object : LiveInstrumentListener {
             override fun onInstrumentRemovedEvent(event: LiveInstrumentRemoved) {
                 testContext.verify {
                     if (event.liveInstrument.location.source.endsWith("1")) {
@@ -143,7 +143,7 @@ class LiveInstrumentListenerTest {
                 }
                 testContext.completeNow()
             }
-        }
+        })
         //todo: DataObjectMessageCodec
         val event = LiveInstrumentEvent(LiveInstrumentEventType.BREAKPOINT_REMOVED, bpsRemoved.toString())
         vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"), JsonObject.mapFrom(event))
