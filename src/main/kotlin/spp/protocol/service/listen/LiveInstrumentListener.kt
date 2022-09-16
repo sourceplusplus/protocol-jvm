@@ -16,10 +16,7 @@
  */
 package spp.protocol.service.listen
 
-import spp.protocol.instrument.LiveBreakpoint
-import spp.protocol.instrument.LiveLog
-import spp.protocol.instrument.LiveMeter
-import spp.protocol.instrument.LiveSpan
+import spp.protocol.instrument.*
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentEvent
 import spp.protocol.instrument.event.LiveInstrumentRemoved
@@ -28,6 +25,9 @@ import spp.protocol.instrument.event.LiveLogHit
 interface LiveInstrumentListener {
 
     fun onInstrumentEvent(event: LiveInstrumentEvent) {
+    }
+
+    fun afterInstrumentEvent(event: LiveInstrumentEvent) {
     }
 
     fun onLogHitEvent(event: LiveLogHit) {
@@ -45,8 +45,8 @@ interface LiveInstrumentListener {
     fun onLogAddedEvent(event: LiveLog) {
     }
 
-//    fun onInstrumentAppliedEvent(event: LiveInstrumentApplied) {
-//    }
+    fun onInstrumentAppliedEvent(event: LiveInstrument) {
+    }
 
     fun onMeterAddedEvent(event: LiveMeter) {
     }
