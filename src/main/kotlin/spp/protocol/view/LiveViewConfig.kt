@@ -28,7 +28,7 @@ import io.vertx.core.json.JsonObject
 @DataObject
 data class LiveViewConfig(
     val viewName: String,
-    val viewMetrics: List<String>,
+    val viewMetrics: List<String>, //todo: change to MetricType after remove monitor module
     val refreshRateLimit: Int = -1 //limit of once per X milliseconds
 ) {
     constructor(json: JsonObject) : this(

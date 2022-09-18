@@ -16,52 +16,75 @@
  */
 package spp.protocol.artifact.metrics
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+import java.util.function.Predicate
+
 /**
  * todo: description.
  *
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-enum class MetricType {
-    Throughput_Average,
-    ResponseTime_Average,
-    ServiceLevelAgreement_Average,
-    ResponseTime_99Percentile,
-    ResponseTime_95Percentile,
-    ResponseTime_90Percentile,
-    ResponseTime_75Percentile,
-    ResponseTime_50Percentile;
-
-    val responseTimePercentile: Boolean
-        get() = this == ResponseTime_99Percentile
-                || this == ResponseTime_95Percentile
-                || this == ResponseTime_90Percentile
-                || this == ResponseTime_75Percentile
-                || this == ResponseTime_50Percentile
-
-    val simpleName: String
-        get() = when (this) {
-            Throughput_Average -> "Throughput"
-            ResponseTime_Average -> "Response"
-            ServiceLevelAgreement_Average -> "SLA"
-            ResponseTime_99Percentile -> "Resp(99%)"
-            ResponseTime_95Percentile -> "Resp(95%)"
-            ResponseTime_90Percentile -> "Resp(90%)"
-            ResponseTime_75Percentile -> "Resp(75%)"
-            ResponseTime_50Percentile -> "Resp(50%)"
-        }
+@DataObject
+data class MetricType(
+    val metricId: String,
+) {
 
     companion object {
-        //todo: remove
-        fun realValueOf(name: String): MetricType {
-            return (values().find { it.name == name }
-                ?: when (name) {
-                    "endpoint_cpm" -> Throughput_Average
-                    "endpoint_avg", "endpoint_resp_time" -> ResponseTime_Average
-                    "endpoint_sla" -> ServiceLevelAgreement_Average
-                    "endpoint_percentile" -> ResponseTime_99Percentile
-                    else -> throw UnsupportedOperationException(name)
-                })
+        val Throughput_Average = MetricType("endpoint_cpm")
+        val ResponseTime_Average = MetricType("endpoint_resp_time")
+        val ServiceLevelAgreement_Average = MetricType("endpoint_sla")
+    }
+
+    constructor(jsonObject: JsonObject) : this(
+        jsonObject.getString("metricId")
+    )
+
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
+
+    fun aliases(): List<Pair<String, Predicate<String>>>? {
+        return when (metricId) {
+            "endpoint_resp_time", "endpoint_avg" -> listOf(
+                Pair("endpoint_resp_time", Predicate { it.startsWith("9") }),
+                Pair("endpoint_avg", Predicate { !it.startsWith("9") }),
+            )
+
+            "endpoint_resp_time_realtime", "endpoint_avg_realtime" -> listOf(
+                Pair("endpoint_resp_time_realtime", Predicate { it.startsWith("9") }),
+                Pair("endpoint_avg_realtime", Predicate { !it.startsWith("9") }),
+            )
+
+            else -> null
         }
+    }
+
+    val simpleName: String
+        get() = when (metricId.substringBefore("_realtime")) {
+            Throughput_Average.metricId -> "Throughput"
+            ResponseTime_Average.metricId -> "Response"
+            ServiceLevelAgreement_Average.metricId -> "SLA"
+            else -> "Unknown"
+        }
+
+    val isRealtime: Boolean = metricId.endsWith("_realtime")
+
+    fun getMetricId(swVersion: String): String {
+        aliases()?.forEach { (alias, predicate) ->
+            if (predicate.test(swVersion)) {
+                return alias
+            }
+        }
+        return metricId
+    }
+
+    fun asRealtime(): MetricType {
+        return MetricType(metricId + "_realtime")
+    }
+
+    fun equalsIgnoringRealtime(other: MetricType): Boolean {
+        return metricId.substringBefore("_realtime") == other.metricId.substringBefore("_realtime")
     }
 }
