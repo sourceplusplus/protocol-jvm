@@ -32,9 +32,9 @@ data class MetricType(
 ) {
 
     companion object {
-        val Throughput_Average = MetricType("endpoint_cpm")
-        val ResponseTime_Average = MetricType("endpoint_resp_time")
-        val ServiceLevelAgreement_Average = MetricType("endpoint_sla")
+        val Endpoint_CPM = MetricType("endpoint_cpm")
+        val Endpoint_RespTime = MetricType("endpoint_resp_time")
+        val Endpoint_SLA = MetricType("endpoint_sla")
     }
 
     constructor(jsonObject: JsonObject) : this(
@@ -63,9 +63,9 @@ data class MetricType(
 
     val simpleName: String
         get() = when (metricId.substringBefore("_realtime")) {
-            Throughput_Average.metricId -> "Throughput"
-            ResponseTime_Average.metricId -> "Response"
-            ServiceLevelAgreement_Average.metricId -> "SLA"
+            Endpoint_CPM.metricId -> "Throughput"
+            Endpoint_RespTime.metricId -> "Response"
+            Endpoint_SLA.metricId -> "SLA"
             else -> "Unknown"
         }
 
