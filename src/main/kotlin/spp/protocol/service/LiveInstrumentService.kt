@@ -25,7 +25,6 @@ import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
 import spp.protocol.SourceServices
 import spp.protocol.instrument.*
-import java.time.Instant
 
 /**
  * todo: description.
@@ -62,10 +61,4 @@ interface LiveInstrumentService {
     fun clearAllLiveInstruments(type: LiveInstrumentType?): Future<Boolean>
 
     fun setupLiveMeter(liveMeter: LiveMeter): Future<JsonObject>
-    fun getLiveMeterMetrics(
-        liveMeter: LiveMeter,
-        start: Instant,
-        stop: Instant,
-        step: DurationStep
-    ): Future<JsonObject>
 }
