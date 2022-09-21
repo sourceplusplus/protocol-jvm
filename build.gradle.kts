@@ -17,6 +17,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.noarg")
     id("maven-publish")
     id("com.diffplug.spotless")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 val vertxVersion: String by project
@@ -78,6 +79,8 @@ dependencies {
 
     annotationProcessor("io.vertx:vertx-codegen:$vertxVersion:processor")
     kapt(findProject("codegen") ?: project(":protocol:codegen"))
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
 }
 
 tasks.withType<JavaCompile> {
@@ -92,6 +95,12 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.getByName<Test>("test") {
     failFast = true
     useJUnitPlatform()
+}
+
+detekt {
+    parallel = true
+    buildUponDefaultConfig = true
+    config.setFrom(arrayOf(File(project.rootDir, "detekt.yml")))
 }
 
 spotless {
