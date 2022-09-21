@@ -27,7 +27,7 @@ object AccessChecker {
         }
 
         val devBlackLists = permissions.filter { it.type == AccessType.BLACK_LIST }
-        val inBlackList = devBlackLists.any { it ->
+        val inBlackList = devBlackLists.any {
             val patterns = it.locationPatterns.map {
                 it.replace(".", "\\.").replace("*", ".+")
             }
@@ -35,7 +35,7 @@ object AccessChecker {
         }
 
         val devWhiteLists = permissions.filter { it.type == AccessType.WHITE_LIST }
-        val inWhiteList = devWhiteLists.any { it ->
+        val inWhiteList = devWhiteLists.any {
             val patterns = it.locationPatterns.map {
                 it.replace(".", "\\.").replace("*", ".+")
             }

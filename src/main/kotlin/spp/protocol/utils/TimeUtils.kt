@@ -16,9 +16,7 @@
  */
 package spp.protocol.utils
 
-import kotlin.jvm.JvmOverloads
-
-fun Int.toPrettyDuration(translate: (String)->String = { it }): String {
+fun Int.toPrettyDuration(translate: (String) -> String = { it }): String {
     val days = this / 86400000.0
     if (days > 1) {
         return "${days.toInt()}" + translate("dys")
@@ -39,7 +37,7 @@ fun Int.toPrettyDuration(translate: (String)->String = { it }): String {
 }
 
 @JvmOverloads
-fun Double.fromPerSecondToPrettyFrequency(translate: (String)->String = { it }): String {
+fun Double.fromPerSecondToPrettyFrequency(translate: (String) -> String = { it }): String {
     return when {
         this > 1000000.0 -> "${this / 1000000.0.toInt()}M/" + translate("sec")
         this > 1000.0 -> "${this / 1000.0.toInt()}K/" + translate("sec")
@@ -48,7 +46,7 @@ fun Double.fromPerSecondToPrettyFrequency(translate: (String)->String = { it }):
     }
 }
 
-fun Long.toPrettyDuration(translate: (String)->String = { it }): String {
+fun Long.toPrettyDuration(translate: (String) -> String = { it }): String {
     val days = this / 86400000.0
     if (days > 1) {
         return "${days.toInt()}" + translate("dys")

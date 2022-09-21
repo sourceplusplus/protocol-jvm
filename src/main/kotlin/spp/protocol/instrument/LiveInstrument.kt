@@ -55,7 +55,7 @@ sealed class LiveInstrument {
             is LiveLog -> this.toJson()
             is LiveSpan -> this.toJson()
             is LiveMeter -> this.toJson()
-            else -> throw IllegalStateException("Unknown live instrument type: $this")
+            else -> error("Unknown live instrument type: $this")
         }
     }
 
