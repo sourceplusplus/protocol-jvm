@@ -65,4 +65,24 @@ data class ArtifactQualifiedName(
         result = 31 * result + (commitId?.hashCode() ?: 0)
         return result
     }
+
+    fun asParent(): ArtifactQualifiedName? {
+        return when (type) {
+            ArtifactType.CLASS -> null
+
+            ArtifactType.METHOD -> ArtifactQualifiedName(
+                identifier.substringBeforeLast("."),
+                commitId,
+                ArtifactType.CLASS
+            )
+
+            ArtifactType.EXPRESSION -> ArtifactQualifiedName(
+                identifier.substringBefore("#"),
+                commitId,
+                ArtifactType.METHOD
+            )
+
+            else -> null
+        }
+    }
 }
