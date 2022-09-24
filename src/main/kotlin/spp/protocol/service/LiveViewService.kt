@@ -50,6 +50,7 @@ interface LiveViewService {
     fun addLiveViewSubscription(subscription: LiveViewSubscription): Future<LiveViewSubscription>
     fun updateLiveViewSubscription(id: String, subscription: LiveViewSubscription): Future<LiveViewSubscription>
     fun removeLiveViewSubscription(id: String): Future<LiveViewSubscription>
+    fun getLiveViewSubscription(id: String): Future<LiveViewSubscription>
     fun getLiveViewSubscriptions(): Future<List<LiveViewSubscription>>
     fun clearLiveViewSubscriptions(): Future<List<LiveViewSubscription>>
     fun getLiveViewSubscriptionStats(): Future<JsonObject>
