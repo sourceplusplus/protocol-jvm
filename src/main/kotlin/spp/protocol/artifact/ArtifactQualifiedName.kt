@@ -71,7 +71,7 @@ data class ArtifactQualifiedName(
             type == ArtifactType.CLASS -> null
 
             type == ArtifactType.METHOD -> ArtifactQualifiedName(
-                identifier.substringBeforeLast("."),
+                identifier.substringBefore("(").substringBeforeLast("."),
                 commitId,
                 ArtifactType.CLASS
             )
