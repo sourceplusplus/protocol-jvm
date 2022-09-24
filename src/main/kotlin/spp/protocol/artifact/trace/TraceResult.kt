@@ -29,7 +29,7 @@ import java.time.Instant
  */
 @DataObject
 data class TraceResult(
-    val artifactQualifiedName: ArtifactQualifiedName,
+    val artifactQualifiedName: ArtifactQualifiedName? = null,
     val artifactSimpleName: String? = null,
     val orderType: TraceOrderType,
     val start: Instant,
@@ -40,7 +40,7 @@ data class TraceResult(
 ) {
 
     constructor(json: JsonObject) : this(
-        artifactQualifiedName = ArtifactQualifiedName(json.getJsonObject("artifactQualifiedName")),
+        artifactQualifiedName = json.getJsonObject("artifactQualifiedName")?.let { ArtifactQualifiedName(it) },
         artifactSimpleName = json.getString("artifactSimpleName"),
         orderType = TraceOrderType.valueOf(json.getString("orderType")),
         start = Instant.parse(json.getString("start")),

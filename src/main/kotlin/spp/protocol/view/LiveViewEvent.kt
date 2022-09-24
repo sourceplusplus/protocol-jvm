@@ -30,7 +30,7 @@ import spp.protocol.artifact.ArtifactQualifiedName
 data class LiveViewEvent(
     val subscriptionId: String,
     val entityId: String,
-    val artifactQualifiedName: ArtifactQualifiedName,
+    val artifactQualifiedName: ArtifactQualifiedName? = null,
     val timeBucket: String,
     val viewConfig: LiveViewConfig,
     val metricsData: String, //todo: type out
@@ -38,7 +38,7 @@ data class LiveViewEvent(
     constructor(json: JsonObject) : this(
         json.getString("subscriptionId"),
         json.getString("entityId"),
-        ArtifactQualifiedName(json.getJsonObject("artifactQualifiedName")),
+        json.getJsonObject("artifactQualifiedName")?.let { ArtifactQualifiedName(it) },
         json.getString("timeBucket"),
         LiveViewConfig(json.getJsonObject("viewConfig")),
         json.getString("metricsData")

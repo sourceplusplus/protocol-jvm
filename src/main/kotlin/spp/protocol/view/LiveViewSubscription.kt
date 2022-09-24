@@ -31,15 +31,15 @@ import spp.protocol.instrument.LiveSourceLocation
 data class LiveViewSubscription(
     val subscriptionId: String? = null, //todo: actual bottom
     val entityIds: List<String>,
-    val artifactQualifiedName: ArtifactQualifiedName, //todo: remove, use artifactLocation
-    val artifactLocation: LiveSourceLocation, //todo: bottom?
+    val artifactQualifiedName: ArtifactQualifiedName? = null, //todo: remove, use artifactLocation
+    val artifactLocation: LiveSourceLocation? = null, //todo: bottom?
     val liveViewConfig: LiveViewConfig
 ) {
     constructor(json: JsonObject) : this(
         subscriptionId = json.getString("subscriptionId"),
         entityIds = json.getJsonArray("entityIds").map { it as String },
-        artifactQualifiedName = ArtifactQualifiedName(json.getJsonObject("artifactQualifiedName")),
-        artifactLocation = LiveSourceLocation(json.getJsonObject("artifactLocation")),
+        artifactQualifiedName = json.getJsonObject("artifactQualifiedName")?.let { ArtifactQualifiedName(it) },
+        artifactLocation = json.getJsonObject("artifactLocation")?.let { LiveSourceLocation(it) },
         liveViewConfig = LiveViewConfig(json.getJsonObject("liveViewConfig"))
     )
 
@@ -47,8 +47,8 @@ data class LiveViewSubscription(
         val json = JsonObject()
         json.put("subscriptionId", subscriptionId)
         json.put("entityIds", entityIds)
-        json.put("artifactQualifiedName", artifactQualifiedName.toJson())
-        json.put("artifactLocation", artifactLocation.toJson())
+        artifactQualifiedName?.let { json.put("artifactQualifiedName", it.toJson()) }
+        artifactLocation?.let { json.put("artifactLocation", it.toJson()) }
         json.put("liveViewConfig", liveViewConfig.toJson())
         return json
     }
