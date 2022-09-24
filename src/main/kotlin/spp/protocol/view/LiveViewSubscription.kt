@@ -17,6 +17,7 @@
 package spp.protocol.view
 
 import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.instrument.LiveSourceLocation
@@ -30,14 +31,14 @@ import spp.protocol.instrument.LiveSourceLocation
 @DataObject
 data class LiveViewSubscription(
     val subscriptionId: String? = null, //todo: actual bottom
-    val entityIds: List<String>,
+    val entityIds: MutableSet<String>,
     val artifactQualifiedName: ArtifactQualifiedName? = null, //todo: remove, use artifactLocation
     val artifactLocation: LiveSourceLocation? = null, //todo: bottom?
     val liveViewConfig: LiveViewConfig
 ) {
     constructor(json: JsonObject) : this(
         subscriptionId = json.getString("subscriptionId"),
-        entityIds = json.getJsonArray("entityIds").map { it as String },
+        entityIds = json.getJsonArray("entityIds").map { it.toString() }.toMutableSet(),
         artifactQualifiedName = json.getJsonObject("artifactQualifiedName")?.let { ArtifactQualifiedName(it) },
         artifactLocation = json.getJsonObject("artifactLocation")?.let { LiveSourceLocation(it) },
         liveViewConfig = LiveViewConfig(json.getJsonObject("liveViewConfig"))
@@ -46,7 +47,7 @@ data class LiveViewSubscription(
     fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("subscriptionId", subscriptionId)
-        json.put("entityIds", entityIds)
+        json.put("entityIds", JsonArray().apply { entityIds.forEach { add(it) } })
         artifactQualifiedName?.let { json.put("artifactQualifiedName", it.toJson()) }
         artifactLocation?.let { json.put("artifactLocation", it.toJson()) }
         json.put("liveViewConfig", liveViewConfig.toJson())
