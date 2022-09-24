@@ -91,4 +91,14 @@ data class ArtifactQualifiedName(
             else -> null
         }
     }
+
+    fun isChildOf(other: ArtifactQualifiedName): Boolean {
+        if (identifier == other.identifier) return false
+        return identifier.substringBefore("#").startsWith(other.identifier)
+    }
+
+    fun isParentOf(other: ArtifactQualifiedName): Boolean {
+        if (identifier == other.identifier) return false
+        return other.identifier.substringBefore("#").startsWith(identifier)
+    }
 }

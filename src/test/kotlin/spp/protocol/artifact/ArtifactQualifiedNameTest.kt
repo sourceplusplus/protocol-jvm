@@ -16,8 +16,7 @@
  */
 package spp.protocol.artifact
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class ArtifactQualifiedNameTest {
@@ -57,5 +56,41 @@ class ArtifactQualifiedNameTest {
         assertNotNull(clazz)
         assertEquals("com.example.TestClass", clazz!!.identifier)
         assertEquals(ArtifactType.CLASS, clazz.type)
+    }
+
+    @Test
+    fun `test is child of`() {
+        val clazz = ArtifactQualifiedName("com.example.TestClass", type = ArtifactType.CLASS)
+        val method = ArtifactQualifiedName("com.example.TestClass.fun()", type = ArtifactType.METHOD)
+        val methodExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = ArtifactType.EXPRESSION)
+
+        assertTrue(methodExpression.isChildOf(clazz))
+        assertTrue(methodExpression.isChildOf(method))
+        assertFalse(methodExpression.isChildOf(methodExpression))
+
+        assertTrue(method.isChildOf(clazz))
+        assertFalse(method.isChildOf(method))
+
+        assertFalse(clazz.isChildOf(clazz))
+        assertFalse(clazz.isChildOf(method))
+        assertFalse(method.isChildOf(methodExpression))
+    }
+
+    @Test
+    fun `test is parent of`() {
+        val clazz = ArtifactQualifiedName("com.example.TestClass", type = ArtifactType.CLASS)
+        val method = ArtifactQualifiedName("com.example.TestClass.fun()", type = ArtifactType.METHOD)
+        val methodExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = ArtifactType.EXPRESSION)
+
+        assertTrue(clazz.isParentOf(methodExpression))
+        assertTrue(method.isParentOf(methodExpression))
+        assertFalse(methodExpression.isParentOf(methodExpression))
+
+        assertTrue(clazz.isParentOf(method))
+        assertFalse(method.isParentOf(method))
+
+        assertFalse(clazz.isParentOf(clazz))
+        assertFalse(method.isParentOf(clazz))
+        assertFalse(methodExpression.isParentOf(method))
     }
 }
