@@ -24,8 +24,8 @@ class ArtifactQualifiedNameTest {
 
     @Test
     fun `test parent qualified name`() {
-        val expression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = ArtifactType.EXPRESSION)
-        val method = expression.asParent()
+        val methodExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = ArtifactType.EXPRESSION)
+        val method = methodExpression.asParent()
         assertNotNull(method)
         assertEquals("com.example.TestClass.fun()", method!!.identifier)
         assertEquals(ArtifactType.METHOD, method.type)
@@ -34,5 +34,11 @@ class ArtifactQualifiedNameTest {
         assertNotNull(clazz)
         assertEquals("com.example.TestClass", clazz!!.identifier)
         assertEquals(ArtifactType.CLASS, clazz.type)
+
+        val fieldExpression = ArtifactQualifiedName("com.example.TestClass#22", type = ArtifactType.EXPRESSION)
+        val clazz2 = fieldExpression.asParent()
+        assertNotNull(clazz2)
+        assertEquals("com.example.TestClass", clazz2!!.identifier)
+        assertEquals(ArtifactType.CLASS, clazz2.type)
     }
 }

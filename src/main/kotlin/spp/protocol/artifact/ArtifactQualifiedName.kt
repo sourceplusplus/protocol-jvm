@@ -67,19 +67,25 @@ data class ArtifactQualifiedName(
     }
 
     fun asParent(): ArtifactQualifiedName? {
-        return when (type) {
-            ArtifactType.CLASS -> null
+        return when {
+            type == ArtifactType.CLASS -> null
 
-            ArtifactType.METHOD -> ArtifactQualifiedName(
+            type == ArtifactType.METHOD -> ArtifactQualifiedName(
                 identifier.substringBeforeLast("."),
                 commitId,
                 ArtifactType.CLASS
             )
 
-            ArtifactType.EXPRESSION -> ArtifactQualifiedName(
+            type == ArtifactType.EXPRESSION && identifier.contains("(") -> ArtifactQualifiedName(
                 identifier.substringBefore("#"),
                 commitId,
                 ArtifactType.METHOD
+            )
+
+            type == ArtifactType.EXPRESSION -> ArtifactQualifiedName(
+                identifier.substringBefore("#"),
+                commitId,
+                ArtifactType.CLASS
             )
 
             else -> null
