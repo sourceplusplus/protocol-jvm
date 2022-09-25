@@ -29,7 +29,7 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
  */
 @DataObject
 data class LiveMeter(
-    val meterName: String,
+    val meterDescription: String? = null,
     val meterType: MeterType,
     val metricValue: MetricValue,
     override val location: LiveSourceLocation,
@@ -46,7 +46,7 @@ data class LiveMeter(
     override val type: LiveInstrumentType = LiveInstrumentType.METER
 
     constructor(json: JsonObject) : this(
-        json.getString("meterName"),
+        json.getString("meterDescription"),
         MeterType.valueOf(json.getString("meterType")),
         MetricValue(json.getJsonObject("metricValue")),
         LiveSourceLocation(json.getJsonObject("location")),
@@ -64,7 +64,7 @@ data class LiveMeter(
     override fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("type", type.name)
-        json.put("meterName", meterName)
+        json.put("meterDescription", meterDescription)
         json.put("meterType", meterType.name)
         json.put("metricValue", metricValue.toJson())
         json.put("location", location.toJson())
