@@ -53,4 +53,16 @@ data class LiveViewSubscription(
         json.put("liveViewConfig", liveViewConfig.toJson())
         return json
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as LiveViewSubscription
+        if (subscriptionId != other.subscriptionId) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return subscriptionId?.hashCode() ?: 0
+    }
 }
