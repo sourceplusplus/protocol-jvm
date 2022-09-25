@@ -101,4 +101,16 @@ data class ArtifactQualifiedName(
         if (identifier == other.identifier) return false
         return other.identifier.substringBefore("#").startsWith(identifier)
     }
+
+    fun toClass(): ArtifactQualifiedName? {
+        return if (type == ArtifactType.CLASS) {
+            this
+        } else {
+            var parent = asParent()
+            while (parent != null && parent.type != ArtifactType.CLASS) {
+                parent = parent.asParent()
+            }
+            parent
+        }
+    }
 }
