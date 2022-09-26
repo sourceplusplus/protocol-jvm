@@ -50,6 +50,7 @@ interface LiveManagementService {
         }
     }
 
+    fun reset(): Future<Void>
     fun getRolePermissions(role: String): Future<List<RolePermission>>
     fun getClientAccessors(): Future<List<ClientAccess>>
     fun getClientAccess(id: String): Future<ClientAccess?>
