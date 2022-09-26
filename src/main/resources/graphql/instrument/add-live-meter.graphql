@@ -1,12 +1,12 @@
 mutation addLiveMeter($input: LiveMeterInput!) {
     addLiveMeter(input: $input) {
         id
-        meterName
         meterType
         metricValue {
             valueType
             value
         }
+        meterDescription
         location {
             source
             line

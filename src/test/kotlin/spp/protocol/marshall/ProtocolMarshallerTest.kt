@@ -42,9 +42,9 @@ class ProtocolMarshallerTest {
     @Test
     fun testLiveInstrument() {
         val liveInstrument = LiveMeter(
-            "meterName",
             MeterType.COUNT,
             MetricValue(MetricValueType.NUMBER, "1"),
+            "meterDescription",
             LiveSourceLocation("source", 1),
             "condition",
             System.currentTimeMillis(),

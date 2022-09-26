@@ -1,12 +1,12 @@
 query getLiveMeters{
     getLiveMeters {
         id
-        meterName
         meterType
         metricValue {
             valueType
             value
         }
+        meterDescription
         location {
             source
             line

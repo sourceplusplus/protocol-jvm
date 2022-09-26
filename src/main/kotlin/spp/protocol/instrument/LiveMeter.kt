@@ -80,7 +80,9 @@ data class LiveMeter(
         return json
     }
 
-    fun toMetricIdWithoutPrefix(): String = meterType.name.lowercase() + "_" + id!!.replace("-", "_")
+    fun toMetricIdWithoutPrefix(): String = meterType.name.lowercase() + "_" +
+            id!!.replace("-", "_").replace(" ", "_")
+
     fun toMetricId(): String = "spp_" + toMetricIdWithoutPrefix()
 
     /**

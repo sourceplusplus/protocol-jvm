@@ -19,12 +19,12 @@ mutation removeLiveInstruments($source: String!, $line: Int!) {
             logArguments
         }
         ... on LiveMeter {
-            meterName
             meterType
             metricValue {
                 valueType
                 value
             }
+            meterDescription
         }
         ... on LiveSpan {
             operationName

@@ -19,12 +19,12 @@ query getLiveInstruments{
             logArguments
         }
         ... on LiveMeter {
-            meterName
             meterType
             metricValue {
                 valueType
                 value
             }
+            meterDescription
         }
         ... on LiveSpan {
             operationName
