@@ -22,7 +22,6 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
-import io.vertx.core.json.JsonObject
 import spp.protocol.SourceServices
 import spp.protocol.instrument.*
 
@@ -47,7 +46,38 @@ interface LiveInstrumentService {
         }
     }
 
+    /**
+     * Applies the given [LiveInstrument].
+     */
     fun addLiveInstrument(instrument: LiveInstrument): Future<LiveInstrument>
+
+    /**
+     * Applies the given [LiveBreakpoint].
+     */
+    fun addLiveBreakpoint(liveBreakpoint: LiveBreakpoint): Future<LiveBreakpoint> {
+        return addLiveInstrument(liveBreakpoint).map { it as LiveBreakpoint }
+    }
+
+    /**
+     * Applies the given [LiveLog].
+     */
+    fun addLiveLog(liveLog: LiveLog): Future<LiveLog> {
+        return addLiveInstrument(liveLog).map { it as LiveLog }
+    }
+
+    /**
+     * Applies the given [LiveSpan].
+     */
+    fun addLiveMeter(liveMeter: LiveMeter): Future<LiveMeter> {
+        return addLiveInstrument(liveMeter).map { it as LiveMeter }
+    }
+
+    /**
+     * Applies the given [LiveSpan].
+     */
+    fun addLiveSpan(liveSpan: LiveSpan): Future<LiveSpan> {
+        return addLiveInstrument(liveSpan).map { it as LiveSpan }
+    }
 
     @JvmSuppressWildcards
     fun addLiveInstruments(instruments: List<LiveInstrument>): Future<List<LiveInstrument>>
@@ -56,9 +86,103 @@ interface LiveInstrumentService {
     fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
     fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
     fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
+
+    /**
+     * Gets [LiveInstrument]s with the given [type].
+     */
     fun getLiveInstruments(type: LiveInstrumentType?): Future<List<LiveInstrument>>
+
+    /**
+     * Removes [LiveInstrument]s with the given [type] created by the developer invoking this method.
+     */
     fun clearLiveInstruments(type: LiveInstrumentType?): Future<Boolean>
+
+    /**
+     * Removes [LiveInstrument]s with the given [type] created by all developers.
+     */
     fun clearAllLiveInstruments(type: LiveInstrumentType?): Future<Boolean>
 
-    fun setupLiveMeter(liveMeter: LiveMeter): Future<JsonObject>
+    /**
+     * Gets all [LiveBreakpoint]s.
+     */
+    fun getLiveBreakpoints(): Future<List<LiveBreakpoint>> {
+        return getLiveInstruments(LiveInstrumentType.BREAKPOINT).map { it as List<LiveBreakpoint> }
+    }
+
+    /**
+     * Gets all [LiveLog]s.
+     */
+    fun getLiveLogs(): Future<List<LiveLog>> {
+        return getLiveInstruments(LiveInstrumentType.LOG).map { it as List<LiveLog> }
+    }
+
+    /**
+     * Gets all [LiveMeter]s.
+     */
+    fun getLiveMeters(): Future<List<LiveMeter>> {
+        return getLiveInstruments(LiveInstrumentType.METER).map { it as List<LiveMeter> }
+    }
+
+    /**
+     * Gets all [LiveSpan]s.
+     */
+    fun getLiveSpans(): Future<List<LiveSpan>> {
+        return getLiveInstruments(LiveInstrumentType.SPAN).map { it as List<LiveSpan> }
+    }
+
+    /**
+     * Removes [LiveBreakpoint]s created by the developer invoking this method.
+     */
+    fun clearLiveBreakpoints(): Future<Boolean> {
+        return clearLiveInstruments(LiveInstrumentType.BREAKPOINT)
+    }
+
+    /**
+     * Removes [LiveLog]s created by the developer invoking this method.
+     */
+    fun clearLiveLogs(): Future<Boolean> {
+        return clearLiveInstruments(LiveInstrumentType.LOG)
+    }
+
+    /**
+     * Removes [LiveMeter]s created by the developer invoking this method.
+     */
+    fun clearLiveMeters(): Future<Boolean> {
+        return clearLiveInstruments(LiveInstrumentType.METER)
+    }
+
+    /**
+     * Removes [LiveSpan]s created by the developer invoking this method.
+     */
+    fun clearLiveSpans(): Future<Boolean> {
+        return clearLiveInstruments(LiveInstrumentType.SPAN)
+    }
+
+    /**
+     * Removes [LiveBreakpoint]s created by all developers.
+     */
+    fun clearAllLiveBreakpoints(): Future<Boolean> {
+        return clearAllLiveInstruments(LiveInstrumentType.BREAKPOINT)
+    }
+
+    /**
+     * Removes [LiveLog]s created by all developers.
+     */
+    fun clearAllLiveLogs(): Future<Boolean> {
+        return clearAllLiveInstruments(LiveInstrumentType.LOG)
+    }
+
+    /**
+     * Removes [LiveMeter]s created by all developers.
+     */
+    fun clearAllLiveMeters(): Future<Boolean> {
+        return clearAllLiveInstruments(LiveInstrumentType.METER)
+    }
+
+    /**
+     * Removes [LiveSpan]s created by all developers.
+     */
+    fun clearAllLiveSpans(): Future<Boolean> {
+        return clearAllLiveInstruments(LiveInstrumentType.SPAN)
+    }
 }
