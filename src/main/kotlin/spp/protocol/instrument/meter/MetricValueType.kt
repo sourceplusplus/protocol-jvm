@@ -27,5 +27,9 @@ enum class MetricValueType {
     NUMBER_EXPRESSION,
     VALUE,
     VALUE_SUPPLIER,
-    VALUE_EXPRESSION
+    VALUE_EXPRESSION;
+
+    fun isAlwaysNumeric(): Boolean {
+        return this == NUMBER || this == NUMBER_SUPPLIER || this == NUMBER_EXPRESSION
+    }
 }
