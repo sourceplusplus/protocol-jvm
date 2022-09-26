@@ -50,7 +50,7 @@ interface LiveManagementService {
         }
     }
 
-    fun reset(): Future<Void>
+    //fun reset(): Future<Void> //todo: handle permission via JWT
     fun getRolePermissions(role: String): Future<List<RolePermission>>
     fun getClientAccessors(): Future<List<ClientAccess>>
     fun getClientAccess(id: String): Future<ClientAccess?>
