@@ -18,6 +18,7 @@ package spp.protocol.artifact.exception
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
+import spp.protocol.artifact.ArtifactLanguage
 
 /**
  * todo: description.
@@ -30,14 +31,16 @@ class LiveStackTrace(
     var exceptionType: String,
     var message: String?,
     val elements: MutableList<LiveStackTraceElement>,
-    val causedBy: LiveStackTrace? = null
+    val causedBy: LiveStackTrace? = null,
+    val language: ArtifactLanguage? = null
 ) : Iterable<LiveStackTraceElement> {
 
     constructor(json: JsonObject) : this(
         json.getString("exceptionType"),
         json.getString("message"),
         json.getJsonArray("elements").map { LiveStackTraceElement(JsonObject.mapFrom(it)) }.toMutableList(),
-        json.getJsonObject("causedBy")?.let { LiveStackTrace(it) }
+        json.getJsonObject("causedBy")?.let { LiveStackTrace(it) },
+        json.getString("language")?.let { ArtifactLanguage.valueOf(it) }
     )
 
     fun toJson(): JsonObject {
@@ -82,7 +85,7 @@ class LiveStackTrace(
     companion object {
         private const val skywalkingInterceptor =
             "org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstMethodsInter.intercept"
-        private val frameRegex = Regex(
+        private val jvmFrameRegex = Regex(
             "\\s*at\\s+((?:[\\w\\s](?:\\\$+|\\.|/)?)+)" +
                     "\\.([\\w|_$\\s<>]+)\\s*\\(([^()]+(?:\\([^)]*\\))?)\\)"
         )
@@ -96,7 +99,7 @@ class LiveStackTrace(
         fun fromString(data: String): LiveStackTrace? {
             return when {
                 nodeFrameRegex.containsMatchIn(data) -> extractNodeStackTrace(data)
-                frameRegex.containsMatchIn(data) -> extractJvmStackTrace(data)
+                jvmFrameRegex.containsMatchIn(data) -> extractJvmStackTrace(data)
                 pythonFrameRegex.containsMatchIn(data) -> extractPythonStackTrace(data)
                 else -> null
             }
@@ -116,7 +119,7 @@ class LiveStackTrace(
             val firstLine = data.split("\n").first()
             val exceptionType = firstLine.split(":").firstOrNull() ?: "n/a"
             val message = firstLine.split(": ").drop(1).firstOrNull() ?: "n/a"
-            return LiveStackTrace(exceptionType, message, elements)
+            return LiveStackTrace(exceptionType, message, elements, language = ArtifactLanguage.NODEJS)
         }
 
         private fun extractPythonStackTrace(data: String): LiveStackTrace {
@@ -128,7 +131,7 @@ class LiveStackTrace(
                 val sourceCode = el.groupValues[4]
                 elements.add(LiveStackTraceElement(inLocation, "$file:$lineNumber", sourceCode = sourceCode))
             }
-            return LiveStackTrace("n/a", "n/a", elements)
+            return LiveStackTrace("n/a", "n/a", elements, language = ArtifactLanguage.PYTHON)
         }
 
         private fun extractJvmStackTrace(data: String): LiveStackTrace {
@@ -141,13 +144,13 @@ class LiveStackTrace(
                 logLines[0]
             }
             val elements = mutableListOf<LiveStackTraceElement>()
-            for (el in frameRegex.findAll(data)) {
+            for (el in jvmFrameRegex.findAll(data)) {
                 val clazz = el.groupValues[1]
                 val method = el.groupValues[2]
                 val source = el.groupValues[3]
                 elements.add(LiveStackTraceElement("$clazz.$method", source))
             }
-            return LiveStackTrace(exceptionClass, message, elements)
+            return LiveStackTrace(exceptionClass, message, elements, language = ArtifactLanguage.JVM)
         }
     }
 
@@ -180,6 +183,7 @@ class LiveStackTrace(
         if (message != other.message) return false
         if (elements != other.elements) return false
         if (causedBy != other.causedBy) return false
+        if (language != other.language) return false
         return true
     }
 
@@ -188,6 +192,7 @@ class LiveStackTrace(
         result = 31 * result + (message?.hashCode() ?: 0)
         result = 31 * result + elements.hashCode()
         result = 31 * result + (causedBy?.hashCode() ?: 0)
+        result = 31 * result + language.hashCode()
         return result
     }
 }

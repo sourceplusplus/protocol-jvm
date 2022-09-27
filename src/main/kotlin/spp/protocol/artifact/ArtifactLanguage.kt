@@ -16,11 +16,11 @@
  */
 package spp.protocol.artifact
 
+/**
+ * Languages supported by Source++.
+ */
 enum class ArtifactLanguage {
-    JAVA,
-    KOTLIN,
-    SCALA,
-    GROOVY,
+    JVM,
     PYTHON,
-    NodeJS
+    NODEJS
 }
