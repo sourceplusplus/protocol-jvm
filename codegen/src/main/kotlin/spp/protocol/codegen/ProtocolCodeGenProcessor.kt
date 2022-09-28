@@ -21,7 +21,7 @@ import io.vertx.codegen.CodeGenProcessor
 import org.joor.Reflect
 
 /**
- * Better (but still hacky) fix for https://github.com/sourceplusplus/live-platform/issues/430.
+ * Better (but still hacky) fix for https://github.com/sourceplusplus/sourceplusplus/issues/430.
  */
 @Suppress("unused")
 class ProtocolCodeGenProcessor : CodeGenProcessor() {
