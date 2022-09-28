@@ -80,7 +80,10 @@ data class LiveLog(
     /**
      * Specify explicitly so Kotlin doesn't override.
      */
-    override fun hashCode(): Int {
-        return super.hashCode()
-    }
+    override fun equals(other: Any?): Boolean = super.equals(other)
+
+    /**
+     * Specify explicitly so Kotlin doesn't override.
+     */
+    override fun hashCode(): Int = super.hashCode()
 }
