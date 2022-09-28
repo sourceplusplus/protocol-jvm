@@ -26,7 +26,7 @@ import spp.protocol.SourceServices
 import spp.protocol.instrument.*
 
 /**
- * todo: description.
+ * Back-end service for managing [LiveInstrument]s.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)

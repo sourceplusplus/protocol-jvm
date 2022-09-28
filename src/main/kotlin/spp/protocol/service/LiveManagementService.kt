@@ -31,7 +31,7 @@ import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.InstanceConnection
 
 /**
- * todo: description.
+ * Back-end service for general and administrative tasks.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */

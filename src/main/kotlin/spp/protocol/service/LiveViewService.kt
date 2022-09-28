@@ -27,7 +27,7 @@ import spp.protocol.SourceServices
 import spp.protocol.view.LiveViewSubscription
 
 /**
- * todo: description.
+ * Back-end service for managing [LiveView]s.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
