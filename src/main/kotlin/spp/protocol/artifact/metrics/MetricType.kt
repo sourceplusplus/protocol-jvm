@@ -27,9 +27,7 @@ import java.util.function.Predicate
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @DataObject
-data class MetricType(
-    val metricId: String,
-) {
+data class MetricType(val metricId: String) {
 
     companion object {
         val Endpoint_CPM = MetricType("endpoint_cpm")

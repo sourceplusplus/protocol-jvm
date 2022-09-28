@@ -23,7 +23,6 @@ import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
 import spp.protocol.instrument.*
-import spp.protocol.platform.auth.ClientAccess
 import spp.protocol.platform.auth.RolePermission
 import java.time.Instant
 
@@ -73,19 +72,6 @@ object ProtocolMarshaller {
         } else {
             throw UnsupportedOperationException("Live instrument type: " + value.getString("type"))
         }
-    }
-
-    @JvmStatic
-    fun serializeClientAccess(value: ClientAccess): JsonObject {
-        return JsonObject(Json.encode(value))
-    }
-
-    @JvmStatic
-    fun deserializeClientAccess(value: JsonObject): ClientAccess {
-        return ClientAccess(
-            value.getString("id"),
-            value.getString("secret")
-        )
     }
 
     @JvmStatic

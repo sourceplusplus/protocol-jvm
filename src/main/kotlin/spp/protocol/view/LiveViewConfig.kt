@@ -20,7 +20,7 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 
 /**
- * todo: description.
+ * Additional configuration for a [LiveView].
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)

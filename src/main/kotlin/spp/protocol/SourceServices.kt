@@ -17,7 +17,7 @@
 package spp.protocol
 
 /**
- * todo: description.
+ * Back-end services available to developers.
  *
  * @since 0.2.1
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)

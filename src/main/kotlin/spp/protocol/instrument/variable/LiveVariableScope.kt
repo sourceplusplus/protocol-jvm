@@ -17,7 +17,7 @@
 package spp.protocol.instrument.variable
 
 /**
- * todo: description.
+ * Represents the scope of a variable encountered in a live probe.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)

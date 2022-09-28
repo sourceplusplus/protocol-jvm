@@ -17,9 +17,10 @@
 package spp.protocol.instrument.throttle
 
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.LiveInstrument
 
 /**
- * todo: description.
+ * Used to throttle the frequency of [LiveInstrument] executions inside a live probe.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)

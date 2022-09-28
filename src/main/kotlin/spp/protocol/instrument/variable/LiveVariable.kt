@@ -20,7 +20,7 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 
 /**
- * todo: description.
+ * Holds the serialized state of a variable encountered in a live probe.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)

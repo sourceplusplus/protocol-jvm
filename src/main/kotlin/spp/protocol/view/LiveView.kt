@@ -23,7 +23,7 @@ import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.instrument.LiveSourceLocation
 
 /**
- * todo: description.
+ * A back-end subscription to events/metrics for a given set of entities.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)

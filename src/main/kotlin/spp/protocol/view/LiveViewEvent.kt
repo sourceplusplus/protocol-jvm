@@ -21,7 +21,7 @@ import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
 
 /**
- * todo: description.
+ * An event that occurred in a [LiveView].
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)

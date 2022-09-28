@@ -17,7 +17,7 @@
 package spp.protocol.instrument.throttle
 
 /**
- * todo: description.
+ * Represents a time step for throttling.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
