@@ -13,7 +13,7 @@ query getLiveViews {
             source
             line
         }
-        liveViewConfig {
+        viewConfig {
             viewName
             viewMetrics
             refreshRateLimit

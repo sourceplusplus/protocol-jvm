@@ -34,14 +34,14 @@ data class LiveView(
     val entityIds: MutableSet<String>,
     val artifactQualifiedName: ArtifactQualifiedName? = null, //todo: remove, use artifactLocation
     val artifactLocation: LiveSourceLocation? = null, //todo: bottom?
-    val liveViewConfig: LiveViewConfig
+    val viewConfig: LiveViewConfig
 ) {
     constructor(json: JsonObject) : this(
         subscriptionId = json.getString("subscriptionId"),
         entityIds = json.getJsonArray("entityIds").map { it.toString() }.toMutableSet(),
         artifactQualifiedName = json.getJsonObject("artifactQualifiedName")?.let { ArtifactQualifiedName(it) },
         artifactLocation = json.getJsonObject("artifactLocation")?.let { LiveSourceLocation(it) },
-        liveViewConfig = LiveViewConfig(json.getJsonObject("liveViewConfig"))
+        viewConfig = LiveViewConfig(json.getJsonObject("viewConfig"))
     )
 
     fun toJson(): JsonObject {
@@ -50,7 +50,7 @@ data class LiveView(
         json.put("entityIds", JsonArray().apply { entityIds.forEach { add(it) } })
         artifactQualifiedName?.let { json.put("artifactQualifiedName", it.toJson()) }
         artifactLocation?.let { json.put("artifactLocation", it.toJson()) }
-        json.put("liveViewConfig", liveViewConfig.toJson())
+        json.put("viewConfig", viewConfig.toJson())
         return json
     }
 

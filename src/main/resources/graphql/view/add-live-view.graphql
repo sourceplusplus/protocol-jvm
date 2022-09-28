@@ -13,7 +13,7 @@ mutation addLiveView($input: LiveViewInput!) {
             source
             line
         }
-        liveViewConfig {
+        viewConfig {
             viewName
             viewMetrics
             refreshRateLimit
