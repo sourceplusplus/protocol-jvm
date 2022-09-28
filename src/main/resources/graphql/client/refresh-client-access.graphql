@@ -1,0 +1,6 @@
+mutation refreshClientAccess($id: String!) {
+    refreshClientAccess(id: $id) {
+        id
+        secret
+    }
+}

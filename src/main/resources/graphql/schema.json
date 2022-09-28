@@ -3599,7 +3599,7 @@
               "deprecationReason": null
             },
             {
-              "name": "updateClientAccess",
+              "name": "refreshClientAccess",
               "description": null,
               "args": [
                 {
