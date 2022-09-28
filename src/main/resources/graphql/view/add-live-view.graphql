@@ -1,5 +1,5 @@
-mutation addLiveViewSubscription($input: LiveViewSubscriptionInput!) {
-    addLiveViewSubscription(input: $input) {
+mutation addLiveView($input: LiveViewInput!) {
+    addLiveView(input: $input) {
         subscriptionId
         entityIds
         artifactQualifiedName {

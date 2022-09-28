@@ -16,9 +16,6 @@
  */
 package spp.protocol
 
-import spp.protocol.SourceServices.Utilize.LIVE_INSTRUMENT
-import spp.protocol.SourceServices.Utilize.LIVE_VIEW
-
 /**
  * todo: description.
  *
@@ -27,13 +24,11 @@ import spp.protocol.SourceServices.Utilize.LIVE_VIEW
  */
 object SourceServices {
 
-    object Utilize {
-        const val LIVE_MANAGEMENT_SERVICE = "spp.service.live-management-service"
-        const val LIVE_INSTRUMENT = "spp.service.live-instrument"
-        const val LIVE_VIEW = "spp.service.live-view"
-    }
+    const val LIVE_MANAGEMENT_SERVICE = "spp.service.live-management-service"
+    const val LIVE_INSTRUMENT = "spp.service.live-instrument"
+    const val LIVE_VIEW = "spp.service.live-view"
 
-    object Provide {
+    object Subscribe {
         const val LIVE_INSTRUMENT_SUBSCRIBER = "$LIVE_INSTRUMENT.subscriber"
         const val LIVE_VIEW_SUBSCRIBER = "$LIVE_VIEW.subscriber"
 

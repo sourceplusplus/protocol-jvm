@@ -29,7 +29,7 @@ import spp.protocol.instrument.LiveSourceLocation
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @DataObject
-data class LiveViewSubscription(
+data class LiveView(
     val subscriptionId: String? = null, //todo: actual bottom
     val entityIds: MutableSet<String>,
     val artifactQualifiedName: ArtifactQualifiedName? = null, //todo: remove, use artifactLocation
@@ -57,7 +57,7 @@ data class LiveViewSubscription(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        other as LiveViewSubscription
+        other as LiveView
         if (subscriptionId != other.subscriptionId) return false
         return true
     }

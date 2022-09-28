@@ -23,8 +23,8 @@ import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
-import spp.protocol.SourceServices
-import spp.protocol.view.LiveViewSubscription
+import spp.protocol.SourceServices.LIVE_VIEW
+import spp.protocol.view.LiveView
 
 /**
  * Back-end service for managing [LiveView]s.
@@ -43,15 +43,15 @@ interface LiveViewService {
             val deliveryOptions = DeliveryOptions().apply {
                 authToken?.let { addHeader("auth-token", it) }
             }
-            return LiveViewServiceVertxEBProxy(vertx, SourceServices.Utilize.LIVE_VIEW, deliveryOptions)
+            return LiveViewServiceVertxEBProxy(vertx, LIVE_VIEW, deliveryOptions)
         }
     }
 
-    fun addLiveViewSubscription(subscription: LiveViewSubscription): Future<LiveViewSubscription>
-    fun updateLiveViewSubscription(id: String, subscription: LiveViewSubscription): Future<LiveViewSubscription>
-    fun removeLiveViewSubscription(id: String): Future<LiveViewSubscription>
-    fun getLiveViewSubscription(id: String): Future<LiveViewSubscription>
-    fun getLiveViewSubscriptions(): Future<List<LiveViewSubscription>>
-    fun clearLiveViewSubscriptions(): Future<List<LiveViewSubscription>>
-    fun getLiveViewSubscriptionStats(): Future<JsonObject>
+    fun addLiveView(subscription: LiveView): Future<LiveView>
+    fun updateLiveView(id: String, subscription: LiveView): Future<LiveView>
+    fun removeLiveView(id: String): Future<LiveView>
+    fun getLiveView(id: String): Future<LiveView>
+    fun getLiveViews(): Future<List<LiveView>>
+    fun clearLiveViews(): Future<List<LiveView>>
+    fun getLiveViewStats(): Future<JsonObject>
 }

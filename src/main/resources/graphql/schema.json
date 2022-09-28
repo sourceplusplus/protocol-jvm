@@ -2165,7 +2165,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "LiveViewSubscription",
+          "name": "LiveView",
           "description": null,
           "fields": [
             {
@@ -2244,7 +2244,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "LiveViewSubscriptionInput",
+          "name": "LiveViewInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -3505,7 +3505,7 @@
               "deprecationReason": null
             },
             {
-              "name": "addLiveViewSubscription",
+              "name": "addLiveView",
               "description": null,
               "args": [
                 {
@@ -3516,7 +3516,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "LiveViewSubscriptionInput",
+                      "name": "LiveViewInput",
                       "ofType": null
                     }
                   },
@@ -3528,7 +3528,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "LiveViewSubscription",
+                  "name": "LiveView",
                   "ofType": null
                 }
               },
@@ -3536,7 +3536,7 @@
               "deprecationReason": null
             },
             {
-              "name": "clearLiveViewSubscriptions",
+              "name": "clearLiveViews",
               "description": null,
               "args": [],
               "type": {
@@ -4232,7 +4232,7 @@
               "deprecationReason": null
             },
             {
-              "name": "getLiveViewSubscriptions",
+              "name": "getLiveViews",
               "description": null,
               "args": [],
               "type": {
@@ -4246,7 +4246,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "LiveViewSubscription",
+                      "name": "LiveView",
                       "ofType": null
                     }
                   }

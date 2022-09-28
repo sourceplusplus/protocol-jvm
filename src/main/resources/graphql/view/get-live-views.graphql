@@ -1,5 +1,5 @@
-query getLiveViewSubscriptions {
-    getLiveViewSubscriptions {
+query getLiveViews {
+    getLiveViews {
         subscriptionId
         entityIds
         artifactQualifiedName {

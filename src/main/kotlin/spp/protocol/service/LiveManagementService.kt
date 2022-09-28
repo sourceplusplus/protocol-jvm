@@ -23,7 +23,7 @@ import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
-import spp.protocol.SourceServices.Utilize.LIVE_MANAGEMENT_SERVICE
+import spp.protocol.SourceServices.LIVE_MANAGEMENT_SERVICE
 import spp.protocol.platform.auth.ClientAccess
 import spp.protocol.platform.auth.RolePermission
 import spp.protocol.platform.developer.SelfInfo

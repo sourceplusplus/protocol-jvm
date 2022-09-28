@@ -22,7 +22,7 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
-import spp.protocol.SourceServices
+import spp.protocol.SourceServices.LIVE_INSTRUMENT
 import spp.protocol.instrument.*
 
 /**
@@ -42,7 +42,7 @@ interface LiveInstrumentService {
             val deliveryOptions = DeliveryOptions().apply {
                 authToken?.let { addHeader("auth-token", it) }
             }
-            return LiveInstrumentServiceVertxEBProxy(vertx, SourceServices.Utilize.LIVE_INSTRUMENT, deliveryOptions)
+            return LiveInstrumentServiceVertxEBProxy(vertx, LIVE_INSTRUMENT, deliveryOptions)
         }
     }
 
