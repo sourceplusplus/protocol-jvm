@@ -72,8 +72,6 @@ jobs:
         version-pattern: "^\\d+\\.\\d+\\.\\d+-SNAPSHOT$"
         names: |
           plus.sourceplus.protocol
-          plus.sourceplus.protocol-jvm
-          plus.sourceplus.protocol-js
 
     - name: Publish New Snapshot Packages
       if: github.ref == 'refs/heads/master'
