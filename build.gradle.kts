@@ -77,8 +77,8 @@ dependencies {
     testImplementation("io.vertx:vertx-junit5:$vertxVersion")
     testImplementation("io.vertx:vertx-core:$vertxVersion")
 
-    annotationProcessor("io.vertx:vertx-codegen:$vertxVersion:processor")
-    kapt(findProject("codegen") ?: project(":protocol:codegen"))
+    kapt("io.vertx:vertx-codegen:$vertxVersion:processor")
+    compileOnly("io.vertx:vertx-codegen:$vertxVersion")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
 }
@@ -141,8 +141,4 @@ spotless {
         }
         licenseHeader(formattedLicenseHeader)
     }
-}
-
-kapt {
-    annotationProcessor("spp.protocol.codegen.ProtocolCodeGenProcessor")
 }
