@@ -27,5 +27,9 @@ enum class ArtifactType {
     METHOD,
     STATEMENT,
     EXPRESSION,
-    ENDPOINT
+    ENDPOINT;
+
+    fun showLineNumber(): Boolean {
+        return this == STATEMENT || this == EXPRESSION
+    }
 }
