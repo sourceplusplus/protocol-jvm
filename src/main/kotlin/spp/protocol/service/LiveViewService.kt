@@ -23,7 +23,7 @@ import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
-import spp.protocol.SourceServices.LIVE_VIEW
+import spp.protocol.service.SourceServices.LIVE_VIEW
 import spp.protocol.view.LiveView
 
 /**

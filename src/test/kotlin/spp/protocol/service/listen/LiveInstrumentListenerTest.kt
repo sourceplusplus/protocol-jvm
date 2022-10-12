@@ -24,7 +24,6 @@ import io.vertx.junit5.VertxTestContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import spp.protocol.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.ArtifactType
 import spp.protocol.artifact.exception.LiveStackTrace
@@ -33,6 +32,7 @@ import spp.protocol.artifact.log.LogResult
 import spp.protocol.instrument.LiveBreakpoint
 import spp.protocol.instrument.LiveSourceLocation
 import spp.protocol.instrument.event.*
+import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 

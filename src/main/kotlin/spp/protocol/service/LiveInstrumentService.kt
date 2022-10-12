@@ -22,8 +22,8 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
-import spp.protocol.SourceServices.LIVE_INSTRUMENT
 import spp.protocol.instrument.*
+import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
 
 /**
  * Back-end service for managing [LiveInstrument]s.

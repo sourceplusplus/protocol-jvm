@@ -23,12 +23,12 @@ import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
-import spp.protocol.SourceServices.LIVE_MANAGEMENT_SERVICE
 import spp.protocol.platform.auth.ClientAccess
 import spp.protocol.platform.auth.RolePermission
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.InstanceConnection
+import spp.protocol.service.SourceServices.LIVE_MANAGEMENT_SERVICE
 
 /**
  * Back-end service for general and administrative tasks.

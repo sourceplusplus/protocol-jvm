@@ -21,9 +21,9 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.MessageConsumer
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import spp.protocol.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 import spp.protocol.instrument.*
 import spp.protocol.instrument.event.*
+import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 
 class LiveInstrumentListenerImpl(
     vertx: Vertx,
