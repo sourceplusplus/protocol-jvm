@@ -23,6 +23,116 @@ import spp.protocol.artifact.ArtifactType.*
 class ArtifactQualifiedNameTest {
 
     @Test
+    fun `test js parent chain`() {
+        ArtifactQualifiedName(
+            identifier = "C:/test/main.js#SlNDYWxsRXhwcmVzc2lvbg==",
+            type = EXPRESSION
+        ).let {
+            val fileParent = it.asParent()
+            assertNotNull(fileParent)
+            assertEquals(
+                "C:/test/main.js",
+                fileParent!!.identifier
+            )
+            assertEquals(fileParent.type, FILE)
+
+            assertNull(fileParent.asParent())
+        }
+
+        ArtifactQualifiedName(
+            identifier = "C:/test/main.js:executeDemos()",
+            type = METHOD
+        ).let {
+            val fileParent = it.asParent()
+            assertNotNull(fileParent)
+            assertEquals(
+                "C:/test/main.js",
+                fileParent!!.identifier
+            )
+            assertEquals(fileParent.type, FILE)
+
+            assertNull(fileParent.asParent())
+        }
+
+        ArtifactQualifiedName(
+            identifier = "C:/test/main.js:executeDemos()#SlNDYWxsRXhwcmVzc2lvbg==",
+            type = EXPRESSION
+        ).let {
+            val methodParent = it.asParent()
+            assertNotNull(methodParent)
+            assertEquals(
+                "C:/test/main.js:executeDemos()",
+                methodParent!!.identifier
+            )
+            assertEquals(methodParent.type, METHOD)
+
+            val fileParent = methodParent.asParent()
+            assertNotNull(fileParent)
+            assertEquals(
+                "C:/test/main.js",
+                fileParent!!.identifier
+            )
+            assertEquals(fileParent.type, FILE)
+
+            assertNull(fileParent.asParent())
+        }
+
+        ArtifactQualifiedName(
+            identifier = "C:/test/main.js:TestClass.executeDemos()",
+            type = METHOD
+        ).let {
+            val methodParent = it.asParent()
+            assertNotNull(methodParent)
+            assertEquals(
+                "C:/test/main.js:TestClass",
+                methodParent!!.identifier
+            )
+            assertEquals(methodParent.type, CLASS)
+
+            val classParent = methodParent.asParent()
+            assertNotNull(classParent)
+            assertEquals(
+                "C:/test/main.js",
+                classParent!!.identifier
+            )
+            assertEquals(classParent.type, FILE)
+
+            assertNull(classParent.asParent())
+        }
+
+        ArtifactQualifiedName(
+            identifier = "C:/test/main.js:TestClass.executeDemos()#SlNDYWxsRXhwcmVzc2lvbg==",
+            type = EXPRESSION
+        ).let {
+            val expressionParent = it.asParent()
+            assertNotNull(expressionParent)
+            assertEquals(
+                "C:/test/main.js:TestClass.executeDemos()",
+                expressionParent!!.identifier
+            )
+            assertEquals(expressionParent.type, METHOD)
+
+            val methodParent = expressionParent.asParent()
+            assertNotNull(methodParent)
+            assertEquals(
+                "C:/test/main.js:TestClass",
+                methodParent!!.identifier
+            )
+            assertEquals(methodParent.type, CLASS)
+
+            val classParent = methodParent.asParent()
+            assertNotNull(classParent)
+            assertEquals(
+                "C:/test/main.js",
+                classParent!!.identifier
+            )
+            assertEquals(classParent.type, FILE)
+
+            assertNull(classParent.asParent())
+        }
+    }
+
+    @Test
     fun `test parent qualified name`() {
         val methodExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = EXPRESSION)
         val method = methodExpression.asParent()

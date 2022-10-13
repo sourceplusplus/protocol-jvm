@@ -68,13 +68,33 @@ data class ArtifactQualifiedName(
 
     fun asParent(): ArtifactQualifiedName? {
         return when {
-            type == ArtifactType.CLASS -> null
+            type == ArtifactType.CLASS -> {
+                if (identifier.contains(":")) {
+                    val filename = identifier.substringBeforeLast(":")
+                    ArtifactQualifiedName(filename, commitId, ArtifactType.FILE)
+                } else {
+                    null
+                }
+            }
 
-            type == ArtifactType.METHOD -> ArtifactQualifiedName(
-                identifier.substringBefore("(").substringBeforeLast("."),
-                commitId,
-                ArtifactType.CLASS
-            )
+            type == ArtifactType.METHOD -> {
+                if (identifier.contains(":")) {
+                    val filename = identifier.substringBeforeLast(":")
+                    val fullOperationName = identifier.substringAfterLast(":")
+                    if (fullOperationName.substringBefore("(").contains(".")) {
+                        val className = fullOperationName.substringBeforeLast(".")
+                        ArtifactQualifiedName("$filename:$className", commitId, ArtifactType.CLASS)
+                    } else {
+                        ArtifactQualifiedName(filename, commitId, ArtifactType.FILE)
+                    }
+                } else {
+                    ArtifactQualifiedName(
+                        identifier.substringBefore("(").substringBeforeLast("."),
+                        commitId,
+                        ArtifactType.CLASS
+                    )
+                }
+            }
 
             type == ArtifactType.EXPRESSION && identifier.contains("(") -> ArtifactQualifiedName(
                 identifier.substringBefore("#"),
@@ -82,11 +102,21 @@ data class ArtifactQualifiedName(
                 ArtifactType.METHOD
             )
 
-            type == ArtifactType.EXPRESSION -> ArtifactQualifiedName(
-                identifier.substringBefore("#"),
-                commitId,
-                ArtifactType.CLASS
-            )
+            type == ArtifactType.EXPRESSION -> {
+                if (identifier.contains("/")) {
+                    ArtifactQualifiedName(
+                        identifier.substringBefore("#"),
+                        commitId,
+                        ArtifactType.FILE
+                    )
+                } else {
+                    ArtifactQualifiedName(
+                        identifier.substringBefore("#"),
+                        commitId,
+                        ArtifactType.CLASS
+                    )
+                }
+            }
 
             else -> null
         }

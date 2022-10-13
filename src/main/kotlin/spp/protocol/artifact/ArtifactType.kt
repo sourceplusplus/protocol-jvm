@@ -23,6 +23,7 @@ package spp.protocol.artifact
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 enum class ArtifactType {
+    FILE,
     CLASS,
     METHOD,
     STATEMENT,
