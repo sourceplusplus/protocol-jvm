@@ -20,6 +20,13 @@ package spp.protocol.platform.auth
  * The type of redaction lookup to perform.
  */
 enum class RedactionType {
+    /**
+     * Redact based on literal match of the variable's name.
+     */
     IDENTIFIER_MATCH,
+
+    /**
+     * Redact based on regular expression match of the variable's value.
+     */
     VALUE_REGEX
 }
