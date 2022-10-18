@@ -18,6 +18,7 @@ package spp.protocol.instrument
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
+import spp.protocol.platform.status.InstanceConnection
 
 /**
  * todo: description.
@@ -34,6 +35,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
     val commitId: String? = null, //todo: impl
     val fileChecksum: String? = null, //todo: impl
     //val language: ArtifactLanguage? = null, //todo: impl
+    val probeId: String? = null,
 ) : Comparable<LiveSourceLocation> {
 
     constructor(json: JsonObject) : this(
@@ -42,7 +44,9 @@ data class LiveSourceLocation @JvmOverloads constructor(
         service = json.getString("service"),
         serviceInstance = json.getString("serviceInstance"),
         commitId = json.getString("commitId"),
-        fileChecksum = json.getString("fileChecksum")
+        fileChecksum = json.getString("fileChecksum"),
+        //language = json.getString("language")?.let { ArtifactLanguage.valueOf(it) }
+        probeId = json.getString("probeId"),
     )
 
     fun toJson(): JsonObject {
@@ -53,6 +57,8 @@ data class LiveSourceLocation @JvmOverloads constructor(
         json.put("serviceInstance", serviceInstance)
         json.put("commitId", commitId)
         json.put("fileChecksum", fileChecksum)
+        //json.put("language", language?.name)
+        json.put("probeId", probeId)
         return json
     }
 
@@ -69,6 +75,16 @@ data class LiveSourceLocation @JvmOverloads constructor(
         if (serviceInstance != other.serviceInstance) return false
         if (commitId != other.commitId) return false
         if (fileChecksum != other.fileChecksum) return false
+        //if (language != other.language) return false
+        if (probeId != other.probeId) return false
+        return true
+    }
+
+    fun isSameLocation(other: InstanceConnection): Boolean {
+        if (service != null && service != other.meta["service"]) return false
+        if (serviceInstance != null && serviceInstance != other.meta["service_instance"]) return false
+        if (commitId != null && commitId != other.meta["commit_id"]) return false
+        if (probeId != null && probeId != other.instanceId) return false
         return true
     }
 }
