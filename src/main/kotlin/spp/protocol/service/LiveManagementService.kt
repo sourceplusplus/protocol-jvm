@@ -63,4 +63,7 @@ interface LiveManagementService {
     fun getSelf(): Future<SelfInfo>
     fun getServices(): Future<List<Service>>
     fun getActiveProbes(): Future<List<InstanceConnection>>
+
+    fun getActiveProbe(id: String): Future<InstanceConnection?>
+    fun updateActiveProbeMetadata(id: String, metadata: JsonObject): Future<InstanceConnection>
 }
