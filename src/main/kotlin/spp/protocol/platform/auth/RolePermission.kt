@@ -67,6 +67,9 @@ enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
     REMOVE_LIVE_INSTRUMENT(false, LIVE_INSTRUMENT),
     CLEAR_ALL_LIVE_INSTRUMENTS(false, LIVE_INSTRUMENT),
 
+    //instrument control
+    BREAKPOINT_VARIABLE_CONTROL(false, LIVE_INSTRUMENT),
+
     //views
     ADD_LIVE_VIEW_SUBSCRIPTION(false, LIVE_VIEW),
     REMOVE_LIVE_VIEW_SUBSCRIPTION(false, LIVE_VIEW),
