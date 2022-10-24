@@ -19,6 +19,7 @@ package spp.protocol.instrument
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.throttle.InstrumentThrottle
+import spp.protocol.instrument.variable.LiveVariableControl
 
 /**
  * A live breakpoint represents a non-breaking breakpoint.
@@ -28,6 +29,7 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
  */
 @DataObject
 data class LiveBreakpoint(
+    val variableControl: LiveVariableControl? = null,
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
@@ -42,6 +44,7 @@ data class LiveBreakpoint(
     override val type: LiveInstrumentType = LiveInstrumentType.BREAKPOINT
 
     constructor(json: JsonObject) : this(
+        variableControl = json.getJsonObject("variableControl")?.let { LiveVariableControl(it) },
         location = LiveSourceLocation(json.getJsonObject("location")),
         condition = json.getString("condition"),
         expiresAt = json.getLong("expiresAt"),
@@ -57,6 +60,7 @@ data class LiveBreakpoint(
     override fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("type", type.name)
+        json.put("variableControl", variableControl?.toJson())
         json.put("location", location.toJson())
         json.put("condition", condition)
         json.put("expiresAt", expiresAt)
