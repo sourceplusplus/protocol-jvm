@@ -68,6 +68,7 @@ class ProtocolMarshallerTest {
             CommandType.ADD_LIVE_INSTRUMENT,
             setOf(
                 LiveBreakpoint(
+                    null,
                     LiveSourceLocation("source", 1),
                     "condition",
                     System.currentTimeMillis(),

@@ -118,13 +118,13 @@ class LiveInstrumentListenerTest {
 
         val bpRemoved1 = LiveInstrumentRemoved(
             LiveBreakpoint(
-                LiveSourceLocation("test.location1", 1)
+                location = LiveSourceLocation("test.location1", 1)
             ),
             Instant.now()
         )
         val bpRemoved2 = LiveInstrumentRemoved(
             LiveBreakpoint(
-                LiveSourceLocation("test.location2", 2)
+                location = LiveSourceLocation("test.location2", 2)
             ),
             Instant.now()
         )
