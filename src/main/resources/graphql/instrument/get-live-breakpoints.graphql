@@ -1,6 +1,27 @@
 query getLiveBreakpoints{
     getLiveBreakpoints {
         id
+        variableControl {
+            maxObjectDepth
+            maxObjectSize
+            maxCollectionLength
+            variableTypeConfig {
+                type
+                control {
+                    maxObjectDepth
+                    maxObjectSize
+                    maxCollectionLength
+                }
+            }
+            variableNameConfig {
+                name
+                control {
+                    maxObjectDepth
+                    maxObjectSize
+                    maxCollectionLength
+                }
+            }
+        }
         location {
             source
             line

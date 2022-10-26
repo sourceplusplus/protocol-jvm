@@ -14,6 +14,29 @@ mutation removeLiveInstrument($id: String!) {
             limit
             step
         }
+        ... on LiveBreakpoint {
+            variableControl {
+                maxObjectDepth
+                maxObjectSize
+                maxCollectionLength
+                variableTypeConfig {
+                    type
+                    control {
+                        maxObjectDepth
+                        maxObjectSize
+                        maxCollectionLength
+                    }
+                }
+                variableNameConfig {
+                    name
+                    control {
+                        maxObjectDepth
+                        maxObjectSize
+                        maxCollectionLength
+                    }
+                }
+            }
+        }
         ... on LiveLog {
             logFormat
             logArguments

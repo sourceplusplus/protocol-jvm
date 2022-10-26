@@ -1,6 +1,27 @@
 mutation addLiveBreakpoint($input: LiveBreakpointInput!) {
     addLiveBreakpoint(input: $input) {
         id
+        variableControl {
+            maxObjectDepth
+            maxObjectSize
+            maxCollectionLength
+            variableTypeConfig {
+                type
+                control {
+                    maxObjectDepth
+                    maxObjectSize
+                    maxCollectionLength
+                }
+            }
+            variableNameConfig {
+                name
+                control {
+                    maxObjectDepth
+                    maxObjectSize
+                    maxCollectionLength
+                }
+            }
+        }
         location {
             source
             line
