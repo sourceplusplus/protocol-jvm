@@ -26,6 +26,10 @@ data class DeveloperRole(val roleName: String, val nativeRole: Boolean) {
         json.getBoolean("nativeRole")
     )
 
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
+
     companion object {
         val ROLE_MANAGER = DeveloperRole("role_manager", true)
         val ROLE_USER = DeveloperRole("role_user", true)
@@ -36,7 +40,7 @@ data class DeveloperRole(val roleName: String, val nativeRole: Boolean) {
             } else if (roleName.equals("role_user", true)) {
                 ROLE_USER
             } else {
-                DeveloperRole(roleName.toLowerCase().replace(' ', '_').trim(), false)
+                DeveloperRole(roleName.lowercase().replace(' ', '_').trim(), false)
             }
         }
     }

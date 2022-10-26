@@ -24,7 +24,9 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
 import spp.protocol.platform.auth.ClientAccess
+import spp.protocol.platform.auth.DeveloperRole
 import spp.protocol.platform.auth.RolePermission
+import spp.protocol.platform.developer.Developer
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.InstanceConnection
@@ -49,6 +51,11 @@ interface LiveManagementService {
             return LiveManagementServiceVertxEBProxy(vertx, LIVE_MANAGEMENT_SERVICE, deliveryOptions)
         }
     }
+
+    fun getAuthToken(accessToken: String): Future<String>
+    fun addDeveloper(id: String): Future<Developer>
+    fun addRole(role: DeveloperRole): Future<Boolean>
+    fun addDeveloperRole(developerId: String, role: DeveloperRole): Future<Void>
 
     //fun reset(): Future<Void> //todo: handle permission via JWT
     fun getRolePermissions(role: String): Future<List<RolePermission>>
