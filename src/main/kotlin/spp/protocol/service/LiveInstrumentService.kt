@@ -54,6 +54,7 @@ interface LiveInstrumentService {
     /**
      * Applies the given [LiveBreakpoint].
      */
+    @GenIgnore
     fun addLiveBreakpoint(liveBreakpoint: LiveBreakpoint): Future<LiveBreakpoint> {
         return addLiveInstrument(liveBreakpoint).map { it as LiveBreakpoint }
     }
@@ -61,6 +62,7 @@ interface LiveInstrumentService {
     /**
      * Applies the given [LiveLog].
      */
+    @GenIgnore
     fun addLiveLog(liveLog: LiveLog): Future<LiveLog> {
         return addLiveInstrument(liveLog).map { it as LiveLog }
     }
@@ -68,6 +70,7 @@ interface LiveInstrumentService {
     /**
      * Applies the given [LiveSpan].
      */
+    @GenIgnore
     fun addLiveMeter(liveMeter: LiveMeter): Future<LiveMeter> {
         return addLiveInstrument(liveMeter).map { it as LiveMeter }
     }
@@ -75,6 +78,7 @@ interface LiveInstrumentService {
     /**
      * Applies the given [LiveSpan].
      */
+    @GenIgnore
     fun addLiveSpan(liveSpan: LiveSpan): Future<LiveSpan> {
         return addLiveInstrument(liveSpan).map { it as LiveSpan }
     }
@@ -105,6 +109,7 @@ interface LiveInstrumentService {
     /**
      * Gets all [LiveBreakpoint]s.
      */
+    @GenIgnore
     fun getLiveBreakpoints(): Future<List<LiveBreakpoint>> {
         return getLiveInstruments(LiveInstrumentType.BREAKPOINT).map { it as List<LiveBreakpoint> }
     }
@@ -112,6 +117,7 @@ interface LiveInstrumentService {
     /**
      * Gets all [LiveLog]s.
      */
+    @GenIgnore
     fun getLiveLogs(): Future<List<LiveLog>> {
         return getLiveInstruments(LiveInstrumentType.LOG).map { it as List<LiveLog> }
     }
@@ -119,6 +125,7 @@ interface LiveInstrumentService {
     /**
      * Gets all [LiveMeter]s.
      */
+    @GenIgnore
     fun getLiveMeters(): Future<List<LiveMeter>> {
         return getLiveInstruments(LiveInstrumentType.METER).map { it as List<LiveMeter> }
     }
@@ -126,6 +133,7 @@ interface LiveInstrumentService {
     /**
      * Gets all [LiveSpan]s.
      */
+    @GenIgnore
     fun getLiveSpans(): Future<List<LiveSpan>> {
         return getLiveInstruments(LiveInstrumentType.SPAN).map { it as List<LiveSpan> }
     }
@@ -133,6 +141,7 @@ interface LiveInstrumentService {
     /**
      * Removes [LiveBreakpoint]s created by the developer invoking this method.
      */
+    @GenIgnore
     fun clearLiveBreakpoints(): Future<Boolean> {
         return clearLiveInstruments(LiveInstrumentType.BREAKPOINT)
     }
@@ -140,6 +149,7 @@ interface LiveInstrumentService {
     /**
      * Removes [LiveLog]s created by the developer invoking this method.
      */
+    @GenIgnore
     fun clearLiveLogs(): Future<Boolean> {
         return clearLiveInstruments(LiveInstrumentType.LOG)
     }
@@ -147,6 +157,7 @@ interface LiveInstrumentService {
     /**
      * Removes [LiveMeter]s created by the developer invoking this method.
      */
+    @GenIgnore
     fun clearLiveMeters(): Future<Boolean> {
         return clearLiveInstruments(LiveInstrumentType.METER)
     }
@@ -154,6 +165,7 @@ interface LiveInstrumentService {
     /**
      * Removes [LiveSpan]s created by the developer invoking this method.
      */
+    @GenIgnore
     fun clearLiveSpans(): Future<Boolean> {
         return clearLiveInstruments(LiveInstrumentType.SPAN)
     }
@@ -161,6 +173,7 @@ interface LiveInstrumentService {
     /**
      * Removes [LiveBreakpoint]s created by all developers.
      */
+    @GenIgnore
     fun clearAllLiveBreakpoints(): Future<Boolean> {
         return clearAllLiveInstruments(LiveInstrumentType.BREAKPOINT)
     }
@@ -168,6 +181,7 @@ interface LiveInstrumentService {
     /**
      * Removes [LiveLog]s created by all developers.
      */
+    @GenIgnore
     fun clearAllLiveLogs(): Future<Boolean> {
         return clearAllLiveInstruments(LiveInstrumentType.LOG)
     }
@@ -175,6 +189,7 @@ interface LiveInstrumentService {
     /**
      * Removes [LiveMeter]s created by all developers.
      */
+    @GenIgnore
     fun clearAllLiveMeters(): Future<Boolean> {
         return clearAllLiveInstruments(LiveInstrumentType.METER)
     }
@@ -182,6 +197,7 @@ interface LiveInstrumentService {
     /**
      * Removes [LiveSpan]s created by all developers.
      */
+    @GenIgnore
     fun clearAllLiveSpans(): Future<Boolean> {
         return clearAllLiveInstruments(LiveInstrumentType.SPAN)
     }
