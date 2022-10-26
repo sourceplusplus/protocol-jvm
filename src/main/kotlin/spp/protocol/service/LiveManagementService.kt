@@ -56,6 +56,7 @@ interface LiveManagementService {
     fun addDeveloper(id: String): Future<Developer>
     fun addRole(role: DeveloperRole): Future<Boolean>
     fun addDeveloperRole(developerId: String, role: DeveloperRole): Future<Void>
+    fun addRolePermission(role: DeveloperRole, permission: RolePermission): Future<Void>
 
     //fun reset(): Future<Void> //todo: handle permission via JWT
     fun getRolePermissions(role: String): Future<List<RolePermission>>
