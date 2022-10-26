@@ -30,4 +30,10 @@ class PermissionAccessDenied(val permission: RolePermission, message: String? = 
     fun toEventBusException(): PermissionAccessDenied {
         return PermissionAccessDenied(permission, "EventBusException:PermissionAccessDenied[$permission]")
     }
+
+    companion object {
+        fun asEventBusException(permission: RolePermission): PermissionAccessDenied {
+            return PermissionAccessDenied(permission).toEventBusException()
+        }
+    }
 }
