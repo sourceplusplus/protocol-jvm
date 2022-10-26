@@ -34,10 +34,12 @@ data class LiveVariableControl(
         maxObjectDepth = json.getInteger("maxObjectDepth"),
         maxObjectSize = json.getInteger("maxObjectSize"),
         maxCollectionLength = json.getInteger("maxCollectionLength"),
-        variableTypeConfig = json.getJsonObject("variableTypeConfig")
-            .associate { it.key to LiveVariableControl(it.value as JsonObject) },
-        variableNameConfig = json.getJsonObject("variableNameConfig")
-            .associate { it.key to LiveVariableControl(it.value as JsonObject) }
+        variableTypeConfig = json.getJsonObject("variableTypeConfig")?.let {
+            it.associate { it.key to LiveVariableControl(it.value as JsonObject) }
+        }.orEmpty(),
+        variableNameConfig = json.getJsonObject("variableNameConfig")?.let {
+            it.associate { it.key to LiveVariableControl(it.value as JsonObject) }
+        }.orEmpty()
     )
 
     fun toJson(): JsonObject {
