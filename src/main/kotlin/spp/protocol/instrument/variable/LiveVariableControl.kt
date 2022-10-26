@@ -17,6 +17,7 @@
 package spp.protocol.instrument.variable
 
 import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 
 /**
@@ -27,18 +28,31 @@ data class LiveVariableControl(
     val maxObjectDepth: Int? = null,
     val maxObjectSize: Int? = null,
     val maxCollectionLength: Int? = null,
-    val variableTypeConfig: Map<String, LiveVariableControl> = emptyMap(),
-    val variableNameConfig: Map<String, LiveVariableControl> = emptyMap()
+    val variableTypeConfig: Map<String, LiveVariableControlBase> = emptyMap(),
+    val variableNameConfig: Map<String, LiveVariableControlBase> = emptyMap()
 ) {
     constructor(json: JsonObject) : this(
         maxObjectDepth = json.getInteger("maxObjectDepth"),
         maxObjectSize = json.getInteger("maxObjectSize"),
         maxCollectionLength = json.getInteger("maxCollectionLength"),
-        variableTypeConfig = json.getJsonObject("variableTypeConfig")?.let {
-            it.associate { it.key to LiveVariableControl(it.value as JsonObject) }
+
+        variableTypeConfig = json.getValue("variableTypeConfig")?.let {
+            when (it) {
+                is JsonObject -> it.associate { it.key to LiveVariableControlBase(it.value as JsonObject) }
+                is JsonArray -> it.map { JsonObject.mapFrom(it) }
+                    .associate { it.getString("type") to LiveVariableControlBase(it.getJsonObject("control")) }
+
+                else -> throw IllegalArgumentException("variableTypeConfig must be a JsonObject or JsonArray")
+            }
         }.orEmpty(),
-        variableNameConfig = json.getJsonObject("variableNameConfig")?.let {
-            it.associate { it.key to LiveVariableControl(it.value as JsonObject) }
+        variableNameConfig = json.getValue("variableNameConfig")?.let {
+            when (it) {
+                is JsonObject -> it.associate { it.key to LiveVariableControlBase(it.value as JsonObject) }
+                is JsonArray -> it.map { JsonObject.mapFrom(it) }
+                    .associate { it.getString("type") to LiveVariableControlBase(it.getJsonObject("control")) }
+
+                else -> throw IllegalArgumentException("variableTypeConfig must be a JsonObject or JsonArray")
+            }
         }.orEmpty()
     )
 
