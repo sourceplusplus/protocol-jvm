@@ -17,7 +17,9 @@
 package spp.protocol.instrument
 
 import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.meter.MeterTagValue
 import spp.protocol.instrument.meter.MeterType
 import spp.protocol.instrument.meter.MetricValue
 import spp.protocol.instrument.throttle.InstrumentThrottle
@@ -32,6 +34,7 @@ data class LiveMeter(
     val meterType: MeterType,
     val metricValue: MetricValue,
     val meterDescription: String? = null,
+    val meterTags: List<MeterTagValue> = emptyList(),
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
@@ -49,6 +52,7 @@ data class LiveMeter(
         MeterType.valueOf(json.getString("meterType")),
         MetricValue(json.getJsonObject("metricValue")),
         json.getString("meterDescription"),
+        json.getJsonArray("meterTags").map { MeterTagValue(it as JsonObject) },
         LiveSourceLocation(json.getJsonObject("location")),
         json.getString("condition"),
         json.getLong("expiresAt"),
@@ -67,6 +71,7 @@ data class LiveMeter(
         json.put("meterType", meterType.name)
         json.put("metricValue", metricValue.toJson())
         json.put("meterDescription", meterDescription)
+        json.put("meterTags", JsonArray().apply { meterTags.forEach { add(it.toJson()) } })
         json.put("location", location.toJson())
         json.put("condition", condition)
         json.put("expiresAt", expiresAt)
