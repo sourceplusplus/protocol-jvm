@@ -38,6 +38,11 @@ configure<app.cash.licensee.LicenseeExtension> {
     allow("MIT")
 }
 
+val sourcesJar = tasks.register<Jar>("sourcesJar") {
+    archiveClassifier.set("sources")
+    from(project.the<SourceSetContainer>()["main"].allSource)
+}
+
 configure<PublishingExtension> {
     repositories {
         maven {
@@ -58,6 +63,9 @@ configure<PublishingExtension> {
                 version = project.version.toString()
 
                 from(components["kotlin"])
+
+                // Ship the sources jar
+                artifact(sourcesJar)
             }
         }
     }
