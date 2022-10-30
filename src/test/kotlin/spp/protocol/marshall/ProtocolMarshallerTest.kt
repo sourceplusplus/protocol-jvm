@@ -28,9 +28,7 @@ import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
-import spp.protocol.instrument.meter.MeterType
-import spp.protocol.instrument.meter.MetricValue
-import spp.protocol.instrument.meter.MetricValueType
+import spp.protocol.instrument.meter.*
 import spp.protocol.instrument.throttle.InstrumentThrottle
 import spp.protocol.instrument.throttle.ThrottleStep
 import spp.protocol.instrument.variable.LiveVariable
@@ -45,6 +43,13 @@ class ProtocolMarshallerTest {
             MeterType.COUNT,
             MetricValue(MetricValueType.NUMBER, "1"),
             "meterDescription",
+            listOf(
+                MeterTagValue(
+                    "tagKey",
+                    MeterTagValueType.VALUE,
+                    "tagValue"
+                )
+            ),
             LiveSourceLocation("source", 1),
             "condition",
             System.currentTimeMillis(),
