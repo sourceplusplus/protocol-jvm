@@ -51,21 +51,8 @@ interface LiveViewService {
 
     fun saveRuleset(ruleset: LiveViewRuleset): Future<LiveViewRuleset>
     fun deleteRuleset(rulesetId: String): Future<LiveViewRuleset?>
-
-    @GenIgnore
-    fun deleteRuleset(ruleset: LiveViewRuleset): Future<LiveViewRuleset?> {
-        val id = ruleset.id ?: throw IllegalArgumentException("ruleset.id must not be null")
-        return deleteRuleset(id)
-    }
-
     fun saveRule(rule: LiveViewRule): Future<LiveViewRule>
-    fun deleteRule(ruleId: String): Future<LiveViewRule?>
-
-    @GenIgnore
-    fun deleteRule(rule: LiveViewRule): Future<LiveViewRule?> {
-        val id = rule.id ?: throw IllegalArgumentException("rule.id must not be null")
-        return deleteRule(id)
-    }
+    fun deleteRule(ruleName: String): Future<LiveViewRule?>
 
     fun addLiveView(subscription: LiveView): Future<LiveView>
     fun updateLiveView(id: String, subscription: LiveView): Future<LiveView>
