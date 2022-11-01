@@ -25,6 +25,8 @@ import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
 import spp.protocol.service.SourceServices.LIVE_VIEW
 import spp.protocol.view.LiveView
+import spp.protocol.view.rule.LiveViewRule
+import spp.protocol.view.rule.LiveViewRuleset
 
 /**
  * Back-end service for managing [LiveView]s.
@@ -46,6 +48,11 @@ interface LiveViewService {
             return LiveViewServiceVertxEBProxy(vertx, LIVE_VIEW, deliveryOptions)
         }
     }
+
+    fun saveRuleset(ruleset: LiveViewRuleset): Future<Void>
+    fun deleteRuleset(rulesetId: String): Future<Void>
+    fun saveRule(rule: LiveViewRule): Future<Void>
+    fun deleteRule(ruleId: String): Future<Void>
 
     fun addLiveView(subscription: LiveView): Future<LiveView>
     fun updateLiveView(id: String, subscription: LiveView): Future<LiveView>
