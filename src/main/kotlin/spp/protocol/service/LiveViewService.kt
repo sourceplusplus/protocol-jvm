@@ -49,12 +49,10 @@ interface LiveViewService {
         }
     }
 
-    fun saveRuleset(ruleset: LiveViewRuleset): Future<Void>
-    fun deleteRuleset(rulesetId: String): Future<Void>
-    fun deleteRuleset(ruleset: LiveViewRuleset)
-    fun saveRule(rule: LiveViewRule): Future<Void>
-    fun deleteRule(ruleId: String): Future<Void>
-    fun deleteRule(rule: LiveViewRule): Future<Void>
+    fun saveRuleset(ruleset: LiveViewRuleset): Future<LiveViewRuleset>
+    fun deleteRuleset(rulesetId: String): Future<LiveViewRuleset?>
+    fun saveRule(rule: LiveViewRule): Future<LiveViewRule>
+    fun deleteRule(ruleId: String): Future<LiveViewRule?>
 
     fun addLiveView(subscription: LiveView): Future<LiveView>
     fun updateLiveView(id: String, subscription: LiveView): Future<LiveView>

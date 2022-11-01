@@ -24,12 +24,14 @@ import io.vertx.core.json.JsonObject
 data class LiveViewRuleset(
     val expSuffix: String,
     val metricPrefix: String,
-    val metricsRules: List<LiveViewRule>
+    val metricsRules: List<LiveViewRule>,
+    val id: String? = null
 ) {
     constructor(json: JsonObject) : this(
         expSuffix = json.getString("expSuffix"),
         metricPrefix = json.getString("metricPrefix"),
-        metricsRules = json.getJsonArray("metricsRules").map { LiveViewRule(it as JsonObject) }
+        metricsRules = json.getJsonArray("metricsRules").map { LiveViewRule(it as JsonObject) },
+        id = json.getString("id")
     )
 
     fun toJson(): JsonObject {
@@ -37,6 +39,7 @@ data class LiveViewRuleset(
         json.put("expSuffix", expSuffix)
         json.put("metricPrefix", metricPrefix)
         json.put("metricsRules", JsonArray().apply { metricsRules.forEach { add(it.toJson()) } })
+        json.put("id", id)
         return json
     }
 }

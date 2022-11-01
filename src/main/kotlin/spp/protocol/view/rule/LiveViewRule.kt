@@ -22,18 +22,21 @@ import io.vertx.core.json.JsonObject
 @DataObject
 data class LiveViewRule(
     val name: String,
-    val exp: String
+    val exp: String,
+    val id: String? = null
 ) {
 
     constructor(json: JsonObject) : this(
         name = json.getString("name"),
-        exp = json.getString("exp")
+        exp = json.getString("exp"),
+        id = json.getString("id")
     )
 
     fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("name", name)
         json.put("exp", exp)
+        json.put("id", id)
         return json
     }
 }
