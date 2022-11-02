@@ -26,7 +26,6 @@ import io.vertx.core.json.JsonObject
 import spp.protocol.service.SourceServices.LIVE_VIEW
 import spp.protocol.view.LiveView
 import spp.protocol.view.rule.LiveViewRule
-import spp.protocol.view.rule.LiveViewRuleset
 
 /**
  * Back-end service for managing [LiveView]s.
@@ -49,8 +48,6 @@ interface LiveViewService {
         }
     }
 
-    fun saveRuleset(ruleset: LiveViewRuleset): Future<LiveViewRuleset>
-    fun deleteRuleset(rulesetId: String): Future<LiveViewRuleset?>
     fun saveRule(rule: LiveViewRule): Future<LiveViewRule>
     fun deleteRule(ruleName: String): Future<LiveViewRule?>
 
