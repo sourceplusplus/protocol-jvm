@@ -24,5 +24,6 @@ package spp.protocol.instrument.meter
 enum class MeterType {
     COUNT,
     GAUGE,
-    HISTOGRAM
+    HISTOGRAM,
+    METHOD_TIMER
 }

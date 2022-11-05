@@ -32,8 +32,7 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
 @DataObject
 data class LiveMeter(
     val meterType: MeterType,
-    val metricValue: MetricValue,
-    val meterDescription: String? = null,
+    val metricValue: MetricValue? = null,
     val meterTags: List<MeterTagValue> = emptyList(),
     override val location: LiveSourceLocation,
     override val condition: String? = null,
@@ -50,8 +49,7 @@ data class LiveMeter(
 
     constructor(json: JsonObject) : this(
         MeterType.valueOf(json.getString("meterType")),
-        MetricValue(json.getJsonObject("metricValue")),
-        json.getString("meterDescription"),
+        json.getJsonObject("metricValue")?.let { MetricValue(it) },
         json.getJsonArray("meterTags").map { MeterTagValue(it as JsonObject) },
         LiveSourceLocation(json.getJsonObject("location")),
         json.getString("condition"),
@@ -69,8 +67,7 @@ data class LiveMeter(
         val json = JsonObject()
         json.put("type", type.name)
         json.put("meterType", meterType.name)
-        json.put("metricValue", metricValue.toJson())
-        json.put("meterDescription", meterDescription)
+        metricValue?.toJson()?.let { json.put("metricValue", it) }
         json.put("meterTags", JsonArray().apply { meterTags.forEach { add(it.toJson()) } })
         json.put("location", location.toJson())
         json.put("condition", condition)

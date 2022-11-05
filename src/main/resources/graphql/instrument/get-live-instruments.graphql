@@ -47,7 +47,6 @@ query getLiveInstruments{
                 valueType
                 value
             }
-            meterDescription
         }
         ... on LiveSpan {
             operationName

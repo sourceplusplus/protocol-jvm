@@ -47,7 +47,6 @@ mutation removeLiveInstrument($id: String!) {
                 valueType
                 value
             }
-            meterDescription
         }
         ... on LiveSpan {
             operationName

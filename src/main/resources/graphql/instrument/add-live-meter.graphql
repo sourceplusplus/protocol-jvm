@@ -6,7 +6,6 @@ mutation addLiveMeter($input: LiveMeterInput!) {
             valueType
             value
         }
-        meterDescription
         location {
             source
             line

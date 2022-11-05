@@ -42,7 +42,6 @@ class ProtocolMarshallerTest {
         val liveInstrument = LiveMeter(
             MeterType.COUNT,
             MetricValue(MetricValueType.NUMBER, "1"),
-            "meterDescription",
             listOf(
                 MeterTagValue(
                     "tagKey",

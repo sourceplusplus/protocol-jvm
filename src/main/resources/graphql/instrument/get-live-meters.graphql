@@ -6,7 +6,6 @@ query getLiveMeters{
             valueType
             value
         }
-        meterDescription
         location {
             source
             line
