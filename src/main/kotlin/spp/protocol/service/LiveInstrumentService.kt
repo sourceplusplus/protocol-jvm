@@ -107,6 +107,14 @@ interface LiveInstrumentService {
     fun clearAllLiveInstruments(type: LiveInstrumentType?): Future<Boolean>
 
     /**
+     * Gets all [LiveInstrument]s.
+     */
+    @GenIgnore
+    fun getLiveInstruments(): Future<List<LiveInstrument>> {
+        return getLiveInstruments(null)
+    }
+
+    /**
      * Gets all [LiveBreakpoint]s.
      */
     @GenIgnore
@@ -139,6 +147,14 @@ interface LiveInstrumentService {
     }
 
     /**
+     * Removes [LiveInstrument]s created by the developer invoking this method.
+     */
+    @GenIgnore
+    fun clearLiveInstruments(): Future<Boolean> {
+        return clearLiveInstruments(null)
+    }
+
+    /**
      * Removes [LiveBreakpoint]s created by the developer invoking this method.
      */
     @GenIgnore
@@ -168,6 +184,14 @@ interface LiveInstrumentService {
     @GenIgnore
     fun clearLiveSpans(): Future<Boolean> {
         return clearLiveInstruments(LiveInstrumentType.SPAN)
+    }
+
+    /**
+     * Removes [LiveInstrument]s created by all developers.
+     */
+    @GenIgnore
+    fun clearAllLiveInstruments(): Future<Boolean> {
+        return clearAllLiveInstruments(null)
     }
 
     /**
