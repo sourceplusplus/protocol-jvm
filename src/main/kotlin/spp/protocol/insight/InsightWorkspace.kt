@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022-2023 CodeBrig, Inc.
+ * Copyright (C) 2022 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,20 @@
  */
 package spp.protocol.insight
 
-enum class InsightType {
-    FUNCTION_DURATION,
-    FUNCTION_DURATION_PREDICTION,
-    FUNCTION_CALL_COUNT,
-    FUNCTION_CALL_PROBABILITY,
-    LOOP_ITERATION_AVG,
-    LOOP_ITERATION_MAX,
-    LOOP_ITERATION_MIN,
-    LOOP_ITERATION_STDDEV,
-    LOOP_ITERATION_SUM,
-    LOOP_ITERATION_VARIANCE,
-    LOOP_DURATION_AVG,
-    LOOP_DURATION_MAX,
-    LOOP_DURATION_MIN,
-    LOOP_DURATION_STDDEV,
-    LOOP_DURATION_SUM,
-    LOOP_DURATION_VARIANCE,
-    PATH_DURATION,
-    PATH_EXECUTION_PROBABILITY,
-    CONTROL_STRUCTURE_PROBABILITY,
-    PATH_IS_RECURSIVE,
-    RECURSIVE_CALL,
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
+@DataObject
+data class InsightWorkspace(
+    val id: String,
+) {
+    constructor(json: JsonObject) : this(
+        id = json.getString("id")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("id", id)
+        return json
+    }
 }
