@@ -18,18 +18,22 @@ package spp.protocol.insight
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
+import java.time.Instant
 
 @DataObject
 data class InsightWorkspace(
     val id: String,
+    val createDate: Instant
 ) {
     constructor(json: JsonObject) : this(
-        id = json.getString("id")
+        id = json.getString("id"),
+        createDate = json.getInstant("createDate")
     )
 
     fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("id", id)
+        json.put("createDate", createDate)
         return json
     }
 }
