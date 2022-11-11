@@ -27,6 +27,7 @@ object SourceServices {
     const val LIVE_MANAGEMENT_SERVICE = "spp.service.live-management-service"
     const val LIVE_INSTRUMENT = "spp.service.live-instrument"
     const val LIVE_VIEW = "spp.service.live-view"
+    const val LIVE_INSIGHT = "spp.service.live-insight"
 
     object Subscribe {
         const val LIVE_INSTRUMENT_SUBSCRIBER = "$LIVE_INSTRUMENT.subscriber"
