@@ -34,6 +34,13 @@ data class MetricType(val metricId: String) {
         val Endpoint_RespTime = MetricType("endpoint_resp_time")
         val Endpoint_SLA = MetricType("endpoint_sla")
         val INSTANCE_JVM_CPU = MetricType("instance_jvm_cpu")
+
+        val ALL = listOf(
+            Endpoint_CPM,
+            Endpoint_RespTime,
+            Endpoint_SLA,
+            INSTANCE_JVM_CPU
+        )
     }
 
     constructor(jsonObject: JsonObject) : this(
