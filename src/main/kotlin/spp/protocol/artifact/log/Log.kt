@@ -19,6 +19,7 @@ package spp.protocol.artifact.log
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.exception.LiveStackTrace
+import spp.protocol.instrument.LiveSourceLocation
 import java.time.Instant
 
 /**
@@ -35,7 +36,8 @@ data class Log(
     val logger: String? = null,
     val thread: String? = null,
     val exception: LiveStackTrace? = null,
-    val arguments: List<String> = listOf()
+    val arguments: List<String> = listOf(),
+    val location: LiveSourceLocation? = null
 ) {
 
     constructor(json: JsonObject) : this(
@@ -45,7 +47,8 @@ data class Log(
         json.getString("logger"),
         json.getString("thread"),
         if (json.getValue("exception") != null) LiveStackTrace(json.getJsonObject("exception")) else null,
-        json.getJsonArray("arguments").map { it.toString() }
+        json.getJsonArray("arguments").map { it.toString() },
+        if (json.getValue("location") != null) LiveSourceLocation(json.getJsonObject("location")) else null
     )
 
     fun toFormattedMessage(): String {
