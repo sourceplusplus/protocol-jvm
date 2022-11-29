@@ -20,10 +20,16 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import java.time.Instant
 
+/**
+ * Represents a siloed CPG for performing live insight analyses. Every commit
+ * to a project is analysed in a new workspace. Workspaces are isolated from
+ * each other and can be deleted when no longer needed.
+ */
 @DataObject
 data class InsightWorkspace(
     val id: String,
-    val createDate: Instant
+    val createDate: Instant,
+    val config: JsonObject = JsonObject()
 ) {
     constructor(json: JsonObject) : this(
         id = json.getString("id"),
