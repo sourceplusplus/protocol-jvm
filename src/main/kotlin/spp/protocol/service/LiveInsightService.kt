@@ -57,6 +57,14 @@ interface LiveInsightService {
     fun uploadSourceCode(workspaceId: String, sourceCode: JsonObject): Future<Void>
 
     /**
+     * Uploads source code repository to the workspace.
+     *
+     * @param workspaceId The workspace to upload the source code to.
+     * @param repository The source code repository to upload.
+     */
+    fun uploadRepository(workspaceId: String, repository: JsonObject): Future<Void>
+
+    /**
      * Scans the workspace for insights.
      */
     fun scanWorkspace(workspaceId: String): Future<Void>
@@ -70,5 +78,10 @@ interface LiveInsightService {
 
 //    fun getMethodInsights(workspaceId: String, method: ArtifactQualifiedName): Future<JsonObject>
 
-//    fun getGraph(workspaceId: String): Future<JsonObject>
+    fun generateInsightGraph(workspaceId: String): Future<JsonObject>
+
+//    @GenIgnore
+//    suspend fun downloadInsightGraph(workspaceId: String): File {
+//        generateInsightGraph(workspaceId).await()
+//    }
 }
