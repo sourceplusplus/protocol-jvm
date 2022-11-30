@@ -46,7 +46,7 @@ data class LiveSpan(
         location = LiveSourceLocation(json.getJsonObject("location")),
         condition = json.getString("condition"),
         expiresAt = json.getLong("expiresAt"),
-        hitLimit = json.getInteger("hitLimit"),
+        hitLimit = json.getInteger("hitLimit") ?: -1,
         id = json.getString("id"),
         applyImmediately = json.getBoolean("applyImmediately") ?: false,
         applied = json.getBoolean("applied") ?: false,

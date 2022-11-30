@@ -40,7 +40,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
 
     constructor(json: JsonObject) : this(
         source = json.getString("source"),
-        line = json.getInteger("line"),
+        line = json.getInteger("line") ?: -1,
         service = json.getString("service"),
         serviceInstance = json.getString("serviceInstance"),
         commitId = json.getString("commitId"),

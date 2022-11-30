@@ -54,7 +54,7 @@ data class LiveMeter(
         LiveSourceLocation(json.getJsonObject("location")),
         json.getString("condition"),
         json.getLong("expiresAt"),
-        json.getInteger("hitLimit"),
+        json.getInteger("hitLimit") ?: -1,
         json.getString("id"),
         json.getBoolean("applyImmediately") ?: false,
         json.getBoolean("applied") ?: false,
