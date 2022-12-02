@@ -78,8 +78,6 @@ interface LiveInsightService {
 
 //    fun getMethodInsights(workspaceId: String, method: ArtifactQualifiedName): Future<JsonObject>
 
-    fun generateInsightGraph(workspaceId: String): Future<JsonObject>
-
 //    @GenIgnore
 //    suspend fun downloadInsightGraph(workspaceId: String): File {
 //        generateInsightGraph(workspaceId).await()
