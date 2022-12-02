@@ -46,7 +46,7 @@ interface LiveInsightService {
      */
     fun createWorkspace(): Future<InsightWorkspace>
 //    fun getWorkspace(workspaceId: String): Future<InsightWorkspace>
-//    fun getWorkspaces(): Future<List<InsightWorkspace>>
+    fun getWorkspaces(): Future<List<InsightWorkspace>>
 //    fun deleteWorkspace(workspaceId: String): Future<Void>
 
     /**
