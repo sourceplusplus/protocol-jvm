@@ -16,8 +16,10 @@
  */
 package spp.protocol.insight
 
+import spp.protocol.artifact.ArtifactQualifiedName
+
 data class BranchProbability(
-    val artifact: String, //todo: ArtifactQualifiedName
+    val artifact: ArtifactQualifiedName,
     val probability: Double,
     val dominates: List<MethodCall>
 )
