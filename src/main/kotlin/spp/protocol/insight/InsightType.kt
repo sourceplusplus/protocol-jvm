@@ -18,6 +18,7 @@ package spp.protocol.insight
 
 enum class InsightType {
     METHOD_DURATION,
+    METHOD_DURATION_PREDICTION,
     METHOD_CALL_COUNT,
     METHOD_CALL_PROBABILITY,
     LOOP_ITERATION_AVG,
