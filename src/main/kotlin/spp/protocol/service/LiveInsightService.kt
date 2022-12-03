@@ -76,6 +76,10 @@ interface LiveInsightService {
 
     fun getArtifactInsights(workspaceId: String, artifact: ArtifactQualifiedName, types: JsonArray): Future<JsonObject>
 
+//    @GenIgnore
+//    fun getArtifactInsights(workspaceId: String, artifact: ArtifactQualifiedName): Future<JsonObject> {
+//    }
+
 //    fun getMethodInsights(workspaceId: String, method: ArtifactQualifiedName): Future<JsonObject>
 
 //    @GenIgnore

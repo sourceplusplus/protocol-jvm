@@ -21,7 +21,7 @@ import io.vertx.core.json.JsonObject
 import java.time.Instant
 
 /**
- * Represents a siloed CPG for performing live insight analyses. Every commit
+ * Represents a siloed workspace for performing live insight analyses. Every commit
  * to a project is analysed in a new workspace. Workspaces are isolated from
  * each other and can be deleted when no longer needed.
  */
