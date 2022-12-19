@@ -32,7 +32,10 @@ import spp.protocol.service.error.LiveInstrumentException
 import spp.protocol.service.error.LiveInstrumentException.ErrorType
 import spp.protocol.service.error.PermissionAccessDenied
 
-class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<AsyncResult<JsonObject>> {
+class TCPServiceFrameParser(
+    private val vertx: Vertx,
+    private val socket: NetSocket
+) : Handler<AsyncResult<JsonObject>> {
 
     override fun handle(event: AsyncResult<JsonObject>) {
         if (event.failed()) {
@@ -102,11 +105,18 @@ class TCPServiceFrameParser(val vertx: Vertx, val socket: NetSocket) : Handler<A
                 "LiveInstrumentException" -> error.initCause(
                     LiveInstrumentException(ErrorType.valueOf(exceptionParams), exceptionMessage)
                 )
-                "InstrumentAccessDenied" -> error.initCause(InstrumentAccessDenied(exceptionParams))
+
+                "InstrumentAccessDenied" -> error.initCause(
+                    InstrumentAccessDenied(exceptionParams)
+                )
+
                 "PermissionAccessDenied" -> error.initCause(
                     PermissionAccessDenied(RolePermission.valueOf(exceptionParams))
                 )
-                else -> TODO()
+
+                else -> error.initCause(
+                    Exception(exceptionMessage)
+                )
             }
             vertx.eventBus().publish(frame.getString("address"), error)
         } else {

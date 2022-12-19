@@ -17,23 +17,7 @@
 package spp.protocol.utils
 
 fun Int.toPrettyDuration(translate: (String) -> String = { it }): String {
-    val days = this / 86400000.0
-    if (days > 1) {
-        return "${days.toInt()}" + translate("dys")
-    }
-    val hours = this / 3600000.0
-    if (hours > 1) {
-        return "${hours.toInt()}" + translate("hrs")
-    }
-    val minutes = this / 60000.0
-    if (minutes > 1) {
-        return "${minutes.toInt()}" + translate("mins")
-    }
-    val seconds = this / 1000.0
-    if (seconds > 1) {
-        return "${seconds.toInt()}" + translate("secs")
-    }
-    return "$this" + translate("ms")
+    return toLong().toPrettyDuration(translate)
 }
 
 @JvmOverloads
@@ -50,18 +34,26 @@ fun Long.toPrettyDuration(translate: (String) -> String = { it }): String {
     val days = this / 86400000.0
     if (days > 1) {
         return "${days.toInt()}" + translate("dys")
+    } else if (days == 1.0) {
+        return "${days.toInt()}" + translate("dy")
     }
     val hours = this / 3600000.0
     if (hours > 1) {
         return "${hours.toInt()}" + translate("hrs")
+    } else if (hours == 1.0) {
+        return "${hours.toInt()}" + translate("hr")
     }
     val minutes = this / 60000.0
     if (minutes > 1) {
         return "${minutes.toInt()}" + translate("mins")
+    } else if (minutes == 1.0) {
+        return "${minutes.toInt()}" + translate("min")
     }
     val seconds = this / 1000.0
     if (seconds > 1) {
         return "${seconds.toInt()}" + translate("secs")
+    } else if (seconds == 1.0) {
+        return "${seconds.toInt()}" + translate("sec")
     }
     return "$this" + translate("ms")
 }

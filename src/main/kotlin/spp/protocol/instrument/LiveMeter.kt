@@ -48,19 +48,19 @@ data class LiveMeter(
     override val type: LiveInstrumentType = LiveInstrumentType.METER
 
     constructor(json: JsonObject) : this(
-        MeterType.valueOf(json.getString("meterType")),
-        json.getJsonObject("metricValue")?.let { MetricValue(it) },
-        json.getJsonArray("meterTags").map { MeterTagValue(it as JsonObject) },
-        LiveSourceLocation(json.getJsonObject("location")),
-        json.getString("condition"),
-        json.getLong("expiresAt"),
-        json.getInteger("hitLimit"),
-        json.getString("id"),
-        json.getBoolean("applyImmediately") ?: false,
-        json.getBoolean("applied") ?: false,
-        json.getBoolean("pending") ?: false,
-        json.getJsonObject("throttle")?.let { InstrumentThrottle(it) },
-        json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
+        meterType = MeterType.valueOf(json.getString("meterType")),
+        metricValue = json.getJsonObject("metricValue")?.let { MetricValue(it) },
+        meterTags = json.getJsonArray("meterTags").map { MeterTagValue(it as JsonObject) },
+        location = LiveSourceLocation(json.getJsonObject("location")),
+        condition = json.getString("condition"),
+        expiresAt = json.getLong("expiresAt"),
+        hitLimit = json.getInteger("hitLimit") ?: -1,
+        id = json.getString("id"),
+        applyImmediately = json.getBoolean("applyImmediately") ?: false,
+        applied = json.getBoolean("applied") ?: false,
+        pending = json.getBoolean("pending") ?: false,
+        throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) },
+        meta = json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
     )
 
     override fun toJson(): JsonObject {

@@ -22,6 +22,7 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.eventbus.ReplyException
 import io.vertx.core.json.JsonObject
 import spp.protocol.service.SourceServices.LIVE_VIEW
 import spp.protocol.view.LiveView
@@ -50,6 +51,17 @@ interface LiveViewService {
 
     fun saveRule(rule: LiveViewRule): Future<LiveViewRule>
     fun deleteRule(ruleName: String): Future<LiveViewRule?>
+
+    @GenIgnore
+    fun saveRuleIfAbsent(rule: LiveViewRule): Future<LiveViewRule> {
+        return saveRule(rule).recover { error ->
+            if (error is ReplyException && error.failureCode() == 409) {
+                Future.succeededFuture(rule)
+            } else {
+                Future.failedFuture(error)
+            }
+        }
+    }
 
     fun addLiveView(subscription: LiveView): Future<LiveView>
     fun updateLiveView(id: String, subscription: LiveView): Future<LiveView>
