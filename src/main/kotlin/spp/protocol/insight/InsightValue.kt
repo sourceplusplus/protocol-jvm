@@ -17,18 +17,16 @@
  */
 package spp.protocol.insight
 
-data class InsightValue<T>(
-    val value: T,
+data class InsightValue<V>(
+    val type: InsightType,
+    val value: V,
     val confidence: Double = 1.0,
     val derived: Boolean = false
 ) {
-    fun asDerived() = InsightValue(value, confidence, true)
+    fun asDerived() = InsightValue(type, value, confidence, true)
+    fun withConfidence(confidence: Double) = InsightValue(type, value, confidence, derived)
 
     companion object {
-        fun <T> of(value: T) = InsightValue(value)
-        fun <T> of(value: T, confidence: Double) = InsightValue(value, confidence)
-        fun <T> of(value: T, confidence: Double, derived: Boolean) = InsightValue(value, confidence, derived)
-
-        fun <T> derived(value: T) = InsightValue(value, derived = true)
+        fun <V> of(type: InsightType, value: V) = InsightValue(type, value)
     }
 }
