@@ -88,7 +88,7 @@ dependencies {
     annotationProcessor("io.vertx:vertx-codegen:$vertxVersion:processor")
     kapt(findProject("codegen") ?: project(":protocol:codegen"))
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
 }
 
 tasks.withType<JavaCompile> {
