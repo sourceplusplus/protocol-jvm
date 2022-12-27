@@ -31,13 +31,15 @@ data class MetricType(val metricId: String) {
 
     companion object {
         val Endpoint_CPM = MetricType("endpoint_cpm")
-        val Endpoint_RespTime = MetricType("endpoint_resp_time")
+        val Endpoint_RespTime_AVG = MetricType("endpoint_resp_time")
+        val Endpoint_RespTime_Percentiles = MetricType("endpoint_percentile")
         val Endpoint_SLA = MetricType("endpoint_sla")
         val INSTANCE_JVM_CPU = MetricType("instance_jvm_cpu")
 
         val ALL = listOf(
             Endpoint_CPM,
-            Endpoint_RespTime,
+            Endpoint_RespTime_AVG,
+            Endpoint_RespTime_Percentiles,
             Endpoint_SLA,
             INSTANCE_JVM_CPU
         )
@@ -70,7 +72,8 @@ data class MetricType(val metricId: String) {
     val simpleName: String
         get() = when (metricId.substringBefore("_realtime")) {
             Endpoint_CPM.metricId -> "Throughput"
-            Endpoint_RespTime.metricId -> "Response"
+            Endpoint_RespTime_AVG.metricId -> "Response"
+            Endpoint_RespTime_Percentiles.metricId -> "Response"
             Endpoint_SLA.metricId -> "SLA"
             INSTANCE_JVM_CPU.metricId -> "JVM CPU"
             else -> "Unknown"
