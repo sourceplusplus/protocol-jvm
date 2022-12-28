@@ -20,36 +20,33 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 
 /**
- * Represents a service.
+ * Represents a service instance.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @DataObject
-data class Service(
+data class ServiceInstance(
     val id: String,
     val name: String,
-    val group: String = "",
-    val shortName: String? = null,
-    val layers: List<String> = emptyList(),
-    val normal: Boolean = true
+    val language: String = "UNKNOWN",
+    val instanceUUID: String,
+    val attributes: Map<String, String> = emptyMap()
 ) {
     constructor(json: JsonObject) : this(
         json.getString("id"),
         json.getString("name"),
-        json.getString("group"),
-        json.getString("shortName"),
-        json.getJsonArray("layers").map { it as String },
-        json.getBoolean("normal")
+        json.getString("language"),
+        json.getString("instanceUUID"),
+        json.getJsonObject("attributes").associate { it.key to it.value.toString() }
     )
 
     fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("id", id)
         json.put("name", name)
-        json.put("group", group)
-        json.put("shortName", shortName)
-        json.put("layers", layers)
-        json.put("normal", normal)
+        json.put("language", language)
+        json.put("instanceUUID", instanceUUID)
+        json.put("attributes", JsonObject(attributes))
         return json
     }
 }
