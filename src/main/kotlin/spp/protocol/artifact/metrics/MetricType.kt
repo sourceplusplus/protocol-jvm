@@ -127,6 +127,18 @@ data class MetricType(val metricId: String) {
             else -> "Unknown"
         }
 
+    val unitConversion: Double
+        get() = when (metricId.substringBefore("_realtime")) {
+            Service_SLA.metricId -> 100.0
+            Service_Instance_SLA.metricId -> 100.0
+            Endpoint_SLA.metricId -> 100.0
+
+            INSTANCE_JVM_CPU.metricId -> 100.0
+            else -> 1.0
+        }
+
+    val requiresConversion: Boolean = unitConversion != 1.0
+
     val isRealtime: Boolean = metricId.endsWith("_realtime")
 
     @Deprecated("use metricId instead", ReplaceWith("metricId"))
