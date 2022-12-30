@@ -107,6 +107,26 @@ data class MetricType(val metricId: String) {
             else -> "Unknown"
         }
 
+    val unitType: String
+        get() = when (metricId.substringBefore("_realtime")) {
+            Service_CPM.metricId -> "req/min"
+            Service_Instance_CPM.metricId -> "req/min"
+            Endpoint_CPM.metricId -> "req/min"
+
+            Service_RespTime_AVG.metricId -> "ms"
+            Service_Instance_RespTime_AVG.metricId -> "ms"
+            Endpoint_RespTime_AVG.metricId -> "ms"
+            Service_RespTime_Percentiles.metricId -> "ms"
+            Endpoint_RespTime_Percentiles.metricId -> "ms"
+
+            Service_SLA.metricId -> "%"
+            Service_Instance_SLA.metricId -> "%"
+            Endpoint_SLA.metricId -> "%"
+
+            INSTANCE_JVM_CPU.metricId -> "%"
+            else -> "Unknown"
+        }
+
     val isRealtime: Boolean = metricId.endsWith("_realtime")
 
     @Deprecated("use metricId instead", ReplaceWith("metricId"))
