@@ -137,7 +137,8 @@ data class MetricType(val metricId: String) {
             else -> 1.0
         }
 
-    val requiresConversion: Boolean = unitConversion != 1.0
+    val requiresConversion: Boolean
+        get() = unitConversion != 1.0
 
     val isRealtime: Boolean = metricId.endsWith("_realtime")
 
