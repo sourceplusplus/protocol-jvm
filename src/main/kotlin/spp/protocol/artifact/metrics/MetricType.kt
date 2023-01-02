@@ -93,15 +93,15 @@ data class MetricType(val metricId: String) {
             Service_Instance_CPM.metricId -> "Throughput"
             Endpoint_CPM.metricId -> "Throughput"
 
-            Service_RespTime_AVG.metricId -> "Response"
-            Service_Instance_RespTime_AVG.metricId -> "Response"
-            Endpoint_RespTime_AVG.metricId -> "Response"
-            Service_RespTime_Percentiles.metricId -> "Response"
-            Endpoint_RespTime_Percentiles.metricId -> "Response"
+            Service_RespTime_AVG.metricId -> "Latency"
+            Service_Instance_RespTime_AVG.metricId -> "Latency"
+            Endpoint_RespTime_AVG.metricId -> "Latency"
+            Service_RespTime_Percentiles.metricId -> "Latency"
+            Endpoint_RespTime_Percentiles.metricId -> "Latency"
 
-            Service_SLA.metricId -> "SLA"
-            Service_Instance_SLA.metricId -> "SLA"
-            Endpoint_SLA.metricId -> "SLA"
+            Service_SLA.metricId -> "Availability"
+            Service_Instance_SLA.metricId -> "Availability"
+            Endpoint_SLA.metricId -> "Availability"
 
             INSTANCE_JVM_CPU.metricId -> "JVM CPU"
             else -> "Unknown"
