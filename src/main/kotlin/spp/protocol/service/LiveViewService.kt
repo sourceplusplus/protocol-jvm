@@ -39,6 +39,7 @@ import java.time.Instant
  */
 @ProxyGen
 @VertxGen
+@Suppress("TooManyFunctions") // public API
 interface LiveViewService {
 
     @GenIgnore

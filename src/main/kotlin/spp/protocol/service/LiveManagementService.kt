@@ -41,6 +41,7 @@ import spp.protocol.service.SourceServices.LIVE_MANAGEMENT_SERVICE
  */
 @ProxyGen
 @VertxGen
+@Suppress("TooManyFunctions") // public API
 interface LiveManagementService {
 
     @GenIgnore

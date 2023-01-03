@@ -33,6 +33,7 @@ import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
  */
 @ProxyGen
 @VertxGen
+@Suppress("TooManyFunctions") // public API
 interface LiveInstrumentService {
 
     @GenIgnore
