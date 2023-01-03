@@ -38,4 +38,7 @@ enum class MetricStep(val formatter: DateTimeFormatter) {
             HOUR -> 3600
             DAY -> 86400
         }
+
+    val milliseconds: Int
+        get() = seconds * 1000
 }
