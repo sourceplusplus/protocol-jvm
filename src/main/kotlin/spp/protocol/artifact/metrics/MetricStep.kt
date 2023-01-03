@@ -29,5 +29,13 @@ enum class MetricStep(val formatter: DateTimeFormatter) {
     SECOND(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmmss").withZone(ZoneOffset.UTC)),
     MINUTE(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm").withZone(ZoneOffset.UTC)),
     HOUR(DateTimeFormatter.ofPattern("yyyy-MM-dd HH").withZone(ZoneOffset.UTC)),
-    DAY(DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC))
+    DAY(DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC));
+
+    val seconds: Int
+        get() = when (this) {
+            SECOND -> 1
+            MINUTE -> 60
+            HOUR -> 3600
+            DAY -> 86400
+        }
 }
