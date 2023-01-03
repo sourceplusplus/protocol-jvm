@@ -25,20 +25,38 @@ import java.time.format.DateTimeFormatter
  * @since 0.7.6
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-enum class MetricStep(val formatter: DateTimeFormatter) {
-    SECOND(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmmss").withZone(ZoneOffset.UTC)),
-    MINUTE(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm").withZone(ZoneOffset.UTC)),
-    HOUR(DateTimeFormatter.ofPattern("yyyy-MM-dd HH").withZone(ZoneOffset.UTC)),
-    DAY(DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC));
+enum class MetricStep {
+    SECOND,
+    MINUTE,
+    HOUR,
+    DAY;
 
-    val seconds: Int
-        get() = when (this) {
+    val seconds: Int by lazy {
+        when (this) {
             SECOND -> 1
             MINUTE -> 60
             HOUR -> 3600
             DAY -> 86400
         }
+    }
 
-    val milliseconds: Int
-        get() = seconds * 1000
+    val milliseconds: Int by lazy { seconds * 1000 }
+
+    val formatter: DateTimeFormatter by lazy {
+        when (this) {
+            SECOND -> DateTimeFormatter.ofPattern("yyyy-MM-dd HHmmss").withZone(ZoneOffset.UTC)
+            MINUTE -> DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm").withZone(ZoneOffset.UTC)
+            HOUR -> DateTimeFormatter.ofPattern("yyyy-MM-dd HH").withZone(ZoneOffset.UTC)
+            DAY -> DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC)
+        }
+    }
+
+    val bucketFormatter: DateTimeFormatter by lazy {
+        when (this) {
+            SECOND -> DateTimeFormatter.ofPattern("yyyyMMddHHmmss").withZone(ZoneOffset.UTC)
+            MINUTE -> DateTimeFormatter.ofPattern("yyyyMMddHHmm").withZone(ZoneOffset.UTC)
+            HOUR -> DateTimeFormatter.ofPattern("yyyyMMddHH").withZone(ZoneOffset.UTC)
+            DAY -> DateTimeFormatter.ofPattern("yyyyMMdd").withZone(ZoneOffset.UTC)
+        }
+    }
 }
