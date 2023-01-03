@@ -40,7 +40,9 @@ enum class MetricStep {
         }
     }
 
-    val milliseconds: Int by lazy { seconds * 1000 }
+    val milliseconds: Int by lazy {
+        seconds * 1000
+    }
 
     val formatter: DateTimeFormatter by lazy {
         when (this) {
