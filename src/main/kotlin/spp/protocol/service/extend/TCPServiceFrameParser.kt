@@ -77,6 +77,8 @@ class TCPServiceFrameParser(
                 handleErrorFrame(frame)
             } else if (body is JsonObject && body.getString("message")?.startsWith("EventBusException:") == true) {
                 handleErrorFrame(body.put("address", frame.getString("address")))
+            } else if (frame.getString("type") == "err") {
+                handleErrorFrame(frame)
             } else {
                 vertx.eventBus().publish(frame.getString("address"), body)
             }
@@ -118,6 +120,13 @@ class TCPServiceFrameParser(
                     Exception(exceptionMessage)
                 )
             }
+            vertx.eventBus().publish(frame.getString("address"), error)
+        } else if (frame.getString("type") == "err") {
+            val error = ReplyException(
+                ReplyFailure.valueOf(frame.getString("failureType")),
+                frame.getInteger("failureCode") ?: 500,
+                frame.getString("message")
+            )
             vertx.eventBus().publish(frame.getString("address"), error)
         } else {
             throw UnsupportedOperationException(frame.toString())
