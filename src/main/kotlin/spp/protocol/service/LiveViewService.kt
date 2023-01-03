@@ -75,6 +75,16 @@ interface LiveViewService {
     fun clearLiveViews(): Future<List<LiveView>>
     fun getLiveViewStats(): Future<JsonObject>
 
+    @GenIgnore
+    fun getHistoricalMetrics(
+        entityIds: List<String>,
+        metricIds: List<String>,
+        step: MetricStep,
+        start: Instant
+    ): Future<HistoricalView> {
+        return getHistoricalMetrics(entityIds, metricIds, step, start, null)
+    }
+
     fun getHistoricalMetrics(
         entityIds: List<String>,
         metricIds: List<String>,
