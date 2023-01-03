@@ -67,7 +67,7 @@ data class MetricType(val metricId: String) {
     )
 
     fun toJson(): JsonObject {
-        return JsonObject.mapFrom(this)
+        return JsonObject().put("metricId", metricId)
     }
 
     @Deprecated("v9.0.0+ only")
