@@ -142,6 +142,13 @@ data class MetricType(val metricId: String) {
 
     val isRealtime: Boolean = metricId.endsWith("_realtime")
 
+    val scope: String = when (metricId.substringBefore("_")) {
+        "service" -> "Service"
+        "service_instance", "instance" -> "ServiceInstance"
+        "endpoint" -> "Endpoint"
+        else -> error("Unknown metric scope: $metricId")
+    }
+
     @Deprecated("use metricId instead", ReplaceWith("metricId"))
     fun getMetricId(swVersion: String): String {
         aliases()?.forEach { (alias, predicate) ->
