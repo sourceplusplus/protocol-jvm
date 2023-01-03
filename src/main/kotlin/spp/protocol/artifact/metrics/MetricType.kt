@@ -156,11 +156,11 @@ data class MetricType(val metricId: String) {
         return MetricType(metricId + "_realtime")
     }
 
-    fun equalsIgnoringRealtime(other: MetricType): Boolean {
-        return equalsIgnoringRealtime(other.metricId)
+    fun equalsIgnoringRealtime(otherMetricType: MetricType): Boolean {
+        return equalsIgnoringRealtime(otherMetricType.metricId)
     }
 
-    fun equalsIgnoringRealtime(metricId: String): Boolean {
-        return metricId.substringBefore("_realtime") == metricId.substringBefore("_realtime")
+    fun equalsIgnoringRealtime(otherMetricId: String): Boolean {
+        return metricId.substringBefore("_realtime") == otherMetricId.substringBefore("_realtime")
     }
 }
