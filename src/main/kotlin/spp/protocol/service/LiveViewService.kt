@@ -24,9 +24,12 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyException
 import io.vertx.core.json.JsonObject
+import spp.protocol.artifact.metrics.MetricStep
 import spp.protocol.service.SourceServices.LIVE_VIEW
+import spp.protocol.view.HistoricalView
 import spp.protocol.view.LiveView
 import spp.protocol.view.rule.LiveViewRule
+import java.time.Instant
 
 /**
  * Back-end service for managing [LiveView]s.
@@ -70,4 +73,12 @@ interface LiveViewService {
     fun getLiveViews(): Future<List<LiveView>>
     fun clearLiveViews(): Future<List<LiveView>>
     fun getLiveViewStats(): Future<JsonObject>
+
+    fun getHistoricalMetrics(
+        entityIds: List<String>,
+        metricIds: List<String>,
+        step: MetricStep,
+        start: Instant,
+        stop: Instant?
+    ): Future<HistoricalView>
 }
