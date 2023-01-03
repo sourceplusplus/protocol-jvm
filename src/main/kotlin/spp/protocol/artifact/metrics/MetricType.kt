@@ -164,6 +164,10 @@ data class MetricType(val metricId: String) {
         return MetricType(metricId + "_realtime")
     }
 
+    fun asHistorical(): MetricType {
+        return MetricType(metricId.substringBefore("_realtime"))
+    }
+
     fun equalsIgnoringRealtime(otherMetricType: MetricType): Boolean {
         return equalsIgnoringRealtime(otherMetricType.metricId)
     }
