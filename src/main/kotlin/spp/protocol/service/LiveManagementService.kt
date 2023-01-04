@@ -55,6 +55,8 @@ interface LiveManagementService {
         }
     }
 
+    fun getVersion(): Future<String>
+
     fun getAuthToken(accessToken: String): Future<String>
     fun addDeveloper(id: String): Future<Developer>
     fun addRole(role: DeveloperRole): Future<Boolean>
