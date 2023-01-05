@@ -25,7 +25,10 @@ import spp.protocol.platform.auth.RolePermission
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-class PermissionAccessDenied(val permission: RolePermission, message: String? = null) : ServiceException(403, message) {
+class PermissionAccessDenied(
+    val permission: RolePermission,
+    message: String = "Permission denied: $permission"
+) : ServiceException(403, message) {
 
     fun toEventBusException(): PermissionAccessDenied {
         return PermissionAccessDenied(permission, "EventBusException:PermissionAccessDenied[$permission]")
