@@ -24,7 +24,7 @@ import io.vertx.serviceproxy.ServiceException
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-class InstrumentAccessDenied(val instrumentLocation: String, message: String? = null) : ServiceException(500, message) {
+class InstrumentAccessDenied(val instrumentLocation: String, message: String? = null) : ServiceException(403, message) {
 
     fun toEventBusException(): InstrumentAccessDenied {
         return InstrumentAccessDenied(
