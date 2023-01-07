@@ -32,7 +32,7 @@ import spp.protocol.service.error.LiveInstrumentException
 import spp.protocol.service.error.LiveInstrumentException.ErrorType
 import spp.protocol.service.error.PermissionAccessDenied
 
-class TCPServiceFrameParser(
+open class TCPServiceFrameParser(
     private val vertx: Vertx,
     private val socket: NetSocket
 ) : Handler<AsyncResult<JsonObject>> {
