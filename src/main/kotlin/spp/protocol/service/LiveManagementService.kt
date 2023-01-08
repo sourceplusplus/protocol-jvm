@@ -23,9 +23,7 @@ import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonObject
-import spp.protocol.platform.auth.ClientAccess
-import spp.protocol.platform.auth.DeveloperRole
-import spp.protocol.platform.auth.RolePermission
+import spp.protocol.platform.auth.*
 import spp.protocol.platform.developer.Developer
 import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
@@ -57,14 +55,42 @@ interface LiveManagementService {
 
     fun getVersion(): Future<String>
 
-    fun getAuthToken(accessToken: String): Future<String>
-    fun addDeveloper(id: String): Future<Developer>
-    fun addRole(role: DeveloperRole): Future<Boolean>
-    fun addDeveloperRole(developerId: String, role: DeveloperRole): Future<Void>
-    fun addRolePermission(role: DeveloperRole, permission: RolePermission): Future<Void>
+    fun getAccessPermissions(): Future<List<AccessPermission>>
+    fun getAccessPermission(id: String): Future<AccessPermission>
+    fun addAccessPermission(locationPatterns: List<String>, type: AccessType): Future<AccessPermission>
+    fun removeAccessPermission(id: String): Future<Void>
+    fun getRoleAccessPermissions(role: DeveloperRole): Future<List<AccessPermission>>
+    fun addRoleAccessPermission(role: DeveloperRole, id: String): Future<Void>
+    fun removeRoleAccessPermission(role: DeveloperRole, id: String): Future<Void>
+    fun getDeveloperAccessPermissions(developerId: String): Future<List<AccessPermission>>
 
-    //fun reset(): Future<Void> //todo: handle permission via JWT
-    fun getRolePermissions(role: String): Future<List<RolePermission>>
+    fun getDataRedactions(): Future<List<DataRedaction>>
+    fun getDataRedaction(id: String): Future<DataRedaction>
+    fun addDataRedaction(id: String, type: RedactionType, lookup: String, replacement: String): Future<DataRedaction>
+    fun updateDataRedaction(id: String, type: RedactionType, lookup: String, replacement: String): Future<DataRedaction>
+    fun removeDataRedaction(id: String): Future<Void>
+    fun getRoleDataRedactions(role: DeveloperRole): Future<List<DataRedaction>>
+    fun addRoleDataRedaction(role: DeveloperRole, id: String): Future<Void>
+    fun removeRoleDataRedaction(role: DeveloperRole, id: String): Future<Void>
+    fun getDeveloperDataRedactions(developerId: String): Future<List<DataRedaction>>
+
+    fun getAuthToken(accessToken: String): Future<String>
+    fun getDevelopers(): Future<List<Developer>>
+    fun addDeveloper(developerId: String): Future<Developer>
+    fun removeDeveloper(developerId: String): Future<Void>
+    fun refreshDeveloperToken(developerId: String): Future<Developer>
+    fun getRoles(): Future<List<DeveloperRole>>
+    fun addRole(role: DeveloperRole): Future<Boolean>
+    fun removeRole(role: DeveloperRole): Future<Boolean>
+    fun getDeveloperRoles(developerId: String): Future<List<DeveloperRole>>
+    fun addDeveloperRole(developerId: String, role: DeveloperRole): Future<Void>
+    fun removeDeveloperRole(developerId: String, role: DeveloperRole): Future<Void>
+    fun getDeveloperPermissions(developerId: String): Future<List<RolePermission>>
+
+    fun reset(): Future<Void>
+    fun getRolePermissions(role: DeveloperRole): Future<List<RolePermission>>
+    fun addRolePermission(role: DeveloperRole, permission: RolePermission): Future<Void>
+    fun removeRolePermission(role: DeveloperRole, permission: RolePermission): Future<Void>
     fun getClientAccessors(): Future<List<ClientAccess>>
     fun getClientAccess(id: String): Future<ClientAccess?>
     fun addClientAccess(): Future<ClientAccess>
