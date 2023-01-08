@@ -36,7 +36,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
     val fileChecksum: String? = null, //todo: impl
     //val language: ArtifactLanguage? = null, //todo: impl
     val probeId: String? = null,
-    val scope: LocationScope? = LocationScope.LINE
+    val scope: LocationScope = LocationScope.LINE
 ) : Comparable<LiveSourceLocation> {
 
     constructor(json: JsonObject) : this(
@@ -48,7 +48,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
         fileChecksum = json.getString("fileChecksum"),
         //language = json.getString("language")?.let { ArtifactLanguage.valueOf(it) }
         probeId = json.getString("probeId"),
-        scope = json.getString("scope")?.let { LocationScope.valueOf(it) }
+        scope = json.getString("scope")?.let { LocationScope.valueOf(it) } ?: LocationScope.LINE
     )
 
     fun toJson(): JsonObject {
@@ -61,7 +61,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
         json.put("fileChecksum", fileChecksum)
         //json.put("language", language?.name)
         json.put("probeId", probeId)
-        scope?.let { json.put("scope", it.name) }
+        json.put("scope", scope.name)
         return json
     }
 
