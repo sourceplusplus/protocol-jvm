@@ -33,6 +33,10 @@ data class DataRedaction(
         json.getString("replacement")
     )
 
+    fun toJson(): JsonObject {
+        return JsonObject().put("id", id).put("type", type.name).put("lookup", lookup).put("replacement", replacement)
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || this::class != other::class) return false
