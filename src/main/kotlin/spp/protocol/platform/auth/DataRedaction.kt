@@ -34,7 +34,7 @@ data class DataRedaction(
     )
 
     fun toJson(): JsonObject {
-        return JsonObject().put("id", id).put("type", type.name).put("lookup", lookup).put("replacement", replacement)
+        return JsonObject.mapFrom(this)
     }
 
     override fun equals(other: Any?): Boolean {
