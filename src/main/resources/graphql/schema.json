@@ -793,6 +793,16 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "id",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "variableControl",
               "description": null,
               "type": {
@@ -1304,6 +1314,16 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "id",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "logFormat",
               "description": null,
               "type": {
@@ -1618,6 +1638,16 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "id",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "meterType",
               "description": null,
               "type": {
@@ -1642,16 +1672,6 @@
                   "name": "MetricValueInput",
                   "ofType": null
                 }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "id",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
               },
               "defaultValue": null
             },
@@ -2003,6 +2023,16 @@
           "description": null,
           "fields": null,
           "inputFields": [
+            {
+              "name": "id",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
             {
               "name": "operationName",
               "description": null,
