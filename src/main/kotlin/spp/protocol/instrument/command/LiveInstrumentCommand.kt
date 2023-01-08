@@ -19,7 +19,7 @@ package spp.protocol.instrument.command
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.LiveInstrument
-import spp.protocol.instrument.LiveSourceLocation
+import spp.protocol.instrument.location.LiveSourceLocation
 
 @DataObject
 data class LiveInstrumentCommand(

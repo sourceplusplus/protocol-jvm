@@ -23,11 +23,11 @@ import spp.protocol.artifact.exception.LiveStackTraceElement
 import spp.protocol.instrument.LiveBreakpoint
 import spp.protocol.instrument.LiveLog
 import spp.protocol.instrument.LiveMeter
-import spp.protocol.instrument.LiveSourceLocation
 import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
+import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.meter.*
 import spp.protocol.instrument.throttle.InstrumentThrottle
 import spp.protocol.instrument.throttle.ThrottleStep

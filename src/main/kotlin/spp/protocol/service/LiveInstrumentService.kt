@@ -23,6 +23,7 @@ import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import spp.protocol.instrument.*
+import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
 
 /**

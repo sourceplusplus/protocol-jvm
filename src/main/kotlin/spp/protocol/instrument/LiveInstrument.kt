@@ -17,6 +17,7 @@
 package spp.protocol.instrument
 
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.throttle.InstrumentThrottle
 
 /**

@@ -20,7 +20,7 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
-import spp.protocol.instrument.LiveSourceLocation
+import spp.protocol.instrument.location.LiveSourceLocation
 
 /**
  * A back-end subscription to events/metrics for a given set of entities.

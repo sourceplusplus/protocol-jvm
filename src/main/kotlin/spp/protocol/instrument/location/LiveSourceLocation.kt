@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.instrument
+package spp.protocol.instrument.location
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject

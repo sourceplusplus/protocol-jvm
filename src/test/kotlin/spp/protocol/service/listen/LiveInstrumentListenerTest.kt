@@ -30,8 +30,8 @@ import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.log.LogOrderType
 import spp.protocol.artifact.log.LogResult
 import spp.protocol.instrument.LiveBreakpoint
-import spp.protocol.instrument.LiveSourceLocation
 import spp.protocol.instrument.event.*
+import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 import java.time.Instant
 import java.util.concurrent.TimeUnit

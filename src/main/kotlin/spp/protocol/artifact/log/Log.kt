@@ -19,7 +19,7 @@ package spp.protocol.artifact.log
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.exception.LiveStackTrace
-import spp.protocol.instrument.LiveSourceLocation
+import spp.protocol.instrument.location.LiveSourceLocation
 import java.time.Instant
 
 /**
