@@ -31,6 +31,7 @@ data class InstrumentThrottle(
 ) {
     companion object {
         val DEFAULT: InstrumentThrottle = InstrumentThrottle(1, ThrottleStep.SECOND)
+        val NONE: InstrumentThrottle = InstrumentThrottle(-1, ThrottleStep.SECOND)
     }
 
     constructor(json: JsonObject) : this(
