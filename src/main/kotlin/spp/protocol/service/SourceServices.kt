@@ -33,6 +33,8 @@ object SourceServices {
         const val LIVE_INSTRUMENT_SUBSCRIBER = "$LIVE_INSTRUMENT.subscriber"
         const val LIVE_VIEW_SUBSCRIBER = "$LIVE_VIEW.subscriber"
 
+        fun toLiveInstrumentSubscription(instrumentId: String): String = "$LIVE_INSTRUMENT_SUBSCRIBER:$instrumentId"
+        fun toLiveViewSubscription(viewId: String): String = "$LIVE_INSTRUMENT_SUBSCRIBER:$viewId"
         fun toLiveInstrumentSubscriberAddress(selfId: String): String = "$LIVE_INSTRUMENT_SUBSCRIBER:$selfId"
         fun toLiveViewSubscriberAddress(selfId: String): String = "$LIVE_VIEW_SUBSCRIBER:$selfId"
     }
