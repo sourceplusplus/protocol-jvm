@@ -30,7 +30,7 @@ import spp.protocol.platform.general.Service
 import spp.protocol.platform.general.ServiceEndpoint
 import spp.protocol.platform.general.ServiceInstance
 import spp.protocol.platform.status.InstanceConnection
-import spp.protocol.service.SourceServices.LIVE_MANAGEMENT_SERVICE
+import spp.protocol.service.SourceServices.LIVE_MANAGEMENT
 
 /**
  * Back-end service for general and administrative tasks.
@@ -49,7 +49,7 @@ interface LiveManagementService {
             val deliveryOptions = DeliveryOptions().apply {
                 authToken?.let { addHeader("auth-token", it) }
             }
-            return LiveManagementServiceVertxEBProxy(vertx, LIVE_MANAGEMENT_SERVICE, deliveryOptions)
+            return LiveManagementServiceVertxEBProxy(vertx, LIVE_MANAGEMENT, deliveryOptions)
         }
     }
 
