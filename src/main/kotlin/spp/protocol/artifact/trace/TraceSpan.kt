@@ -16,6 +16,8 @@
  */
 package spp.protocol.artifact.trace
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
 import java.time.Instant
 
@@ -25,6 +27,7 @@ import java.time.Instant
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class TraceSpan(
     val traceId: String,
     val segmentId: String,
@@ -48,35 +51,32 @@ data class TraceSpan(
     val logs: List<TraceSpanLogEntry> = emptyList(),
     val meta: MutableMap<String, String> = mutableMapOf()
 ) {
-    fun putMetaInt(tag: String, value: Int) {
-        meta[tag] = value.toString()
-    }
 
-    fun putMetaLong(tag: String, value: Long) {
-        meta[tag] = value.toString()
-    }
+    constructor(json: JsonObject) : this(
+        traceId = json.getString("traceId"),
+        segmentId = json.getString("segmentId"),
+        spanId = json.getInteger("spanId"),
+        parentSpanId = json.getInteger("parentSpanId"),
+        refs = json.getJsonArray("refs").map { TraceSpanRef(JsonObject.mapFrom(it)) },
+        serviceCode = json.getString("serviceCode"),
+        serviceInstanceName = json.getString("serviceInstanceName"),
+        startTime = Instant.parse(json.getString("startTime")),
+        endTime = Instant.parse(json.getString("endTime")),
+        endpointName = json.getString("endpointName"),
+        artifactQualifiedName = json.getJsonObject("artifactQualifiedName")?.let { ArtifactQualifiedName(it) },
+        type = json.getString("type"),
+        peer = json.getString("peer"),
+        component = json.getString("component"),
+        error = json.getBoolean("error"),
+        childError = json.getBoolean("childError"),
+        hasChildStack = json.getBoolean("hasChildStack"),
+        layer = json.getString("layer"),
+        tags = json.getJsonObject("tags").map { it.key to it.value.toString() }.toMap(),
+        logs = json.getJsonArray("logs").map { TraceSpanLogEntry(JsonObject.mapFrom(it)) },
+        meta = json.getJsonObject("meta").map { it.key to it.value.toString() }.toMap().toMutableMap()
+    )
 
-    fun putMetaDouble(tag: String, value: Double) {
-        meta[tag] = value.toString()
-    }
-
-    fun putMetaString(tag: String, value: String) {
-        meta[tag] = value
-    }
-
-    fun getMetaInt(tag: String): Int? {
-        return meta[tag]?.toIntOrNull()
-    }
-
-    fun getMetaLong(tag: String): Long {
-        return meta[tag]!!.toLong()
-    }
-
-    fun getMetaDouble(tag: String): Double {
-        return meta[tag]!!.toDouble()
-    }
-
-    fun getMetaString(tag: String): String {
-        return meta[tag]!!
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
     }
 }

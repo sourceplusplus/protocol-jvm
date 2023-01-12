@@ -22,12 +22,13 @@ import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.artifact.ArtifactType
 import java.time.Instant
 
-class TraceStackTest {
+class TraceSegmentTest {
 
     @Test
-    fun `trace stack deser`() {
-        val traceStack = TraceStack(
-            listOf(
+    fun `trace segment deser`() {
+        val traceSegment = TraceSegment(
+            segmentId = "segmentId",
+            traceSpans = listOf(
                 TraceSpan(
                     traceId = "traceId",
                     segmentId = "segmentId",
@@ -51,10 +52,11 @@ class TraceStackTest {
                     logs = emptyList(),
                     meta = mutableMapOf()
                 )
-            )
+            ),
+            depth = 0
         )
-        val json = traceStack.toJson()
-        val traceStack2 = TraceStack(json)
-        assertEquals(traceStack, traceStack2)
+        val json = traceSegment.toJson()
+        val traceSegment2 = TraceSegment(json)
+        assertEquals(traceSegment, traceSegment2)
     }
 }

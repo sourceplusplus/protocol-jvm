@@ -16,28 +16,29 @@
  */
 package spp.protocol.artifact.trace
 
-import io.vertx.codegen.annotations.DataObject
-import io.vertx.core.json.JsonObject
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import java.time.Instant
 
-/**
- * todo: description.
- *
- * @since 0.1.0
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-@DataObject
-data class TraceSpanLogEntry(
-    val time: Instant,
-    val data: String
-) {
+class TraceTest {
 
-    constructor(json: JsonObject) : this(
-        time = Instant.parse(json.getString("time")),
-        data = json.getString("data")
-    )
-
-    fun toJson(): JsonObject {
-        return JsonObject.mapFrom(this)
+    @Test
+    fun `trace deser`() {
+        val trace = Trace(
+            key = "key",
+            operationNames = listOf("operationNames"),
+            duration = 1,
+            start = Instant.now(),
+            error = false,
+            traceIds = listOf("traceIds"),
+            partial = false,
+            segmentId = "segmentId",
+            meta = mutableMapOf(
+                "key" to "value"
+            )
+        )
+        val json = trace.toJson()
+        val trace2 = Trace(json)
+        assertEquals(trace, trace2)
     }
 }

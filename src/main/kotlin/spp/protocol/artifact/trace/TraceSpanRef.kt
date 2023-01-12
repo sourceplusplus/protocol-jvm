@@ -16,15 +16,30 @@
  */
 package spp.protocol.artifact.trace
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
+@DataObject
 data class TraceSpanRef(
     val traceId: String,
     val parentSegmentId: String,
     val parentSpanId: Int,
     val type: String
-)
+) {
+    constructor(json: JsonObject) : this(
+        traceId = json.getString("traceId"),
+        parentSegmentId = json.getString("parentSegmentId"),
+        parentSpanId = json.getInteger("parentSpanId"),
+        type = json.getString("type")
+    )
+
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
+}

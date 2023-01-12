@@ -50,6 +50,10 @@ data class TraceResult(
         total = json.getInteger("total")
     )
 
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
+
     fun mergeWith(traceResult: TraceResult): TraceResult {
         var result: TraceResult = traceResult
         require(artifactQualifiedName == result.artifactQualifiedName) { "Mismatching artifact qualified name" }

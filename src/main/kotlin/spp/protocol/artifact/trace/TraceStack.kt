@@ -16,7 +16,8 @@
  */
 package spp.protocol.artifact.trace
 
-import spp.protocol.artifact.trace.TraceStack.Segment
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 
 /**
  * Represents a list of [TraceSpan]s as the equivalent tree structure.
@@ -24,15 +25,24 @@ import spp.protocol.artifact.trace.TraceStack.Segment
  * @since 0.1.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-data class TraceStack(val traceSpans: List<TraceSpan>) : Iterable<Segment> {
-    private val segmentMap: MutableMap<String, Segment> = mutableMapOf()
+@DataObject
+data class TraceStack(val traceSpans: List<TraceSpan>) : Iterable<TraceSegment> {
+    private val segmentMap: MutableMap<String, TraceSegment> = mutableMapOf()
     val isEmpty: Boolean = traceSpans.isEmpty()
     fun size(): Int = traceSpans.size
     val segments: Int
 
+    constructor(json: JsonObject) : this(
+        traceSpans = json.getJsonArray("traceSpans").map { TraceSpan(JsonObject.mapFrom(it)) }
+    )
+
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
+
     init {
         for ((segmentId, traceSpans) in traceSpans.groupBy { it.segmentId }) {
-            val segment = Segment(segmentId, traceSpans, traceSpans.distinctBy { it.parentSpanId }.size)
+            val segment = TraceSegment(segmentId, traceSpans, traceSpans.distinctBy { it.parentSpanId }.size)
             segmentMap[segmentId] = segment
             for (traceSpan in traceSpans) {
                 segment.spanMap[traceSpan.spanId] = traceSpan
@@ -64,11 +74,11 @@ data class TraceStack(val traceSpans: List<TraceSpan>) : Iterable<Segment> {
         return getSegment(traceSpan).getChildren(traceSpan)
     }
 
-    fun getSegment(segmentId: String): Segment {
+    fun getSegment(segmentId: String): TraceSegment {
         return segmentMap[segmentId]!!
     }
 
-    fun getSegment(traceSpan: TraceSpan): Segment {
+    fun getSegment(traceSpan: TraceSpan): TraceSegment {
         return segmentMap[traceSpan.segmentId]!!
     }
 
@@ -76,46 +86,7 @@ data class TraceStack(val traceSpans: List<TraceSpan>) : Iterable<Segment> {
         return segmentMap.keys.toList()
     }
 
-    override fun iterator(): Iterator<Segment> {
+    override fun iterator(): Iterator<TraceSegment> {
         return segmentMap.values.iterator()
-    }
-
-    data class Segment(
-        val segmentId: String,
-        val traceSpans: List<TraceSpan>,
-        val depth: Int = 0
-    ) : Collection<TraceSpan> {
-        internal val spanMap: MutableMap<Int, TraceSpan> = mutableMapOf()
-        internal val childSpanMap: MutableMap<TraceSpan, MutableList<TraceSpan>> = mutableMapOf()
-
-        fun getTraceSpan(spanId: Int): TraceSpan {
-            return spanMap[spanId]!!
-        }
-
-        fun getParent(spanId: Int): TraceSpan? {
-            return spanMap[getTraceSpan(spanId).parentSpanId]
-        }
-
-        fun getParent(traceSpan: TraceSpan): TraceSpan? {
-            return spanMap[traceSpan.parentSpanId]
-        }
-
-        fun hasChildren(traceSpan: TraceSpan): Boolean {
-            return getChildren(traceSpan).isNotEmpty()
-        }
-
-        fun getChildren(spanId: Int): List<TraceSpan> {
-            return childSpanMap[getTraceSpan(spanId)]?.toList() ?: emptyList()
-        }
-
-        fun getChildren(traceSpan: TraceSpan): List<TraceSpan> {
-            return childSpanMap[traceSpan]?.toList() ?: emptyList()
-        }
-
-        override val size: Int = traceSpans.size
-        override fun contains(element: TraceSpan): Boolean = traceSpans.contains(element)
-        override fun containsAll(elements: Collection<TraceSpan>): Boolean = traceSpans.containsAll(elements)
-        override fun isEmpty(): Boolean = traceSpans.isEmpty()
-        override fun iterator(): Iterator<TraceSpan> = traceSpans.iterator()
     }
 }
