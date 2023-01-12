@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022 CodeBrig, Inc.
+ * Copyright (C) 2022-2023 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ import spp.protocol.artifact.exception.LiveStackTraceElement
 import spp.protocol.instrument.LiveBreakpoint
 import spp.protocol.instrument.LiveLog
 import spp.protocol.instrument.LiveMeter
-import spp.protocol.instrument.LiveSourceLocation
 import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
+import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.meter.*
 import spp.protocol.instrument.throttle.InstrumentThrottle
 import spp.protocol.instrument.throttle.ThrottleStep

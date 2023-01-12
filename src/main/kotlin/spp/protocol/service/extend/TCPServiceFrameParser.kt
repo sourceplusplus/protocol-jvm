@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022 CodeBrig, Inc.
+ * Copyright (C) 2022-2023 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import spp.protocol.service.error.LiveInstrumentException
 import spp.protocol.service.error.LiveInstrumentException.ErrorType
 import spp.protocol.service.error.PermissionAccessDenied
 
-class TCPServiceFrameParser(
+open class TCPServiceFrameParser(
     private val vertx: Vertx,
     private val socket: NetSocket
 ) : Handler<AsyncResult<JsonObject>> {
@@ -77,6 +77,8 @@ class TCPServiceFrameParser(
                 handleErrorFrame(frame)
             } else if (body is JsonObject && body.getString("message")?.startsWith("EventBusException:") == true) {
                 handleErrorFrame(body.put("address", frame.getString("address")))
+            } else if (frame.getString("type") == "err") {
+                handleErrorFrame(frame)
             } else {
                 vertx.eventBus().publish(frame.getString("address"), body)
             }
@@ -118,6 +120,13 @@ class TCPServiceFrameParser(
                     Exception(exceptionMessage)
                 )
             }
+            vertx.eventBus().publish(frame.getString("address"), error)
+        } else if (frame.getString("type") == "err") {
+            val error = ReplyException(
+                ReplyFailure.valueOf(frame.getString("failureType")),
+                frame.getInteger("failureCode") ?: 500,
+                frame.getString("message")
+            )
             vertx.eventBus().publish(frame.getString("address"), error)
         } else {
             throw UnsupportedOperationException(frame.toString())

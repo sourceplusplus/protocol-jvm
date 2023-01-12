@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022 CodeBrig, Inc.
+ * Copyright (C) 2022-2023 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.artifact.trace
+package spp.protocol.instrument.location
 
 /**
- * todo: description.
+ * Allows for specifying [LiveSourceLocation] on lines, lambdas, or both.
  *
- * @since 0.1.0
+ * @since 0.7.7
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-data class TraceSpanStackQueryResult(
-    val traceSpans: List<TraceSpan>,
-    val total: Int
-)
+enum class LocationScope {
+    LINE,
+    LAMBDA,
+    BOTH
+}

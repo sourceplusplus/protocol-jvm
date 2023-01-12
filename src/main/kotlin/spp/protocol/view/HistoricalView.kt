@@ -14,42 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.platform.general
+package spp.protocol.view
 
 import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 
 /**
- * Represents a service.
+ * todo: description
  *
+ * @since 0.7.6
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @DataObject
-data class Service(
-    val id: String,
-    val name: String,
-    val group: String = "",
-    val shortName: String? = null,
-    val layers: List<String> = emptyList(),
-    val normal: Boolean = true
+data class HistoricalView(
+    val entityIds: List<String>,
+    val metricIds: List<String>,
+    val data: JsonArray = JsonArray() //todo: type out
 ) {
     constructor(json: JsonObject) : this(
-        json.getString("id"),
-        json.getString("name"),
-        json.getString("group"),
-        json.getString("shortName"),
-        json.getJsonArray("layers").map { it as String },
-        json.getBoolean("normal")
+        entityIds = json.getJsonArray("entityIds").map { it.toString() },
+        metricIds = json.getJsonArray("metricIds").map { it.toString() },
+        data = json.getJsonArray("data")
     )
 
     fun toJson(): JsonObject {
         val json = JsonObject()
-        json.put("id", id)
-        json.put("name", name)
-        json.put("group", group)
-        json.put("shortName", shortName)
-        json.put("layers", layers)
-        json.put("normal", normal)
+        json.put("entityIds", JsonArray().apply { entityIds.forEach { add(it) } })
+        json.put("metricIds", JsonArray().apply { metricIds.forEach { add(it) } })
+        json.put("data", data)
         return json
     }
 }

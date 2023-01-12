@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022 CodeBrig, Inc.
+ * Copyright (C) 2022-2023 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ package spp.protocol.service
  */
 object SourceServices {
 
-    const val LIVE_MANAGEMENT_SERVICE = "spp.service.live-management-service"
+    const val LIVE_MANAGEMENT = "spp.service.live-management"
     const val LIVE_INSTRUMENT = "spp.service.live-instrument"
     const val LIVE_VIEW = "spp.service.live-view"
     const val LIVE_INSIGHT = "spp.service.live-insight"
@@ -33,6 +33,8 @@ object SourceServices {
         const val LIVE_INSTRUMENT_SUBSCRIBER = "$LIVE_INSTRUMENT.subscriber"
         const val LIVE_VIEW_SUBSCRIBER = "$LIVE_VIEW.subscriber"
 
+        fun toLiveInstrumentSubscription(instrumentId: String): String = "$LIVE_INSTRUMENT_SUBSCRIBER:$instrumentId"
+        fun toLiveViewSubscription(viewId: String): String = "$LIVE_VIEW_SUBSCRIBER:$viewId"
         fun toLiveInstrumentSubscriberAddress(selfId: String): String = "$LIVE_INSTRUMENT_SUBSCRIBER:$selfId"
         fun toLiveViewSubscriberAddress(selfId: String): String = "$LIVE_VIEW_SUBSCRIBER:$selfId"
     }

@@ -2,7 +2,7 @@
 # https://github.com/detekt/detekt/blob/master/detekt-core/src/main/resources/default-detekt-config.yml
 
 build:
-  maxIssues: 9 #todo: zero out
+  maxIssues: 7 #todo: zero out
 
 formatting:
   Indentation:
@@ -15,6 +15,12 @@ formatting:
     active: false
   Wrapping:
     active: false
+  ArgumentListWrapping:
+    active: false
+  MultiLineIfElse:
+    active: false
+  AnnotationOnSeparateLine:
+    active: false
 
 style:
   MagicNumber:
@@ -26,16 +32,16 @@ style:
   WildcardImport:
     active: false
   MaxLineLength:
-    excludes: ['**/test/**']
+    excludes: [ '**/test/**' ]
 
 exceptions:
   TooGenericExceptionCaught:
     active: false
   TooGenericExceptionThrown:
-    excludes: ['**/test/**']
+    excludes: [ '**/test/**' ]
 
 complexity:
   LongParameterList:
     functionThreshold: 8
   LongMethod:
-    excludes: ['**/test/**']
+    excludes: [ '**/test/**' ]

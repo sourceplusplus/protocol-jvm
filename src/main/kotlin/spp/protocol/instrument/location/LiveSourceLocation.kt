@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022 CodeBrig, Inc.
+ * Copyright (C) 2022-2023 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.instrument
+package spp.protocol.instrument.location
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
@@ -36,6 +36,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
     val fileChecksum: String? = null, //todo: impl
     //val language: ArtifactLanguage? = null, //todo: impl
     val probeId: String? = null,
+    val scope: LocationScope = LocationScope.LINE
 ) : Comparable<LiveSourceLocation> {
 
     constructor(json: JsonObject) : this(
@@ -47,6 +48,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
         fileChecksum = json.getString("fileChecksum"),
         //language = json.getString("language")?.let { ArtifactLanguage.valueOf(it) }
         probeId = json.getString("probeId"),
+        scope = json.getString("scope")?.let { LocationScope.valueOf(it) } ?: LocationScope.LINE
     )
 
     fun toJson(): JsonObject {
@@ -59,6 +61,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
         json.put("fileChecksum", fileChecksum)
         //json.put("language", language?.name)
         json.put("probeId", probeId)
+        json.put("scope", scope.name)
         return json
     }
 

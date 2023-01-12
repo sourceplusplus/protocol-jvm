@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022 CodeBrig, Inc.
+ * Copyright (C) 2022-2023 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,12 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyException
 import io.vertx.core.json.JsonObject
+import spp.protocol.artifact.metrics.MetricStep
 import spp.protocol.service.SourceServices.LIVE_VIEW
+import spp.protocol.view.HistoricalView
 import spp.protocol.view.LiveView
 import spp.protocol.view.rule.LiveViewRule
+import java.time.Instant
 
 /**
  * Back-end service for managing [LiveView]s.
@@ -36,6 +39,7 @@ import spp.protocol.view.rule.LiveViewRule
  */
 @ProxyGen
 @VertxGen
+@Suppress("TooManyFunctions") // public API
 interface LiveViewService {
 
     @GenIgnore
@@ -70,4 +74,22 @@ interface LiveViewService {
     fun getLiveViews(): Future<List<LiveView>>
     fun clearLiveViews(): Future<List<LiveView>>
     fun getLiveViewStats(): Future<JsonObject>
+
+    @GenIgnore
+    fun getHistoricalMetrics(
+        entityIds: List<String>,
+        metricIds: List<String>,
+        step: MetricStep,
+        start: Instant
+    ): Future<HistoricalView> {
+        return getHistoricalMetrics(entityIds, metricIds, step, start, null)
+    }
+
+    fun getHistoricalMetrics(
+        entityIds: List<String>,
+        metricIds: List<String>,
+        step: MetricStep,
+        start: Instant,
+        stop: Instant?
+    ): Future<HistoricalView>
 }

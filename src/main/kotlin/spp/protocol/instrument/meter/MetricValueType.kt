@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022 CodeBrig, Inc.
+ * Copyright (C) 2022-2023 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,11 @@ enum class MetricValueType {
     NUMBER_EXPRESSION,
     VALUE,
     VALUE_SUPPLIER,
-    VALUE_EXPRESSION;
+    VALUE_EXPRESSION,
+    OBJECT_LIFESPAN;
 
     fun isAlwaysNumeric(): Boolean {
-        return this == NUMBER || this == NUMBER_SUPPLIER || this == NUMBER_EXPRESSION
+        return this == NUMBER || this == NUMBER_SUPPLIER || this == NUMBER_EXPRESSION || this == OBJECT_LIFESPAN
     }
 
     fun isExpression(): Boolean {

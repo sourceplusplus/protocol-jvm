@@ -1,6 +1,6 @@
 /*
  * Source++, the continuous feedback platform for developers.
- * Copyright (C) 2022 CodeBrig, Inc.
+ * Copyright (C) 2022-2023 CodeBrig, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import spp.protocol.instrument.*
+import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
 
 /**
@@ -33,6 +34,7 @@ import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
  */
 @ProxyGen
 @VertxGen
+@Suppress("TooManyFunctions") // public API
 interface LiveInstrumentService {
 
     @GenIgnore
