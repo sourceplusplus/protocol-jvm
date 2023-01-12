@@ -49,17 +49,9 @@ class MetricTypeTest {
         val endpointAvg = MetricType("endpoint_avg")
         assertEquals("endpoint_avg", endpointAvg.metricId)
         assertEquals("endpoint_avg_realtime", endpointAvg.asRealtime().metricId)
-        assertEquals("endpoint_resp_time", endpointAvg.getMetricId("9.0.0"))
-        assertEquals("endpoint_resp_time_realtime", endpointAvg.asRealtime().getMetricId("9.0.0"))
-        assertEquals("endpoint_avg", endpointAvg.getMetricId("8.0.0"))
-        assertEquals("endpoint_avg_realtime", endpointAvg.asRealtime().getMetricId("8.0.0"))
 
         val endpointRespTime = MetricType("endpoint_resp_time")
         assertEquals("endpoint_resp_time", endpointRespTime.metricId)
         assertEquals("endpoint_resp_time_realtime", endpointRespTime.asRealtime().metricId)
-        assertEquals("endpoint_resp_time", endpointRespTime.getMetricId("9.0.0"))
-        assertEquals("endpoint_resp_time_realtime", endpointRespTime.asRealtime().getMetricId("9.0.0"))
-        assertEquals("endpoint_avg", endpointRespTime.getMetricId("8.0.0"))
-        assertEquals("endpoint_avg_realtime", endpointRespTime.asRealtime().getMetricId("8.0.0"))
     }
 }

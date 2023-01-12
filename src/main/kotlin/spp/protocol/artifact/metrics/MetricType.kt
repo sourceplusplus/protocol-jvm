@@ -18,7 +18,6 @@ package spp.protocol.artifact.metrics
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
-import java.util.function.Predicate
 
 /**
  * todo: description.
@@ -68,23 +67,6 @@ data class MetricType(val metricId: String) {
 
     fun toJson(): JsonObject {
         return JsonObject().put("metricId", metricId)
-    }
-
-    @Deprecated("v9.0.0+ only")
-    fun aliases(): List<Pair<String, Predicate<String>>>? {
-        return when (metricId) {
-            "endpoint_resp_time", "endpoint_avg" -> listOf(
-                Pair("endpoint_resp_time", Predicate { it.startsWith("9") }),
-                Pair("endpoint_avg", Predicate { !it.startsWith("9") }),
-            )
-
-            "endpoint_resp_time_realtime", "endpoint_avg_realtime" -> listOf(
-                Pair("endpoint_resp_time_realtime", Predicate { it.startsWith("9") }),
-                Pair("endpoint_avg_realtime", Predicate { !it.startsWith("9") }),
-            )
-
-            else -> null
-        }
     }
 
     val simpleName: String
@@ -149,16 +131,6 @@ data class MetricType(val metricId: String) {
             "endpoint" -> "Endpoint"
             else -> error("Unknown metric scope: $metricId")
         }
-
-    @Deprecated("use metricId instead", ReplaceWith("metricId"))
-    fun getMetricId(swVersion: String): String {
-        aliases()?.forEach { (alias, predicate) ->
-            if (predicate.test(swVersion)) {
-                return alias
-            }
-        }
-        return metricId
-    }
 
     fun asRealtime(): MetricType {
         return MetricType(metricId + "_realtime")
