@@ -36,6 +36,6 @@ data class AccessPermission(
     )
 
     fun toJson(): JsonObject {
-        return JsonObject().put("id", id).put("locationPatterns", locationPatterns).put("type", type.name)
+        return JsonObject.mapFrom(this)
     }
 }
