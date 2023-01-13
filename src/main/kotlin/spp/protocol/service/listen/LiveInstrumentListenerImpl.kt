@@ -25,6 +25,13 @@ import spp.protocol.instrument.*
 import spp.protocol.instrument.event.*
 import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 
+/**
+ * Listen for [LiveInstrument] events.
+ *
+ * @param vertx the vertx instance
+ * @param subscriptionId the subscription id (can be developer id or instrument id)
+ * @param listener the listener to be called when an instrument event is received
+ */
 class LiveInstrumentListenerImpl(
     vertx: Vertx,
     subscriptionId: String,
