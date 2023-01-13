@@ -22,7 +22,7 @@ import spp.protocol.instrument.*
 import java.util.*
 
 /**
- * Used to transmit [LiveInstrument] messages.
+ * Used to transmit [LiveInstrument] messages over the event bus.
  */
 class LiveInstrumentCodec<T : LiveInstrument> : MessageCodec<T, T> {
     override fun encodeToWire(buffer: Buffer, o: T) {

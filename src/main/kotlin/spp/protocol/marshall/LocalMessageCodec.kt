@@ -21,7 +21,7 @@ import io.vertx.core.eventbus.MessageCodec
 import java.util.*
 
 /**
- * Used to transmit protocol messages.
+ * Used to transmit protocol messages over the event bus.
  *
  * @since 0.1.0
  */
