@@ -18,7 +18,6 @@ package spp.protocol.marshall
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
@@ -39,7 +38,6 @@ object ProtocolMarshaller {
             DatabindCodec.mapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
             DatabindCodec.mapper().enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
-            DatabindCodec.mapper().registerModule(KotlinModule())
         } catch (ignore: Throwable) {
         }
     }
