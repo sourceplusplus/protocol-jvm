@@ -19,13 +19,20 @@ package spp.protocol.service.listen
 import io.vertx.core.Future
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
+import spp.protocol.instrument.LiveInstrument
 
+/**
+ * Listen to [LiveInstrument] events for the given [subscriptionId].
+ *
+ * @param subscriptionId the subscription id (can be developer id or instrument id)
+ * @param listener the listener to be called when an instrument event is received
+ */
 fun Vertx.addLiveInstrumentListener(
-    developerId: String,
-    instrumentListener: LiveInstrumentListener
+    subscriptionId: String,
+    listener: LiveInstrumentListener
 ): Future<LiveInstrumentListenerImpl> {
     val promise = Promise.promise<LiveInstrumentListenerImpl>()
-    val instrumentListenerImpl = LiveInstrumentListenerImpl(this, developerId, instrumentListener)
+    val instrumentListenerImpl = LiveInstrumentListenerImpl(this, subscriptionId, listener)
     instrumentListenerImpl.consumer.completionHandler {
         if (it.succeeded()) {
             promise.complete(instrumentListenerImpl)
