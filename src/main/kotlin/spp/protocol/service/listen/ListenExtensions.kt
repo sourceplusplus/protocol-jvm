@@ -20,6 +20,8 @@ import io.vertx.core.Future
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
 import spp.protocol.instrument.LiveInstrument
+import spp.protocol.instrument.event.LiveBreakpointHit
+import spp.protocol.instrument.event.LiveLogHit
 
 /**
  * Listen to [LiveInstrument] events for the given [subscriptionId].
@@ -41,4 +43,38 @@ fun Vertx.addLiveInstrumentListener(
         }
     }
     return promise.future()
+}
+
+/**
+ * Listen to [LiveBreakpointHit] events for the given [subscriptionId].
+ *
+ * @param subscriptionId the subscription id (can be developer id or instrument id)
+ * @param listener the listener to be called when a breakpoint hit event is received
+ */
+fun Vertx.addBreakpointHitListener(
+    subscriptionId: String,
+    listener: (LiveBreakpointHit) -> Unit
+): Future<LiveInstrumentListenerImpl> {
+    return addLiveInstrumentListener(subscriptionId, object : LiveInstrumentListener {
+        override fun onBreakpointHitEvent(event: LiveBreakpointHit) {
+            listener(event)
+        }
+    })
+}
+
+/**
+ * Listen to [LiveLogHit] events for the given [subscriptionId].
+ *
+ * @param subscriptionId the subscription id (can be developer id or instrument id)
+ * @param listener the listener to be called when a log hit event is received
+ */
+fun Vertx.addLogHitListener(
+    subscriptionId: String,
+    listener: (LiveLogHit) -> Unit
+): Future<LiveInstrumentListenerImpl> {
+    return addLiveInstrumentListener(subscriptionId, object : LiveInstrumentListener {
+        override fun onLogHitEvent(event: LiveLogHit) {
+            listener(event)
+        }
+    })
 }
