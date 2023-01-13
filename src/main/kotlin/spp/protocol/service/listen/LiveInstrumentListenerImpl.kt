@@ -27,16 +27,16 @@ import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberA
 
 class LiveInstrumentListenerImpl(
     vertx: Vertx,
-    developerId: String,
-    private val instrumentListener: LiveInstrumentListener
+    subscriptionId: String,
+    private val listener: LiveInstrumentListener
 ) {
 
     internal var consumer: MessageConsumer<JsonObject>
 
     init {
-        consumer = vertx.eventBus().consumer(toLiveInstrumentSubscriberAddress(developerId)) {
+        consumer = vertx.eventBus().consumer(toLiveInstrumentSubscriberAddress(subscriptionId)) {
             val liveEvent = LiveInstrumentEvent(it.body())
-            instrumentListener.onInstrumentEvent(liveEvent)
+            listener.onInstrumentEvent(liveEvent)
 
             when (liveEvent.eventType) {
                 LiveInstrumentEventType.LOG_HIT -> onLogHitEvent(liveEvent)
@@ -56,7 +56,7 @@ class LiveInstrumentListenerImpl(
                 LiveInstrumentEventType.SPAN_REMOVED -> onInstrumentRemovedEvent(liveEvent)
             }
 
-            instrumentListener.afterInstrumentEvent(liveEvent)
+            listener.afterInstrumentEvent(liveEvent)
         }
     }
 
@@ -66,17 +66,17 @@ class LiveInstrumentListenerImpl(
 
     private fun onLogHitEvent(liveEvent: LiveInstrumentEvent) {
         val logHit = LiveLogHit(JsonObject(liveEvent.data))
-        instrumentListener.onLogHitEvent(logHit)
+        listener.onLogHitEvent(logHit)
     }
 
     private fun onBreakpointHitEvent(liveEvent: LiveInstrumentEvent) {
         val breakpointHit = LiveBreakpointHit(JsonObject(liveEvent.data))
-        instrumentListener.onBreakpointHitEvent(breakpointHit)
+        listener.onBreakpointHitEvent(breakpointHit)
     }
 
     private fun onBreakpointAddedEvent(liveEvent: LiveInstrumentEvent) {
         val breakpointAdded = LiveBreakpoint(JsonObject(liveEvent.data))
-        instrumentListener.onBreakpointAddedEvent(breakpointAdded)
+        listener.onBreakpointAddedEvent(breakpointAdded)
     }
 
     private fun onInstrumentRemovedEvent(liveEvent: LiveInstrumentEvent) {
@@ -84,27 +84,27 @@ class LiveInstrumentListenerImpl(
             val instrumentsRemoved = JsonArray(liveEvent.data)
             for (i in 0 until instrumentsRemoved.size()) {
                 val instrumentRemoved = LiveInstrumentRemoved(instrumentsRemoved.getJsonObject(i))
-                instrumentListener.onInstrumentRemovedEvent(instrumentRemoved)
+                listener.onInstrumentRemovedEvent(instrumentRemoved)
             }
         } else {
             val instrumentRemoved = LiveInstrumentRemoved(JsonObject(liveEvent.data))
-            instrumentListener.onInstrumentRemovedEvent(instrumentRemoved)
+            listener.onInstrumentRemovedEvent(instrumentRemoved)
         }
     }
 
     private fun onLogAddedEvent(liveEvent: LiveInstrumentEvent) {
         val logAdded = LiveLog(JsonObject(liveEvent.data))
-        instrumentListener.onLogAddedEvent(logAdded)
+        listener.onLogAddedEvent(logAdded)
     }
 
     private fun onInstrumentAppliedEvent(liveEvent: LiveInstrumentEvent) {
         val instrumentApplied = LiveInstrument.fromJson(JsonObject(liveEvent.data))
-        instrumentListener.onInstrumentAppliedEvent(instrumentApplied)
+        listener.onInstrumentAppliedEvent(instrumentApplied)
     }
 
     private fun onMeterAddedEvent(liveEvent: LiveInstrumentEvent) {
         val meterAdded = LiveMeter(JsonObject(liveEvent.data))
-        instrumentListener.onMeterAddedEvent(meterAdded)
+        listener.onMeterAddedEvent(meterAdded)
     }
 
     private fun onMeterUpdatedEvent(liveEvent: LiveInstrumentEvent) {
@@ -114,6 +114,6 @@ class LiveInstrumentListenerImpl(
 
     private fun onSpanAddedEvent(liveEvent: LiveInstrumentEvent) {
         val spanAdded = LiveSpan(JsonObject(liveEvent.data))
-        instrumentListener.onSpanAddedEvent(spanAdded)
+        listener.onSpanAddedEvent(spanAdded)
     }
 }
