@@ -16,6 +16,9 @@
  */
 package spp.protocol.platform.auth
 
+/**
+ * Restriction type for a [AccessPermission].
+ */
 enum class AccessType {
     BLACK_LIST,
     WHITE_LIST

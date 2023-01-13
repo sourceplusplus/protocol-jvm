@@ -18,6 +18,9 @@ package spp.protocol.platform.auth
 
 import spp.protocol.platform.auth.CommandType.*
 
+/**
+ * Lists the permissions that can be granted to a role.
+ */
 enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
     RESET(true, LIVE_MANAGEMENT_SERVICE),
 

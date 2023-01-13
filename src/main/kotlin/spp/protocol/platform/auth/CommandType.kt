@@ -16,6 +16,9 @@
  */
 package spp.protocol.platform.auth
 
+/**
+ * Represents the general scope of a [RolePermission].
+ */
 enum class CommandType {
     LIVE_MANAGEMENT_SERVICE,
     LIVE_VIEW,

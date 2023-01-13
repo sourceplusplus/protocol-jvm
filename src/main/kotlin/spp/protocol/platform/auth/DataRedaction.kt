@@ -18,7 +18,11 @@ package spp.protocol.platform.auth
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.variable.LiveVariable
 
+/**
+ * Used to implement PII redactions in [LiveVariable] and other data types.
+ */
 @DataObject
 data class DataRedaction(
     val id: String,

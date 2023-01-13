@@ -19,6 +19,11 @@ package spp.protocol.platform.auth
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 
+/**
+ * Used to define the access role of a developer. Developers can be assigned
+ * multiple roles and each role can be granted multiple permissions. The
+ * available permissions are defined by the [RolePermission] enum.
+ */
 @DataObject
 data class DeveloperRole(val roleName: String, val nativeRole: Boolean) {
     constructor(json: JsonObject) : this(

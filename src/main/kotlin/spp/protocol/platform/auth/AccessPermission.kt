@@ -18,7 +18,11 @@ package spp.protocol.platform.auth
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.LiveInstrument
 
+/**
+ * Location-based access control for a [LiveInstrument].
+ */
 @DataObject
 data class AccessPermission(
     val id: String,
