@@ -89,6 +89,13 @@ interface LiveInstrumentService {
     fun addLiveInstruments(instruments: List<LiveInstrument>): Future<List<LiveInstrument>>
     fun removeLiveInstrument(id: String): Future<LiveInstrument?>
     fun removeLiveInstruments(location: LiveSourceLocation): Future<List<LiveInstrument>>
+
+    @GenIgnore
+    fun getLiveInstrument(id: String): Future<LiveInstrument?> {
+        return getLiveInstrumentById(id)
+    }
+
+    @Deprecated("use getLiveInstrument", ReplaceWith("getLiveInstrument(id)"))
     fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
     fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
     fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
