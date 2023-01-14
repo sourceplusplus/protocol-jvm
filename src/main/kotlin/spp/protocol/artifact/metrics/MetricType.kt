@@ -59,6 +59,13 @@ data class MetricType(val metricId: String) {
             Endpoint_RespTime_Percentiles,
             INSTANCE_JVM_CPU
         )
+
+        fun fromBestGuess(source: String): MetricType {
+            val metricId = source.lowercase().replace(" ", "_")
+            val metricType = ALL.firstOrNull { it.metricId == metricId }
+            if (metricType != null) return metricType
+            return MetricType(metricId)
+        }
     }
 
     constructor(jsonObject: JsonObject) : this(
