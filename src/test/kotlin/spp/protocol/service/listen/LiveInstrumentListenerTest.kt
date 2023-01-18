@@ -63,7 +63,7 @@ class LiveInstrumentListenerTest {
             }
         })
         //todo: DataObjectMessageCodec
-        val event = LiveInstrumentEvent(LiveInstrumentEventType.LOG_HIT, logHit.toJson().toString())
+        val event = LiveInstrumentEvent.fromJson(logHit.toJson())
         vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"), JsonObject.mapFrom(event))
 
         if (testContext.awaitCompletion(5, TimeUnit.SECONDS)) {
@@ -100,7 +100,7 @@ class LiveInstrumentListenerTest {
             }
         })
         //todo: DataObjectMessageCodec
-        val event = LiveInstrumentEvent(LiveInstrumentEventType.BREAKPOINT_HIT, bpHit.toJson().toString())
+        val event = LiveInstrumentEvent.fromJson(bpHit.toJson())
         vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"), JsonObject.mapFrom(event))
 
         if (testContext.awaitCompletion(5, TimeUnit.SECONDS)) {
@@ -128,9 +128,6 @@ class LiveInstrumentListenerTest {
             ),
             Instant.now()
         )
-        val bpsRemoved = JsonArray()
-            .add(bpRemoved1.toJson())
-            .add(bpRemoved2.toJson())
 
         vertx.addLiveInstrumentListener("system", object : LiveInstrumentListener {
             override fun onInstrumentRemovedEvent(event: LiveInstrumentRemoved) {
@@ -145,8 +142,12 @@ class LiveInstrumentListenerTest {
             }
         })
         //todo: DataObjectMessageCodec
-        val event = LiveInstrumentEvent(LiveInstrumentEventType.BREAKPOINT_REMOVED, bpsRemoved.toString())
-        vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"), JsonObject.mapFrom(event))
+        vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"),
+            JsonObject.mapFrom(LiveInstrumentEvent.fromJson(bpRemoved1.toJson()))
+        )
+        vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"),
+            JsonObject.mapFrom(LiveInstrumentEvent.fromJson(bpRemoved2.toJson()))
+        )
 
         if (testContext.awaitCompletion(5, TimeUnit.SECONDS)) {
             if (testContext.failed()) {

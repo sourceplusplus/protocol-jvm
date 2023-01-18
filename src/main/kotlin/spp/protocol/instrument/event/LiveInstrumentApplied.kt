@@ -31,8 +31,8 @@ import java.time.Instant
 @DataObject
 data class LiveInstrumentApplied(
     val liveInstrument: LiveInstrument,
-    override val occurredAt: Instant = Instant.now()
-) : TrackedLiveEvent {
+    override val occurredAt: Instant
+) : LiveInstrumentEvent {
     override val eventType: LiveInstrumentEventType
         get() {
             return when (liveInstrument.type) {
@@ -48,7 +48,7 @@ data class LiveInstrumentApplied(
         occurredAt = Instant.parse(json.getString("occurredAt"))
     )
 
-    fun toJson(): JsonObject {
+    override fun toJson(): JsonObject {
         return JsonObject.mapFrom(this)
     }
 }

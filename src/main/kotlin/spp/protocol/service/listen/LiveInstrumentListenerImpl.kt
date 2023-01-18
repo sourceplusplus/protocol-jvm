@@ -19,10 +19,10 @@ package spp.protocol.service.listen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.MessageConsumer
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import spp.protocol.instrument.*
+import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.event.*
+import spp.protocol.instrument.event.LiveInstrumentEventType.*
 import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 
 /**
@@ -42,85 +42,32 @@ class LiveInstrumentListenerImpl(
 
     init {
         consumer = vertx.eventBus().consumer(toLiveInstrumentSubscriberAddress(subscriptionId)) {
-            val liveEvent = LiveInstrumentEvent(it.body())
-            listener.onInstrumentEvent(liveEvent)
+            val event = LiveInstrumentEvent.fromJson(it.body())
+            listener.onInstrumentEvent(event)
 
-            when (liveEvent.eventType) {
-                LiveInstrumentEventType.LOG_HIT -> onLogHitEvent(liveEvent)
-                LiveInstrumentEventType.BREAKPOINT_HIT -> onBreakpointHitEvent(liveEvent)
-                LiveInstrumentEventType.BREAKPOINT_ADDED -> onBreakpointAddedEvent(liveEvent)
-                LiveInstrumentEventType.BREAKPOINT_REMOVED -> onInstrumentRemovedEvent(liveEvent)
-                LiveInstrumentEventType.LOG_ADDED -> onLogAddedEvent(liveEvent)
-                LiveInstrumentEventType.LOG_REMOVED -> onInstrumentRemovedEvent(liveEvent)
-                LiveInstrumentEventType.BREAKPOINT_APPLIED -> onInstrumentAppliedEvent(liveEvent)
-                LiveInstrumentEventType.LOG_APPLIED -> onInstrumentAppliedEvent(liveEvent)
-                LiveInstrumentEventType.METER_ADDED -> onMeterAddedEvent(liveEvent)
-                LiveInstrumentEventType.METER_APPLIED -> onInstrumentAppliedEvent(liveEvent)
-                LiveInstrumentEventType.METER_UPDATED -> onMeterUpdatedEvent(liveEvent)
-                LiveInstrumentEventType.METER_REMOVED -> onInstrumentRemovedEvent(liveEvent)
-                LiveInstrumentEventType.SPAN_ADDED -> onSpanAddedEvent(liveEvent)
-                LiveInstrumentEventType.SPAN_APPLIED -> onInstrumentAppliedEvent(liveEvent)
-                LiveInstrumentEventType.SPAN_REMOVED -> onInstrumentRemovedEvent(liveEvent)
+            when (event.eventType) {
+                LOG_HIT -> listener.onLogHitEvent(event as LiveLogHit)
+                BREAKPOINT_HIT -> listener.onBreakpointHitEvent(event as LiveBreakpointHit)
+                BREAKPOINT_ADDED -> listener.onBreakpointAddedEvent(event as LiveInstrumentAdded)
+                BREAKPOINT_REMOVED -> listener.onInstrumentRemovedEvent(event as LiveInstrumentRemoved)
+                LOG_ADDED -> listener.onLogAddedEvent(event as LiveInstrumentAdded)
+                LOG_REMOVED -> listener.onInstrumentRemovedEvent(event as LiveInstrumentRemoved)
+                BREAKPOINT_APPLIED -> listener.onInstrumentAppliedEvent(event as LiveInstrumentApplied)
+                LOG_APPLIED -> listener.onInstrumentAppliedEvent(event as LiveInstrumentApplied)
+                METER_ADDED -> listener.onMeterAddedEvent(event as LiveInstrumentAdded)
+                METER_APPLIED -> listener.onInstrumentAppliedEvent(event as LiveInstrumentApplied)
+                METER_UPDATED -> Unit // TODO
+                METER_REMOVED -> listener.onInstrumentRemovedEvent(event as LiveInstrumentRemoved)
+                SPAN_ADDED -> listener.onSpanAddedEvent(event as LiveInstrumentAdded)
+                SPAN_APPLIED -> listener.onInstrumentAppliedEvent(event as LiveInstrumentApplied)
+                SPAN_REMOVED -> listener.onInstrumentRemovedEvent(event as LiveInstrumentRemoved)
             }
 
-            listener.afterInstrumentEvent(liveEvent)
+            listener.afterInstrumentEvent(event)
         }
     }
 
     fun unregister(): Future<Void> {
         return consumer.unregister()
-    }
-
-    private fun onLogHitEvent(liveEvent: LiveInstrumentEvent) {
-        val logHit = LiveLogHit(JsonObject(liveEvent.data))
-        listener.onLogHitEvent(logHit)
-    }
-
-    private fun onBreakpointHitEvent(liveEvent: LiveInstrumentEvent) {
-        val breakpointHit = LiveBreakpointHit(JsonObject(liveEvent.data))
-        listener.onBreakpointHitEvent(breakpointHit)
-    }
-
-    private fun onBreakpointAddedEvent(liveEvent: LiveInstrumentEvent) {
-        val breakpointAdded = LiveBreakpoint(JsonObject(liveEvent.data))
-        listener.onBreakpointAddedEvent(breakpointAdded)
-    }
-
-    private fun onInstrumentRemovedEvent(liveEvent: LiveInstrumentEvent) {
-        if (liveEvent.data.startsWith("[")) {
-            val instrumentsRemoved = JsonArray(liveEvent.data)
-            for (i in 0 until instrumentsRemoved.size()) {
-                val instrumentRemoved = LiveInstrumentRemoved(instrumentsRemoved.getJsonObject(i))
-                listener.onInstrumentRemovedEvent(instrumentRemoved)
-            }
-        } else {
-            val instrumentRemoved = LiveInstrumentRemoved(JsonObject(liveEvent.data))
-            listener.onInstrumentRemovedEvent(instrumentRemoved)
-        }
-    }
-
-    private fun onLogAddedEvent(liveEvent: LiveInstrumentEvent) {
-        val logAdded = LiveLog(JsonObject(liveEvent.data))
-        listener.onLogAddedEvent(logAdded)
-    }
-
-    private fun onInstrumentAppliedEvent(liveEvent: LiveInstrumentEvent) {
-        val instrumentApplied = LiveInstrument.fromJson(JsonObject(liveEvent.data))
-        listener.onInstrumentAppliedEvent(instrumentApplied)
-    }
-
-    private fun onMeterAddedEvent(liveEvent: LiveInstrumentEvent) {
-        val meterAdded = LiveMeter(JsonObject(liveEvent.data))
-        listener.onMeterAddedEvent(meterAdded)
-    }
-
-    private fun onMeterUpdatedEvent(liveEvent: LiveInstrumentEvent) {
-//        val meterUpdated = LiveMeterUpdated(JsonObject(liveEvent.data))
-//        handleMeterUpdatedEvent(meterUpdated)
-    }
-
-    private fun onSpanAddedEvent(liveEvent: LiveInstrumentEvent) {
-        val spanAdded = LiveSpan(JsonObject(liveEvent.data))
-        listener.onSpanAddedEvent(spanAdded)
     }
 }

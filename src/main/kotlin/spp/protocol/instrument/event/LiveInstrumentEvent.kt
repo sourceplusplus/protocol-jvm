@@ -17,6 +17,8 @@
 package spp.protocol.instrument.event
 
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.event.LiveInstrumentEventType.*
+import java.time.Instant
 
 /**
  * todo: description.
@@ -24,16 +26,36 @@ import io.vertx.core.json.JsonObject
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-data class LiveInstrumentEvent(
-    val eventType: LiveInstrumentEventType,
-    val data: String //todo: type out
-) {
-    constructor(json: JsonObject) : this(
-        LiveInstrumentEventType.valueOf(json.getString("eventType")),
-        json.getString("data")
-    )
+interface LiveInstrumentEvent {
 
-    fun toJson(): JsonObject {
-        return JsonObject.mapFrom(this)
+    val occurredAt: Instant
+    val eventType: LiveInstrumentEventType
+
+    fun toJson(): JsonObject
+
+    companion object {
+        @JvmStatic
+        fun fromJson(json: JsonObject): LiveInstrumentEvent {
+            return when (valueOf(json.getString("eventType"))) {
+                BREAKPOINT_ADDED -> LiveInstrumentAdded(json)
+                BREAKPOINT_APPLIED -> LiveInstrumentApplied(json)
+                BREAKPOINT_HIT -> LiveBreakpointHit(json)
+                BREAKPOINT_REMOVED -> LiveInstrumentRemoved(json)
+
+                LOG_ADDED -> LiveInstrumentAdded(json)
+                LOG_APPLIED -> LiveInstrumentApplied(json)
+                LOG_HIT -> LiveLogHit(json)
+                LOG_REMOVED -> LiveInstrumentRemoved(json)
+
+                METER_ADDED -> LiveInstrumentAdded(json)
+                METER_APPLIED -> LiveInstrumentApplied(json)
+                METER_REMOVED -> LiveInstrumentRemoved(json)
+                METER_UPDATED -> TODO()
+
+                SPAN_ADDED -> LiveInstrumentAdded(json)
+                SPAN_APPLIED -> LiveInstrumentApplied(json)
+                SPAN_REMOVED -> LiveInstrumentRemoved(json)
+            }
+        }
     }
 }

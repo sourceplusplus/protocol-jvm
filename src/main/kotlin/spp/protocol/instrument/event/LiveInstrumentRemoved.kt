@@ -34,7 +34,7 @@ data class LiveInstrumentRemoved(
     val liveInstrument: LiveInstrument,
     override val occurredAt: Instant,
     val cause: LiveStackTrace? = null
-) : TrackedLiveEvent {
+) : LiveInstrumentEvent {
     override val eventType: LiveInstrumentEventType
         get() {
             return when (liveInstrument.type) {
@@ -51,7 +51,7 @@ data class LiveInstrumentRemoved(
         cause = json.getJsonObject("cause")?.let { LiveStackTrace(it) }
     )
 
-    fun toJson(): JsonObject {
+    override fun toJson(): JsonObject {
         return JsonObject.mapFrom(this)
     }
 }

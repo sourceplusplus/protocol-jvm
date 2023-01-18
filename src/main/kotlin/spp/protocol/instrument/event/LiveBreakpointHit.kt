@@ -35,7 +35,7 @@ data class LiveBreakpointHit(
     val serviceInstance: String,
     val service: String,
     val stackTrace: LiveStackTrace
-) : TrackedLiveEvent {
+) : LiveInstrumentEvent {
     override val eventType: LiveInstrumentEventType = LiveInstrumentEventType.BREAKPOINT_HIT
 
     constructor(json: JsonObject) : this(
@@ -47,7 +47,7 @@ data class LiveBreakpointHit(
         LiveStackTrace(json.getJsonObject("stackTrace"))
     )
 
-    fun toJson(): JsonObject {
+    override fun toJson(): JsonObject {
         return JsonObject.mapFrom(this)
     }
 }
