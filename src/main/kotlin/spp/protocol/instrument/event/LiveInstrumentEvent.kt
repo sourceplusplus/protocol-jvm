@@ -32,4 +32,8 @@ data class LiveInstrumentEvent(
         LiveInstrumentEventType.valueOf(json.getString("eventType")),
         json.getString("data")
     )
+
+    fun toJson(): JsonObject {
+        return JsonObject.mapFrom(this)
+    }
 }
