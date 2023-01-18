@@ -52,10 +52,6 @@ data class LiveInstrumentRemoved(
     )
 
     fun toJson(): JsonObject {
-        val json = JsonObject()
-        json.put("liveInstrument", liveInstrument.toJson())
-        json.put("occurredAt", occurredAt.toString())
-        json.put("cause", cause?.toJson())
-        return json
+        return JsonObject.mapFrom(this)
     }
 }
