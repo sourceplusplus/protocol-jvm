@@ -19,6 +19,7 @@ package spp.protocol.instrument.event
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.log.LogResult
+import spp.protocol.instrument.LiveInstrument
 import java.time.Instant
 
 /**
@@ -29,20 +30,20 @@ import java.time.Instant
  */
 @DataObject
 data class LiveLogHit(
-    val logId: String,
+    override val instrument: LiveInstrument,
+    val logResult: LogResult,
     override val occurredAt: Instant,
-    val serviceInstance: String,
-    val service: String,
-    val logResult: LogResult
-) : LiveInstrumentEvent {
+    override val serviceInstance: String,
+    override val service: String
+) : LiveInstrumentHit {
     override val eventType: LiveInstrumentEventType = LiveInstrumentEventType.LOG_HIT
 
     constructor(json: JsonObject) : this(
-        json.getString("logId"),
+        LiveInstrument.fromJson(json.getJsonObject("instrument")),
+        LogResult(json.getJsonObject("logResult")),
         Instant.parse(json.getString("occurredAt")),
         json.getString("serviceInstance"),
-        json.getString("service"),
-        LogResult(json.getJsonObject("logResult"))
+        json.getString("service")
     )
 
     override fun toJson(): JsonObject {

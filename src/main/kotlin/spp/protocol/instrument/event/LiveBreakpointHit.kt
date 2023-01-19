@@ -19,6 +19,7 @@ package spp.protocol.instrument.event
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.exception.LiveStackTrace
+import spp.protocol.instrument.LiveInstrument
 import java.time.Instant
 
 /**
@@ -29,22 +30,22 @@ import java.time.Instant
  */
 @DataObject
 data class LiveBreakpointHit(
-    val breakpointId: String,
+    override val instrument: LiveInstrument,
     val traceId: String,
+    val stackTrace: LiveStackTrace,
     override val occurredAt: Instant,
-    val serviceInstance: String,
-    val service: String,
-    val stackTrace: LiveStackTrace
-) : LiveInstrumentEvent {
+    override val serviceInstance: String,
+    override val service: String
+) : LiveInstrumentHit {
     override val eventType: LiveInstrumentEventType = LiveInstrumentEventType.BREAKPOINT_HIT
 
     constructor(json: JsonObject) : this(
-        json.getString("breakpointId"),
+        LiveInstrument.fromJson(json.getJsonObject("instrument")),
         json.getString("traceId"),
+        LiveStackTrace(json.getJsonObject("stackTrace")),
         Instant.parse(json.getString("occurredAt")),
         json.getString("serviceInstance"),
-        json.getString("service"),
-        LiveStackTrace(json.getJsonObject("stackTrace"))
+        json.getString("service")
     )
 
     override fun toJson(): JsonObject {

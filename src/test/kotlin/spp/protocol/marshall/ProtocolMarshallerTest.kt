@@ -124,11 +124,14 @@ class ProtocolMarshallerTest {
     @Test
     fun testLiveBreakpointHit() {
         val liveBreakpointHit = LiveBreakpointHit(
-            "breakpointId",
+            LiveBreakpoint(
+                location = LiveSourceLocation(
+                    "source",
+                    10,
+                ),
+                condition = "1 == 1"
+            ),
             "traceId",
-            Instant.now(),
-            "serviceInstance",
-            "service",
             LiveStackTrace(
                 "exception",
                 "message",
@@ -174,7 +177,10 @@ class ProtocolMarshallerTest {
                         )
                     )
                 )
-            )
+            ),
+            Instant.now(),
+            "serviceInstance",
+            "service"
         )
 
         val serialized = liveBreakpointHit.toJson()

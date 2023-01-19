@@ -30,12 +30,12 @@ import java.time.Instant
  */
 @DataObject
 data class LiveInstrumentAdded(
-    val liveInstrument: LiveInstrument,
+    val instrument: LiveInstrument,
     override val occurredAt: Instant = Instant.now()
 ) : LiveInstrumentEvent {
     override val eventType: LiveInstrumentEventType
         get() {
-            return when (liveInstrument.type) {
+            return when (instrument.type) {
                 LiveInstrumentType.BREAKPOINT -> LiveInstrumentEventType.BREAKPOINT_ADDED
                 LiveInstrumentType.LOG -> LiveInstrumentEventType.LOG_ADDED
                 LiveInstrumentType.METER -> LiveInstrumentEventType.METER_ADDED
@@ -44,7 +44,7 @@ data class LiveInstrumentAdded(
         }
 
     constructor(json: JsonObject) : this(
-        liveInstrument = LiveInstrument.fromJson(json.getJsonObject("liveInstrument")),
+        instrument = LiveInstrument.fromJson(json.getJsonObject("instrument")),
         occurredAt = Instant.parse(json.getString("occurredAt"))
     )
 

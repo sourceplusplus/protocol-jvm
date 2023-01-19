@@ -17,7 +17,6 @@
 package spp.protocol.service.listen
 
 import io.vertx.core.Vertx
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.junit5.VertxExtension
 import io.vertx.junit5.VertxTestContext
@@ -30,6 +29,7 @@ import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.log.LogOrderType
 import spp.protocol.artifact.log.LogResult
 import spp.protocol.instrument.LiveBreakpoint
+import spp.protocol.instrument.LiveLog
 import spp.protocol.instrument.event.*
 import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
@@ -44,15 +44,24 @@ class LiveInstrumentListenerTest {
         val testContext = VertxTestContext()
 
         val logHit = LiveLogHit(
-            "logId",
-            Instant.now(),
-            "serviceInstance",
-            "service",
+            LiveLog(
+                "test {}",
+                listOf("b"),
+                location = LiveSourceLocation(
+                    "source",
+                    10,
+                ),
+                applyImmediately = true,
+                id = "id"
+            ),
             LogResult(
                 ArtifactQualifiedName("identifier", type = ArtifactType.EXPRESSION),
                 LogOrderType.NEWEST_LOGS,
                 Instant.now(),
-            )
+            ),
+            Instant.now(),
+            "serviceInstance",
+            "service"
         )
         vertx.addLiveInstrumentListener("system", object : LiveInstrumentListener {
             override fun onLogHitEvent(event: LiveLogHit) {
@@ -80,16 +89,22 @@ class LiveInstrumentListenerTest {
         val testContext = VertxTestContext()
 
         val bpHit = LiveBreakpointHit(
-            "breakpointId",
+            LiveBreakpoint(
+                location = LiveSourceLocation(
+                    "source",
+                    10,
+                ),
+                condition = "1 == 1"
+            ),
             "traceId",
-            Instant.now(),
-            "serviceInstance",
-            "service",
             LiveStackTrace(
                 "exceptionType",
                 "message",
                 mutableListOf()
-            )
+            ),
+            Instant.now(),
+            "serviceInstance",
+            "service",
         )
         vertx.addLiveInstrumentListener("system", object : LiveInstrumentListener {
             override fun onBreakpointHitEvent(event: LiveBreakpointHit) {
@@ -132,7 +147,7 @@ class LiveInstrumentListenerTest {
         vertx.addLiveInstrumentListener("system", object : LiveInstrumentListener {
             override fun onInstrumentRemovedEvent(event: LiveInstrumentRemoved) {
                 testContext.verify {
-                    if (event.liveInstrument.location.source.endsWith("1")) {
+                    if (event.instrument.location.source.endsWith("1")) {
                         assertEquals(bpRemoved1, event)
                     } else {
                         assertEquals(bpRemoved2, event)
@@ -142,10 +157,12 @@ class LiveInstrumentListenerTest {
             }
         })
         //todo: DataObjectMessageCodec
-        vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"),
+        vertx.eventBus().publish(
+            toLiveInstrumentSubscriberAddress("system"),
             JsonObject.mapFrom(LiveInstrumentEvent.fromJson(bpRemoved1.toJson()))
         )
-        vertx.eventBus().publish(toLiveInstrumentSubscriberAddress("system"),
+        vertx.eventBus().publish(
+            toLiveInstrumentSubscriberAddress("system"),
             JsonObject.mapFrom(LiveInstrumentEvent.fromJson(bpRemoved2.toJson()))
         )
 

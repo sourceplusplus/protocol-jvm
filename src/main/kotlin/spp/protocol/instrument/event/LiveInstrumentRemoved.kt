@@ -31,13 +31,13 @@ import java.time.Instant
  */
 @DataObject
 data class LiveInstrumentRemoved(
-    val liveInstrument: LiveInstrument,
+    val instrument: LiveInstrument,
     override val occurredAt: Instant,
     val cause: LiveStackTrace? = null
 ) : LiveInstrumentEvent {
     override val eventType: LiveInstrumentEventType
         get() {
-            return when (liveInstrument.type) {
+            return when (instrument.type) {
                 LiveInstrumentType.BREAKPOINT -> LiveInstrumentEventType.BREAKPOINT_REMOVED
                 LiveInstrumentType.LOG -> LiveInstrumentEventType.LOG_REMOVED
                 LiveInstrumentType.METER -> LiveInstrumentEventType.METER_REMOVED
@@ -46,7 +46,7 @@ data class LiveInstrumentRemoved(
         }
 
     constructor(json: JsonObject) : this(
-        liveInstrument = LiveInstrument.fromJson(json.getJsonObject("liveInstrument")),
+        instrument = LiveInstrument.fromJson(json.getJsonObject("instrument")),
         occurredAt = Instant.parse(json.getString("occurredAt")),
         cause = json.getJsonObject("cause")?.let { LiveStackTrace(it) }
     )
