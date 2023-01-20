@@ -46,19 +46,43 @@ class LiveInstrumentListenerImpl(
             listener.onInstrumentEvent(event)
 
             when (event.eventType) {
-                LOG_HIT -> listener.onLogHitEvent(event as LiveLogHit)
-                BREAKPOINT_HIT -> listener.onBreakpointHitEvent(event as LiveBreakpointHit)
-                BREAKPOINT_ADDED -> listener.onBreakpointAddedEvent(event as LiveInstrumentAdded)
+                BREAKPOINT_HIT -> {
+                    listener.onInstrumentHitEvent(event as LiveBreakpointHit)
+                    listener.onBreakpointHitEvent(event)
+                }
+
+                LOG_HIT -> {
+                    listener.onInstrumentHitEvent(event as LiveLogHit)
+                    listener.onLogHitEvent(event)
+                }
+
+                BREAKPOINT_ADDED -> {
+                    listener.onInstrumentAddedEvent(event as LiveInstrumentAdded)
+                    listener.onBreakpointAddedEvent(event)
+                }
+
                 BREAKPOINT_REMOVED -> listener.onInstrumentRemovedEvent(event as LiveInstrumentRemoved)
-                LOG_ADDED -> listener.onLogAddedEvent(event as LiveInstrumentAdded)
+                LOG_ADDED -> {
+                    listener.onInstrumentAddedEvent(event as LiveInstrumentAdded)
+                    listener.onLogAddedEvent(event)
+                }
+
                 LOG_REMOVED -> listener.onInstrumentRemovedEvent(event as LiveInstrumentRemoved)
                 BREAKPOINT_APPLIED -> listener.onInstrumentAppliedEvent(event as LiveInstrumentApplied)
                 LOG_APPLIED -> listener.onInstrumentAppliedEvent(event as LiveInstrumentApplied)
-                METER_ADDED -> listener.onMeterAddedEvent(event as LiveInstrumentAdded)
+                METER_ADDED -> {
+                    listener.onInstrumentAddedEvent(event as LiveInstrumentAdded)
+                    listener.onMeterAddedEvent(event)
+                }
+
                 METER_APPLIED -> listener.onInstrumentAppliedEvent(event as LiveInstrumentApplied)
                 METER_UPDATED -> Unit // TODO
                 METER_REMOVED -> listener.onInstrumentRemovedEvent(event as LiveInstrumentRemoved)
-                SPAN_ADDED -> listener.onSpanAddedEvent(event as LiveInstrumentAdded)
+                SPAN_ADDED -> {
+                    listener.onInstrumentAddedEvent(event as LiveInstrumentAdded)
+                    listener.onSpanAddedEvent(event)
+                }
+
                 SPAN_APPLIED -> listener.onInstrumentAppliedEvent(event as LiveInstrumentApplied)
                 SPAN_REMOVED -> listener.onInstrumentRemovedEvent(event as LiveInstrumentRemoved)
             }

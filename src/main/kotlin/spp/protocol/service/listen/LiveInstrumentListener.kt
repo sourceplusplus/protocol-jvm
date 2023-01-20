@@ -26,6 +26,12 @@ interface LiveInstrumentListener {
     fun afterInstrumentEvent(event: LiveInstrumentEvent) {
     }
 
+    fun onInstrumentAddedEvent(event: LiveInstrumentAdded) {
+    }
+
+    fun onInstrumentHitEvent(event: LiveInstrumentHit) {
+    }
+
     fun onLogHitEvent(event: LiveLogHit) {
     }
 
