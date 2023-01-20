@@ -25,6 +25,7 @@ import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyException
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.metrics.MetricStep
+import spp.protocol.artifact.trace.TraceStack
 import spp.protocol.service.SourceServices.LIVE_VIEW
 import spp.protocol.view.HistoricalView
 import spp.protocol.view.LiveView
@@ -92,4 +93,6 @@ interface LiveViewService {
         start: Instant,
         stop: Instant?
     ): Future<HistoricalView>
+
+    fun getTraceStack(traceId: String): Future<TraceStack?>
 }
