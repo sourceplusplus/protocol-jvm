@@ -17,6 +17,7 @@
 package spp.protocol.instrument.event
 
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.LiveInstrument
 import spp.protocol.instrument.event.LiveInstrumentEventType.*
 import java.time.Instant
 
@@ -28,6 +29,7 @@ import java.time.Instant
  */
 interface LiveInstrumentEvent {
 
+    val instrument: LiveInstrument
     val occurredAt: Instant
     val eventType: LiveInstrumentEventType
 

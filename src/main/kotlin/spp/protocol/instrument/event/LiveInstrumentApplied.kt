@@ -30,7 +30,7 @@ import java.time.Instant
  */
 @DataObject
 data class LiveInstrumentApplied(
-    val instrument: LiveInstrument,
+    override val instrument: LiveInstrument,
     override val occurredAt: Instant
 ) : LiveInstrumentEvent {
     override val eventType: LiveInstrumentEventType

@@ -25,7 +25,7 @@ import spp.protocol.instrument.LiveInstrument
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 interface LiveInstrumentHit : LiveInstrumentEvent {
-    val instrument: LiveInstrument
+    override val instrument: LiveInstrument
     val serviceInstance: String
     val service: String
 }

@@ -31,7 +31,7 @@ import java.time.Instant
  */
 @DataObject
 data class LiveInstrumentRemoved(
-    val instrument: LiveInstrument,
+    override val instrument: LiveInstrument,
     override val occurredAt: Instant,
     val cause: LiveStackTrace? = null
 ) : LiveInstrumentEvent {
