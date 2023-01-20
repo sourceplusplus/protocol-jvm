@@ -26,6 +26,7 @@ import io.vertx.core.json.JsonObject
  */
 @DataObject
 data class DeveloperRole(val roleName: String, val nativeRole: Boolean) {
+
     constructor(json: JsonObject) : this(
         json.getString("roleName"),
         json.getBoolean("nativeRole")
@@ -33,6 +34,10 @@ data class DeveloperRole(val roleName: String, val nativeRole: Boolean) {
 
     fun toJson(): JsonObject {
         return JsonObject.mapFrom(this)
+    }
+
+    override fun toString(): String {
+        return roleName
     }
 
     companion object {
