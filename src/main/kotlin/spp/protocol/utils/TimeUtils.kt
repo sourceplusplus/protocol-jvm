@@ -30,30 +30,30 @@ fun Double.fromPerSecondToPrettyFrequency(translate: (String) -> String = { it }
     }
 }
 
-fun Long.toPrettyDuration(translate: (String) -> String = { it }): String {
+fun Long.toPrettyDuration(translate: (String) -> String = { it }, pluralize: Boolean = true): String {
     val days = this / 86400000.0
     if (days > 1) {
-        return "${days.toInt()}" + translate("dys")
+        return "${days.toInt()}" + if (pluralize) translate("dys") else translate("dy")
     } else if (days == 1.0) {
         return "${days.toInt()}" + translate("dy")
     }
     val hours = this / 3600000.0
     if (hours > 1) {
-        return "${hours.toInt()}" + translate("hrs")
+        return "${hours.toInt()}" + if (pluralize) translate("hrs") else translate("hr")
     } else if (hours == 1.0) {
         return "${hours.toInt()}" + translate("hr")
     }
     val minutes = this / 60000.0
     if (minutes > 1) {
-        return "${minutes.toInt()}" + translate("mins")
+        return "${minutes.toInt()}" + if (pluralize) translate("mins") else translate("min")
     } else if (minutes == 1.0) {
         return "${minutes.toInt()}" + translate("min")
     }
     val seconds = this / 1000.0
     if (seconds > 1) {
-        return "${seconds.toInt()}" + translate("secs")
+        return "${seconds.toInt()}" + if (pluralize) translate("s") else translate("s")
     } else if (seconds == 1.0) {
-        return "${seconds.toInt()}" + translate("sec")
+        return "${seconds.toInt()}" + translate("s")
     }
     return "$this" + translate("ms")
 }
