@@ -18,6 +18,7 @@ package spp.protocol.service.listen
 
 import spp.protocol.instrument.event.*
 
+@Suppress("TooManyFunctions") // public API
 interface LiveInstrumentListener {
 
     fun onInstrumentEvent(event: LiveInstrumentEvent) {
