@@ -27,7 +27,7 @@ import spp.protocol.artifact.ArtifactLanguage
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @DataObject
-class LiveStackTrace(
+data class LiveStackTrace(
     var exceptionType: String,
     var message: String?,
     val elements: MutableList<LiveStackTraceElement>,
@@ -174,25 +174,5 @@ class LiveStackTrace(
             builder.append(causedBy.toString())
         }
         return builder.toString()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is LiveStackTrace) return false
-        if (exceptionType != other.exceptionType) return false
-        if (message != other.message) return false
-        if (elements != other.elements) return false
-        if (causedBy != other.causedBy) return false
-        if (language != other.language) return false
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = exceptionType.hashCode()
-        result = 31 * result + (message?.hashCode() ?: 0)
-        result = 31 * result + elements.hashCode()
-        result = 31 * result + (causedBy?.hashCode() ?: 0)
-        result = 31 * result + language.hashCode()
-        return result
     }
 }
