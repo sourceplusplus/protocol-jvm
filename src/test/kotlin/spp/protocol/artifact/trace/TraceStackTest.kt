@@ -39,7 +39,7 @@ class TraceStackTest {
                     startTime = Instant.now(),
                     endTime = Instant.now(),
                     endpointName = "endpointName",
-                    artifactQualifiedName = ArtifactQualifiedName("id", "commit", ArtifactType.METHOD),
+                    artifactQualifiedName = ArtifactQualifiedName("id", "commit", ArtifactType.FUNCTION),
                     type = "type",
                     peer = "peer",
                     component = "component",

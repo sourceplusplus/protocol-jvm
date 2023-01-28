@@ -25,7 +25,7 @@ package spp.protocol.artifact
 enum class ArtifactType {
     FILE,
     CLASS,
-    METHOD,
+    FUNCTION,
     STATEMENT,
     EXPRESSION,
     ENDPOINT;

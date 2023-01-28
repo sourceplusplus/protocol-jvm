@@ -27,7 +27,7 @@ class TraceResultTest {
     @Test
     fun `trace result deser`() {
         val traceResult = TraceResult(
-            artifactQualifiedName = ArtifactQualifiedName("id", "commit", ArtifactType.METHOD),
+            artifactQualifiedName = ArtifactQualifiedName("id", "commit", ArtifactType.FUNCTION),
             artifactSimpleName = "artifactSimpleName",
             orderType = TraceOrderType.LATEST_TRACES,
             start = Instant.now(),

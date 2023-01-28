@@ -77,7 +77,7 @@ data class ArtifactQualifiedName(
                 }
             }
 
-            type == ArtifactType.METHOD -> {
+            type == ArtifactType.FUNCTION -> {
                 if (identifier.contains(":")) {
                     val filename = identifier.substringBeforeLast(":")
                     val fullOperationName = identifier.substringAfterLast(":")
@@ -99,7 +99,7 @@ data class ArtifactQualifiedName(
             type == ArtifactType.EXPRESSION && identifier.contains("(") -> ArtifactQualifiedName(
                 identifier.substringBefore("#"),
                 commitId,
-                ArtifactType.METHOD
+                ArtifactType.FUNCTION
             )
 
             type == ArtifactType.EXPRESSION -> {

@@ -41,7 +41,7 @@ class ArtifactQualifiedNameTest {
 
         ArtifactQualifiedName(
             identifier = "C:/test/main.js:executeDemos()",
-            type = METHOD
+            type = FUNCTION
         ).let {
             val fileParent = it.asParent()
             assertNotNull(fileParent)
@@ -58,15 +58,15 @@ class ArtifactQualifiedNameTest {
             identifier = "C:/test/main.js:executeDemos()#SlNDYWxsRXhwcmVzc2lvbg==",
             type = EXPRESSION
         ).let {
-            val methodParent = it.asParent()
-            assertNotNull(methodParent)
+            val functionParent = it.asParent()
+            assertNotNull(functionParent)
             assertEquals(
                 "C:/test/main.js:executeDemos()",
-                methodParent!!.identifier
+                functionParent!!.identifier
             )
-            assertEquals(methodParent.type, METHOD)
+            assertEquals(functionParent.type, FUNCTION)
 
-            val fileParent = methodParent.asParent()
+            val fileParent = functionParent.asParent()
             assertNotNull(fileParent)
             assertEquals(
                 "C:/test/main.js",
@@ -79,17 +79,17 @@ class ArtifactQualifiedNameTest {
 
         ArtifactQualifiedName(
             identifier = "C:/test/main.js:TestClass.executeDemos()",
-            type = METHOD
+            type = FUNCTION
         ).let {
-            val methodParent = it.asParent()
-            assertNotNull(methodParent)
+            val functionParent = it.asParent()
+            assertNotNull(functionParent)
             assertEquals(
                 "C:/test/main.js:TestClass",
-                methodParent!!.identifier
+                functionParent!!.identifier
             )
-            assertEquals(methodParent.type, CLASS)
+            assertEquals(functionParent.type, CLASS)
 
-            val classParent = methodParent.asParent()
+            val classParent = functionParent.asParent()
             assertNotNull(classParent)
             assertEquals(
                 "C:/test/main.js",
@@ -110,17 +110,17 @@ class ArtifactQualifiedNameTest {
                 "C:/test/main.js:TestClass.executeDemos()",
                 expressionParent!!.identifier
             )
-            assertEquals(expressionParent.type, METHOD)
+            assertEquals(expressionParent.type, FUNCTION)
 
-            val methodParent = expressionParent.asParent()
-            assertNotNull(methodParent)
+            val functionParent = expressionParent.asParent()
+            assertNotNull(functionParent)
             assertEquals(
                 "C:/test/main.js:TestClass",
-                methodParent!!.identifier
+                functionParent!!.identifier
             )
-            assertEquals(methodParent.type, CLASS)
+            assertEquals(functionParent.type, CLASS)
 
-            val classParent = methodParent.asParent()
+            val classParent = functionParent.asParent()
             assertNotNull(classParent)
             assertEquals(
                 "C:/test/main.js",
@@ -134,13 +134,13 @@ class ArtifactQualifiedNameTest {
 
     @Test
     fun `test parent qualified name`() {
-        val methodExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = EXPRESSION)
-        val method = methodExpression.asParent()
-        assertNotNull(method)
-        assertEquals("com.example.TestClass.fun()", method!!.identifier)
-        assertEquals(METHOD, method.type)
+        val functionExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = EXPRESSION)
+        val function = functionExpression.asParent()
+        assertNotNull(function)
+        assertEquals("com.example.TestClass.fun()", function!!.identifier)
+        assertEquals(FUNCTION, function.type)
 
-        val clazz = method.asParent()
+        val clazz = function.asParent()
         assertNotNull(clazz)
         assertEquals("com.example.TestClass", clazz!!.identifier)
         assertEquals(CLASS, clazz.type)
@@ -154,16 +154,16 @@ class ArtifactQualifiedNameTest {
 
     @Test
     fun `test parent qualified name with args`() {
-        val methodExpression = ArtifactQualifiedName(
+        val functionExpression = ArtifactQualifiedName(
             "com.example.TestClass.fun(java.lang.String)#22",
             type = EXPRESSION
         )
-        val method = methodExpression.asParent()
-        assertNotNull(method)
-        assertEquals("com.example.TestClass.fun(java.lang.String)", method!!.identifier)
-        assertEquals(METHOD, method.type)
+        val function = functionExpression.asParent()
+        assertNotNull(function)
+        assertEquals("com.example.TestClass.fun(java.lang.String)", function!!.identifier)
+        assertEquals(FUNCTION, function.type)
 
-        val clazz = method.asParent()
+        val clazz = function.asParent()
         assertNotNull(clazz)
         assertEquals("com.example.TestClass", clazz!!.identifier)
         assertEquals(CLASS, clazz.type)
@@ -172,37 +172,37 @@ class ArtifactQualifiedNameTest {
     @Test
     fun `test is child of`() {
         val clazz = ArtifactQualifiedName("com.example.TestClass", type = CLASS)
-        val method = ArtifactQualifiedName("com.example.TestClass.fun()", type = METHOD)
-        val methodExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = EXPRESSION)
+        val function = ArtifactQualifiedName("com.example.TestClass.fun()", type = FUNCTION)
+        val functionExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = EXPRESSION)
 
-        assertTrue(methodExpression.isChildOf(clazz))
-        assertTrue(methodExpression.isChildOf(method))
-        assertFalse(methodExpression.isChildOf(methodExpression))
+        assertTrue(functionExpression.isChildOf(clazz))
+        assertTrue(functionExpression.isChildOf(function))
+        assertFalse(functionExpression.isChildOf(functionExpression))
 
-        assertTrue(method.isChildOf(clazz))
-        assertFalse(method.isChildOf(method))
+        assertTrue(function.isChildOf(clazz))
+        assertFalse(function.isChildOf(function))
 
         assertFalse(clazz.isChildOf(clazz))
-        assertFalse(clazz.isChildOf(method))
-        assertFalse(method.isChildOf(methodExpression))
+        assertFalse(clazz.isChildOf(function))
+        assertFalse(function.isChildOf(functionExpression))
     }
 
     @Test
     fun `test is parent of`() {
         val clazz = ArtifactQualifiedName("com.example.TestClass", type = CLASS)
-        val method = ArtifactQualifiedName("com.example.TestClass.fun()", type = METHOD)
-        val methodExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = EXPRESSION)
+        val function = ArtifactQualifiedName("com.example.TestClass.fun()", type = FUNCTION)
+        val functionExpression = ArtifactQualifiedName("com.example.TestClass.fun()#22", type = EXPRESSION)
 
-        assertTrue(clazz.isParentOf(methodExpression))
-        assertTrue(method.isParentOf(methodExpression))
-        assertFalse(methodExpression.isParentOf(methodExpression))
+        assertTrue(clazz.isParentOf(functionExpression))
+        assertTrue(function.isParentOf(functionExpression))
+        assertFalse(functionExpression.isParentOf(functionExpression))
 
-        assertTrue(clazz.isParentOf(method))
-        assertFalse(method.isParentOf(method))
+        assertTrue(clazz.isParentOf(function))
+        assertFalse(function.isParentOf(function))
 
         assertFalse(clazz.isParentOf(clazz))
-        assertFalse(method.isParentOf(clazz))
-        assertFalse(methodExpression.isParentOf(method))
+        assertFalse(function.isParentOf(clazz))
+        assertFalse(functionExpression.isParentOf(function))
     }
 
     @Test
@@ -212,8 +212,8 @@ class ArtifactQualifiedNameTest {
         assertNotNull(clazz)
         assertEquals("com.example.TestClass", clazz!!.identifier)
 
-        val method = ArtifactQualifiedName("com.example.TestClass.fun()", type = METHOD)
-        val clazz2 = method.toClass()
+        val function = ArtifactQualifiedName("com.example.TestClass.fun()", type = FUNCTION)
+        val clazz2 = function.toClass()
         assertNotNull(clazz2)
         assertEquals("com.example.TestClass", clazz2!!.identifier)
     }
@@ -225,8 +225,8 @@ class ArtifactQualifiedNameTest {
         assertNotNull(clazz)
         assertEquals("com.example.TestClass\$InnerClass", clazz!!.identifier)
 
-        val method = ArtifactQualifiedName("com.example.TestClass\$InnerClass.fun()", type = METHOD)
-        val clazz2 = method.toClass()
+        val function = ArtifactQualifiedName("com.example.TestClass\$InnerClass.fun()", type = FUNCTION)
+        val clazz2 = function.toClass()
         assertNotNull(clazz2)
         assertEquals("com.example.TestClass\$InnerClass", clazz2!!.identifier)
     }
