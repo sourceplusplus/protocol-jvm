@@ -143,4 +143,16 @@ data class ArtifactQualifiedName(
             parent
         }
     }
+
+    fun toFunction(): ArtifactQualifiedName? {
+        return if (type == ArtifactType.FUNCTION) {
+            this
+        } else {
+            var parent = asParent()
+            while (parent != null && parent.type != ArtifactType.FUNCTION) {
+                parent = parent.asParent()
+            }
+            parent
+        }
+    }
 }
