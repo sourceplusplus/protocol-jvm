@@ -76,7 +76,13 @@ interface LiveManagementService {
 
     fun getAuthToken(accessToken: String): Future<String>
     fun getDevelopers(): Future<List<Developer>>
-    fun addDeveloper(developerId: String): Future<Developer>
+
+    @GenIgnore
+    fun addDeveloper(developerId: String): Future<Developer> {
+        return addDeveloper(developerId, null)
+    }
+
+    fun addDeveloper(developerId: String, accessToken: String?): Future<Developer>
     fun removeDeveloper(developerId: String): Future<Void>
     fun refreshDeveloperToken(developerId: String): Future<Developer>
     fun getRoles(): Future<List<DeveloperRole>>
