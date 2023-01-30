@@ -30,7 +30,10 @@ data class InstrumentThrottle(
     val step: ThrottleStep,
 ) {
     companion object {
+        @JvmStatic
         val DEFAULT: InstrumentThrottle = InstrumentThrottle(1, ThrottleStep.SECOND)
+
+        @JvmStatic
         val NONE: InstrumentThrottle = InstrumentThrottle(-1, ThrottleStep.SECOND)
     }
 
