@@ -6,7 +6,8 @@
 
 ## What is this?
 
-This project holds common communication models for [Source++](https://github.com/sourceplusplus/sourceplusplus), the open-source live coding platform.
+This project holds common communication models for [Source++](https://github.com/sourceplusplus/sourceplusplus), the
+continuous feedback platform for developers.
 
 ## Bugs & Features
 
