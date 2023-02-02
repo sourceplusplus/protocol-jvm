@@ -29,6 +29,7 @@ import spp.protocol.platform.developer.SelfInfo
 import spp.protocol.platform.general.Service
 import spp.protocol.platform.general.ServiceEndpoint
 import spp.protocol.platform.general.ServiceInstance
+import spp.protocol.platform.general.TimeInfo
 import spp.protocol.platform.status.InstanceConnection
 import spp.protocol.service.SourceServices.LIVE_MANAGEMENT
 
@@ -54,6 +55,7 @@ interface LiveManagementService {
     }
 
     fun getVersion(): Future<String>
+    fun getTimeInfo(): Future<TimeInfo>
 
     fun getAccessPermissions(): Future<List<AccessPermission>>
     fun getAccessPermission(id: String): Future<AccessPermission>
