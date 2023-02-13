@@ -82,8 +82,11 @@ open class TCPServiceFrameParser(
             } else {
                 vertx.eventBus().publish(frame.getString("address"), body)
             }
+        } else if (frame.getString("type") == "pong") {
+            //no-op
         } else {
             //directly thrown event bus exceptions
+            //todo: nothing catches this exception, it is just logged
             throw ReplyException(ReplyFailure.ERROR, frame.getString("message"))
         }
     }
