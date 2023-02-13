@@ -84,6 +84,9 @@ open class TCPServiceFrameParser(
             }
         } else if (frame.getString("type") == "pong") {
             //no-op
+        } else if (frame.getString("message") == "blocked by bridgeEvent handler") {
+            //authentication error, disconnect
+            socket.close()
         } else {
             //directly thrown event bus exceptions
             //todo: nothing catches this exception, it is just logged
