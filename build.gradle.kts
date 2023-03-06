@@ -84,7 +84,7 @@ dependencies {
     testImplementation("io.vertx:vertx-junit5:$vertxVersion")
     testImplementation("io.vertx:vertx-core:$vertxVersion")
 
-    annotationProcessor("io.vertx:vertx-codegen:$vertxVersion:processor")
+    kapt("io.vertx:vertx-codegen:$vertxVersion:processor")
     compileOnly("io.vertx:vertx-codegen:$vertxVersion")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
