@@ -83,9 +83,15 @@ data class LiveMeter(
         return json
     }
 
+    /**
+     * Returns an id without the "spp_" prefix in a format that is compatible with SkyWalking metrics.
+     */
     fun toMetricIdWithoutPrefix(): String = meterType.name.lowercase() + "_" +
-            id!!.replace("-", "_").replace(" ", "_")
+            id!!.replace("[^a-zA-Z0-9]".toRegex(), "_")
 
+    /**
+     * Returns an id in a format that is compatible with SkyWalking metrics.
+     */
     fun toMetricId(): String = "spp_" + toMetricIdWithoutPrefix()
 
     /**
