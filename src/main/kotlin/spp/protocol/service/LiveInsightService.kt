@@ -25,7 +25,6 @@ import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
-import spp.protocol.insight.InsightWorkspace
 
 @ProxyGen
 @VertxGen
@@ -42,48 +41,17 @@ interface LiveInsightService {
     }
 
     /**
-     * Creates a new workspace where source code can be uploaded and analyzed.
-     */
-    fun createWorkspace(): Future<InsightWorkspace>
-//    fun getWorkspace(workspaceId: String): Future<InsightWorkspace>
-    fun getWorkspaces(): Future<List<InsightWorkspace>>
-//    fun deleteWorkspace(workspaceId: String): Future<Void>
-
-    /**
      * Uploads source code to the workspace.
-     * @param workspaceId The workspace to upload the source code to.
      * @param sourceCode The source code to upload.
      */
-    fun uploadSourceCode(workspaceId: String, sourceCode: JsonObject): Future<Void>
+    fun uploadSourceCode(sourceCode: JsonObject): Future<Void>
 
     /**
      * Uploads source code repository to the workspace.
      *
-     * @param workspaceId The workspace to upload the source code to.
      * @param repository The source code repository to upload.
      */
-    fun uploadRepository(workspaceId: String, repository: JsonObject): Future<Void>
+    fun uploadRepository(repository: JsonObject): Future<Void>
 
-    /**
-     * Scans the workspace for insights.
-     */
-    fun scanWorkspace(workspaceId: String): Future<Void>
-
-    /**
-     * Gets the insights for the workspace.
-     */
-//    fun getInsights(workspaceId: String): Future<JsonArray>
-
-    fun getArtifactInsights(workspaceId: String, artifact: ArtifactQualifiedName, types: JsonArray): Future<JsonObject>
-
-//    @GenIgnore
-//    fun getArtifactInsights(workspaceId: String, artifact: ArtifactQualifiedName): Future<JsonObject> {
-//    }
-
-//    fun getMethodInsights(workspaceId: String, method: ArtifactQualifiedName): Future<JsonObject>
-
-//    @GenIgnore
-//    suspend fun downloadInsightGraph(workspaceId: String): File {
-//        generateInsightGraph(workspaceId).await()
-//    }
+    fun getArtifactInsights(artifact: ArtifactQualifiedName, types: JsonArray): Future<JsonObject>
 }
