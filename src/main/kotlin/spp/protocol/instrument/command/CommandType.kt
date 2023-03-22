@@ -18,5 +18,6 @@ package spp.protocol.instrument.command
 
 enum class CommandType {
     ADD_LIVE_INSTRUMENT,
-    REMOVE_LIVE_INSTRUMENT
+    REMOVE_LIVE_INSTRUMENT,
+    SET_INITIAL_INSTRUMENTS,
 }
