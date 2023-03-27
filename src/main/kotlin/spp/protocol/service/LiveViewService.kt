@@ -46,9 +46,9 @@ interface LiveViewService {
     @GenIgnore
     companion object {
         @JvmStatic
-        fun createProxy(vertx: Vertx, authToken: String? = null): LiveViewService {
+        fun createProxy(vertx: Vertx, accessToken: String? = null): LiveViewService {
             val deliveryOptions = DeliveryOptions().apply {
-                authToken?.let { addHeader("auth-token", it) }
+                accessToken?.let { addHeader("access-token", it) }
             }
             return LiveViewServiceVertxEBProxy(vertx, LIVE_VIEW, deliveryOptions)
         }

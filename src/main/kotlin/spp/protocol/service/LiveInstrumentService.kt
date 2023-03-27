@@ -40,9 +40,9 @@ interface LiveInstrumentService {
     @GenIgnore
     companion object {
         @JvmStatic
-        fun createProxy(vertx: Vertx, authToken: String? = null): LiveInstrumentService {
+        fun createProxy(vertx: Vertx, accessToken: String? = null): LiveInstrumentService {
             val deliveryOptions = DeliveryOptions().apply {
-                authToken?.let { addHeader("auth-token", it) }
+                accessToken?.let { addHeader("access-token", it) }
             }
             return LiveInstrumentServiceVertxEBProxy(vertx, LIVE_INSTRUMENT, deliveryOptions)
         }

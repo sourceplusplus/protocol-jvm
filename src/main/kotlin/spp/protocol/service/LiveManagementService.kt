@@ -46,9 +46,9 @@ interface LiveManagementService {
     @GenIgnore
     companion object {
         @JvmStatic
-        fun createProxy(vertx: Vertx, authToken: String? = null): LiveManagementService {
+        fun createProxy(vertx: Vertx, accessToken: String? = null): LiveManagementService {
             val deliveryOptions = DeliveryOptions().apply {
-                authToken?.let { addHeader("auth-token", it) }
+                accessToken?.let { addHeader("access-token", it) }
             }
             return LiveManagementServiceVertxEBProxy(vertx, LIVE_MANAGEMENT, deliveryOptions)
         }
@@ -76,17 +76,22 @@ interface LiveManagementService {
     fun removeRoleDataRedaction(role: DeveloperRole, id: String): Future<Void>
     fun getDeveloperDataRedactions(developerId: String): Future<List<DataRedaction>>
 
-    fun getAuthToken(accessToken: String): Future<String>
+    @GenIgnore
+    fun getAccessToken(): Future<String> {
+        return getAccessToken(null)
+    }
+
+    fun getAccessToken(authorizationCode: String?): Future<String>
     fun getDevelopers(): Future<List<Developer>>
 
     @GenIgnore
-    fun addDeveloper(developerId: String): Future<Developer> {
-        return addDeveloper(developerId, null)
+    fun addDeveloper(id: String): Future<Developer> {
+        return addDeveloper(id, null)
     }
 
-    fun addDeveloper(developerId: String, accessToken: String?): Future<Developer>
-    fun removeDeveloper(developerId: String): Future<Void>
-    fun refreshDeveloperToken(developerId: String): Future<Developer>
+    fun addDeveloper(id: String, authorizationCode: String?): Future<Developer>
+    fun removeDeveloper(id: String): Future<Void>
+    fun refreshAuthorizationCode(developerId: String): Future<Developer>
     fun getRoles(): Future<List<DeveloperRole>>
     fun addRole(role: DeveloperRole): Future<Boolean>
     fun removeRole(role: DeveloperRole): Future<Boolean>

@@ -410,7 +410,7 @@
               "deprecationReason": null
             },
             {
-              "name": "accessToken",
+              "name": "authorizationCode",
               "description": null,
               "args": [],
               "type": {
@@ -3661,7 +3661,7 @@
                   "defaultValue": null
                 },
                 {
-                  "name": "accessToken",
+                  "name": "authorizationCode",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -3684,7 +3684,7 @@
               "deprecationReason": null
             },
             {
-              "name": "refreshDeveloperToken",
+              "name": "refreshAuthorizationCode",
               "description": null,
               "args": [
                 {
@@ -4111,6 +4111,22 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "timeInfo",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TimeInfo",
                   "ofType": null
                 }
               },
@@ -5645,6 +5661,49 @@
               "deprecationReason": null
             }
           ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "TimeInfo",
+          "description": null,
+          "fields": [
+            {
+              "name": "timezone",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "currentTimestamp",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Long",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
           "possibleTypes": null
         },
         {

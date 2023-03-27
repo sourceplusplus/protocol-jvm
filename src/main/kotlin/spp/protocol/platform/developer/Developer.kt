@@ -27,17 +27,17 @@ import io.vertx.core.json.JsonObject
 @DataObject
 data class Developer(
     val id: String,
-    val accessToken: String? = null
+    val authorizationCode: String? = null
 ) {
     constructor(json: JsonObject) : this(
         json.getString("id"),
-        json.getString("accessToken")
+        json.getString("authorizationCode")
     )
 
     fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("id", id)
-        json.put("accessToken", accessToken)
+        json.put("authorizationCode", authorizationCode)
         return json
     }
 }
