@@ -42,7 +42,7 @@ interface LiveInstrumentService {
         @JvmStatic
         fun createProxy(vertx: Vertx, accessToken: String? = null): LiveInstrumentService {
             val deliveryOptions = DeliveryOptions().apply {
-                accessToken?.let { addHeader("access-token", it) }
+                accessToken?.let { addHeader("auth-token", it) }
             }
             return LiveInstrumentServiceVertxEBProxy(vertx, LIVE_INSTRUMENT, deliveryOptions)
         }

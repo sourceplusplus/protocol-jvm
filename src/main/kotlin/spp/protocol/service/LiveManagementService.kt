@@ -48,7 +48,7 @@ interface LiveManagementService {
         @JvmStatic
         fun createProxy(vertx: Vertx, accessToken: String? = null): LiveManagementService {
             val deliveryOptions = DeliveryOptions().apply {
-                accessToken?.let { addHeader("access-token", it) }
+                accessToken?.let { addHeader("auth-token", it) }
             }
             return LiveManagementServiceVertxEBProxy(vertx, LIVE_MANAGEMENT, deliveryOptions)
         }
