@@ -79,13 +79,7 @@ interface LiveManagementService {
     fun addRoleDataRedaction(role: DeveloperRole, id: String): Future<Void>
     fun removeRoleDataRedaction(role: DeveloperRole, id: String): Future<Void>
     fun getDeveloperDataRedactions(developerId: String): Future<List<DataRedaction>>
-
-    @GenIgnore
-    fun getAccessToken(): Future<String> {
-        return getAccessToken(null)
-    }
-
-    fun getAccessToken(authorizationCode: String?): Future<String>
+    fun getAccessToken(authorizationCode: String): Future<String>
     fun getDevelopers(): Future<List<Developer>>
 
     @GenIgnore
