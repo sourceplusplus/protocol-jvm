@@ -22,6 +22,7 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.impl.ContextInternal
 import io.vertx.core.json.JsonObject
 import spp.protocol.platform.auth.*
 import spp.protocol.platform.developer.Developer
@@ -49,6 +50,9 @@ interface LiveManagementService {
         fun createProxy(vertx: Vertx, accessToken: String? = null): LiveManagementService {
             val deliveryOptions = DeliveryOptions().apply {
                 accessToken?.let { addHeader("auth-token", it) }
+                (Vertx.currentContext() as? ContextInternal)?.localContextData()?.forEach {
+                    addHeader(it.key.toString(), it.value.toString())
+                }
             }
             return LiveManagementServiceVertxEBProxy(vertx, LIVE_MANAGEMENT, deliveryOptions)
         }
