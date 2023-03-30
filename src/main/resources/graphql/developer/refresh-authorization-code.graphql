@@ -1,0 +1,6 @@
+mutation refreshAuthorizationCode($id: String!) {
+    refreshAuthorizationCode(id: $id) {
+        id
+        authorizationCode
+    }
+}

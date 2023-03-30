@@ -22,6 +22,7 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.impl.ContextInternal
 import io.vertx.core.json.JsonObject
 import spp.protocol.platform.auth.*
 import spp.protocol.platform.developer.Developer
@@ -46,9 +47,12 @@ interface LiveManagementService {
     @GenIgnore
     companion object {
         @JvmStatic
-        fun createProxy(vertx: Vertx, authToken: String? = null): LiveManagementService {
+        fun createProxy(vertx: Vertx, accessToken: String? = null): LiveManagementService {
             val deliveryOptions = DeliveryOptions().apply {
-                authToken?.let { addHeader("auth-token", it) }
+                accessToken?.let { addHeader("auth-token", it) }
+                (Vertx.currentContext() as? ContextInternal)?.localContextData()?.forEach {
+                    addHeader(it.key.toString(), it.value.toString())
+                }
             }
             return LiveManagementServiceVertxEBProxy(vertx, LIVE_MANAGEMENT, deliveryOptions)
         }
@@ -75,18 +79,17 @@ interface LiveManagementService {
     fun addRoleDataRedaction(role: DeveloperRole, id: String): Future<Void>
     fun removeRoleDataRedaction(role: DeveloperRole, id: String): Future<Void>
     fun getDeveloperDataRedactions(developerId: String): Future<List<DataRedaction>>
-
-    fun getAuthToken(accessToken: String): Future<String>
+    fun getAccessToken(authorizationCode: String): Future<String>
     fun getDevelopers(): Future<List<Developer>>
 
     @GenIgnore
-    fun addDeveloper(developerId: String): Future<Developer> {
-        return addDeveloper(developerId, null)
+    fun addDeveloper(id: String): Future<Developer> {
+        return addDeveloper(id, null)
     }
 
-    fun addDeveloper(developerId: String, accessToken: String?): Future<Developer>
-    fun removeDeveloper(developerId: String): Future<Void>
-    fun refreshDeveloperToken(developerId: String): Future<Developer>
+    fun addDeveloper(id: String, authorizationCode: String?): Future<Developer>
+    fun removeDeveloper(id: String): Future<Void>
+    fun refreshAuthorizationCode(developerId: String): Future<Developer>
     fun getRoles(): Future<List<DeveloperRole>>
     fun addRole(role: DeveloperRole): Future<Boolean>
     fun removeRole(role: DeveloperRole): Future<Boolean>

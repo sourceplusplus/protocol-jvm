@@ -23,6 +23,7 @@ import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyException
+import io.vertx.core.impl.ContextInternal
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.metrics.MetricStep
 import spp.protocol.artifact.trace.TraceStack
@@ -46,9 +47,12 @@ interface LiveViewService {
     @GenIgnore
     companion object {
         @JvmStatic
-        fun createProxy(vertx: Vertx, authToken: String? = null): LiveViewService {
+        fun createProxy(vertx: Vertx, accessToken: String? = null): LiveViewService {
             val deliveryOptions = DeliveryOptions().apply {
-                authToken?.let { addHeader("auth-token", it) }
+                accessToken?.let { addHeader("auth-token", it) }
+                (Vertx.currentContext() as? ContextInternal)?.localContextData()?.forEach {
+                    addHeader(it.key.toString(), it.value.toString())
+                }
             }
             return LiveViewServiceVertxEBProxy(vertx, LIVE_VIEW, deliveryOptions)
         }

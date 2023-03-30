@@ -22,6 +22,7 @@ import io.vertx.codegen.annotations.VertxGen
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.impl.ContextInternal
 import spp.protocol.instrument.*
 import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
@@ -40,9 +41,12 @@ interface LiveInstrumentService {
     @GenIgnore
     companion object {
         @JvmStatic
-        fun createProxy(vertx: Vertx, authToken: String? = null): LiveInstrumentService {
+        fun createProxy(vertx: Vertx, accessToken: String? = null): LiveInstrumentService {
             val deliveryOptions = DeliveryOptions().apply {
-                authToken?.let { addHeader("auth-token", it) }
+                accessToken?.let { addHeader("auth-token", it) }
+                (Vertx.currentContext() as? ContextInternal)?.localContextData()?.forEach {
+                    addHeader(it.key.toString(), it.value.toString())
+                }
             }
             return LiveInstrumentServiceVertxEBProxy(vertx, LIVE_INSTRUMENT, deliveryOptions)
         }
