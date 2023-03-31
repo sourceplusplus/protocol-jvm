@@ -16,6 +16,8 @@
  */
 package spp.protocol.artifact.metrics
 
+import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
@@ -60,5 +62,12 @@ enum class MetricStep {
             HOUR -> DateTimeFormatter.ofPattern("yyyyMMddHH").withZone(ZoneOffset.UTC)
             DAY -> DateTimeFormatter.ofPattern("yyyyMMdd").withZone(ZoneOffset.UTC)
         }
+    }
+
+    fun toInstant(value: String): Instant {
+        if (this == DAY) {
+            return LocalDate.from(formatter.parse(value)).atStartOfDay(ZoneOffset.UTC).toInstant()
+        }
+        return Instant.from(formatter.parse(value))
     }
 }
