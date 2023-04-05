@@ -90,12 +90,24 @@ interface LiveViewService {
         return getHistoricalMetrics(entityIds, metricIds, step, start, null)
     }
 
+    @GenIgnore
     fun getHistoricalMetrics(
         entityIds: List<String>,
         metricIds: List<String>,
         step: MetricStep,
         start: Instant,
         stop: Instant?
+    ): Future<HistoricalView> {
+        return getHistoricalMetrics(entityIds, metricIds, step, start, stop, emptyList())
+    }
+
+    fun getHistoricalMetrics(
+        entityIds: List<String>,
+        metricIds: List<String>,
+        step: MetricStep,
+        start: Instant,
+        stop: Instant?,
+        labels: List<String>
     ): Future<HistoricalView>
 
     fun getTraceStack(traceId: String): Future<TraceStack?>
