@@ -30,7 +30,7 @@ import spp.protocol.artifact.trace.TraceStack
 import spp.protocol.service.SourceServices.LIVE_VIEW
 import spp.protocol.view.HistoricalView
 import spp.protocol.view.LiveView
-import spp.protocol.view.rule.LiveViewRule
+import spp.protocol.view.rule.ViewRule
 import java.time.Instant
 
 /**
@@ -58,11 +58,11 @@ interface LiveViewService {
         }
     }
 
-    fun saveRule(rule: LiveViewRule): Future<LiveViewRule>
-    fun deleteRule(ruleName: String): Future<LiveViewRule?>
+    fun saveRule(rule: ViewRule): Future<ViewRule>
+    fun deleteRule(ruleName: String): Future<ViewRule?>
 
     @GenIgnore
-    fun saveRuleIfAbsent(rule: LiveViewRule): Future<LiveViewRule> {
+    fun saveRuleIfAbsent(rule: ViewRule): Future<ViewRule> {
         return saveRule(rule).recover { error ->
             if (error is ReplyException && error.failureCode() == 409) {
                 Future.succeededFuture(rule)

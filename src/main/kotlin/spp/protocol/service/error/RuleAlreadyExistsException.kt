@@ -17,10 +17,10 @@
 package spp.protocol.service.error
 
 import io.vertx.serviceproxy.ServiceException
-import spp.protocol.view.rule.LiveViewRule
+import spp.protocol.view.rule.ViewRule
 
 /**
- * Thrown when attempting to save a [LiveViewRule] that already exists.
+ * Thrown when attempting to save a [ViewRule] that already exists.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */

@@ -14,33 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.instrument.meter
+package spp.protocol.view.rule
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 
-/**
- * todo: description.
- *
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
 @DataObject
-data class MeterTagValue(
-    val key: String,
-    val valueType: MeterTagValueType,
-    val value: String
+data class RulePartition(
+    val find: String,
+    val replace: String
 ) {
     constructor(json: JsonObject) : this(
-        json.getString("key"),
-        MeterTagValueType.valueOf(json.getString("valueType")),
-        json.getString("value")
+        find = json.getString("find"),
+        replace = json.getString("replace")
     )
 
     fun toJson(): JsonObject {
         val json = JsonObject()
-        json.put("key", key)
-        json.put("valueType", valueType.name)
-        json.put("value", value)
+        json.put("find", find)
+        json.put("replace", replace)
         return json
     }
 }
