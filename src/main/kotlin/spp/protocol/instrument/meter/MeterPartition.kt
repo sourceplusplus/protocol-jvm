@@ -27,7 +27,7 @@ import io.vertx.core.json.JsonObject
  */
 @DataObject
 data class MeterPartition(
-    val keys: List<String>,
+    val keys: List<String> = emptyList(),
     val valueType: MeterValueType,
     val value: String
 ) {
