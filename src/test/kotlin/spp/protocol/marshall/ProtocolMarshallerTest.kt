@@ -49,6 +49,7 @@ class ProtocolMarshallerTest {
                     "tagValue"
                 )
             ),
+            listOf(),
             LiveSourceLocation("source", 1),
             "condition",
             System.currentTimeMillis(),
