@@ -101,4 +101,18 @@ data class LiveMeter(
      * Specify explicitly so Kotlin doesn't override.
      */
     override fun hashCode(): Int = super.hashCode()
+
+    companion object {
+        fun formatMeterName(meterName: String): String {
+            val sb = StringBuilder()
+            for (c in meterName) {
+                if (c.isLetterOrDigit() || c == '_') {
+                    sb.append(c) //todo: lowercase()?
+                } else {
+                    sb.append('_')
+                }
+            }
+            return sb.toString()
+        }
+    }
 }
