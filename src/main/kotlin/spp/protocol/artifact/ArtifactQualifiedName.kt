@@ -66,6 +66,10 @@ data class ArtifactQualifiedName(
         return result
     }
 
+    override fun toString(): String {
+        return identifier
+    }
+
     fun asParent(): ArtifactQualifiedName? {
         return when {
             type == ArtifactType.CLASS -> {
