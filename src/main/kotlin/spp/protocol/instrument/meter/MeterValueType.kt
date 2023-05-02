@@ -14,26 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.view.rule
+package spp.protocol.instrument.meter
 
-import io.vertx.codegen.annotations.DataObject
-import io.vertx.core.json.JsonObject
-
-@DataObject
-data class LiveViewRule(
-    val name: String,
-    val exp: String,
-) {
-
-    constructor(json: JsonObject) : this(
-        name = json.getString("name"),
-        exp = json.getString("exp"),
-    )
-
-    fun toJson(): JsonObject {
-        val json = JsonObject()
-        json.put("name", name)
-        json.put("exp", exp)
-        return json
-    }
+/**
+ * todo: description.
+ *
+ * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
+ */
+enum class MeterValueType {
+    VALUE,
+    VALUE_EXPRESSION;
 }

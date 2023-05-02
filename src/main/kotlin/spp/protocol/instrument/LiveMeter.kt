@@ -20,7 +20,8 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.location.LiveSourceLocation
-import spp.protocol.instrument.meter.MeterTagValue
+import spp.protocol.instrument.meter.MeterPartition
+import spp.protocol.instrument.meter.MeterTag
 import spp.protocol.instrument.meter.MeterType
 import spp.protocol.instrument.meter.MetricValue
 import spp.protocol.instrument.throttle.InstrumentThrottle
@@ -34,7 +35,8 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
 data class LiveMeter(
     val meterType: MeterType,
     val metricValue: MetricValue? = null,
-    val meterTags: List<MeterTagValue> = emptyList(),
+    val meterTags: List<MeterTag> = emptyList(),
+    val meterPartitions: List<MeterPartition> = emptyList(),
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
@@ -51,7 +53,8 @@ data class LiveMeter(
     constructor(json: JsonObject) : this(
         meterType = MeterType.valueOf(json.getString("meterType")),
         metricValue = json.getJsonObject("metricValue")?.let { MetricValue(it) },
-        meterTags = json.getJsonArray("meterTags").map { MeterTagValue(it as JsonObject) },
+        meterTags = json.getJsonArray("meterTags")?.map { MeterTag(it as JsonObject) } ?: emptyList(),
+        meterPartitions = json.getJsonArray("meterPartitions")?.map { MeterPartition(it as JsonObject) } ?: emptyList(),
         location = LiveSourceLocation(json.getJsonObject("location")),
         condition = json.getString("condition"),
         expiresAt = json.getLong("expiresAt"),
@@ -70,6 +73,7 @@ data class LiveMeter(
         json.put("meterType", meterType.name)
         metricValue?.toJson()?.let { json.put("metricValue", it) }
         json.put("meterTags", JsonArray().apply { meterTags.forEach { add(it.toJson()) } })
+        json.put("meterPartitions", JsonArray().apply { meterPartitions.forEach { add(it.toJson()) } })
         json.put("location", location.toJson())
         json.put("condition", condition)
         json.put("expiresAt", expiresAt)
@@ -103,4 +107,18 @@ data class LiveMeter(
      * Specify explicitly so Kotlin doesn't override.
      */
     override fun hashCode(): Int = super.hashCode()
+
+    companion object {
+        fun formatMeterName(meterName: String): String {
+            val sb = StringBuilder()
+            for (c in meterName) {
+                if (c.isLetterOrDigit() || c == '_') {
+                    sb.append(c) //todo: lowercase()?
+                } else {
+                    sb.append('_')
+                }
+            }
+            return sb.toString()
+        }
+    }
 }

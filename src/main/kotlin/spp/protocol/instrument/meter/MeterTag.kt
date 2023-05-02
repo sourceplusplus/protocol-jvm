@@ -14,14 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.service.error
+package spp.protocol.instrument.meter
 
-import io.vertx.serviceproxy.ServiceException
-import spp.protocol.view.rule.ViewRule
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 
 /**
- * Thrown when attempting to save a [ViewRule] that already exists.
+ * todo: description.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-class RuleAlreadyExistsException(message: String) : ServiceException(409, message)
+@DataObject
+data class MeterTag(
+    val key: String,
+    val valueType: MeterValueType,
+    val value: String
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("key"),
+        MeterValueType.valueOf(json.getString("valueType")),
+        json.getString("value")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("key", key)
+        json.put("valueType", valueType.name)
+        json.put("value", value)
+        return json
+    }
+}

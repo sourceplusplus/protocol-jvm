@@ -30,7 +30,7 @@ import spp.protocol.artifact.trace.TraceStack
 import spp.protocol.service.SourceServices.LIVE_VIEW
 import spp.protocol.view.HistoricalView
 import spp.protocol.view.LiveView
-import spp.protocol.view.rule.LiveViewRule
+import spp.protocol.view.rule.ViewRule
 import java.time.Instant
 
 /**
@@ -58,11 +58,11 @@ interface LiveViewService {
         }
     }
 
-    fun saveRule(rule: LiveViewRule): Future<LiveViewRule>
-    fun deleteRule(ruleName: String): Future<LiveViewRule?>
+    fun saveRule(rule: ViewRule): Future<ViewRule>
+    fun deleteRule(ruleName: String): Future<ViewRule?>
 
     @GenIgnore
-    fun saveRuleIfAbsent(rule: LiveViewRule): Future<LiveViewRule> {
+    fun saveRuleIfAbsent(rule: ViewRule): Future<ViewRule> {
         return saveRule(rule).recover { error ->
             if (error is ReplyException && error.failureCode() == 409) {
                 Future.succeededFuture(rule)
@@ -90,12 +90,24 @@ interface LiveViewService {
         return getHistoricalMetrics(entityIds, metricIds, step, start, null)
     }
 
+    @GenIgnore
     fun getHistoricalMetrics(
         entityIds: List<String>,
         metricIds: List<String>,
         step: MetricStep,
         start: Instant,
         stop: Instant?
+    ): Future<HistoricalView> {
+        return getHistoricalMetrics(entityIds, metricIds, step, start, stop, emptyList())
+    }
+
+    fun getHistoricalMetrics(
+        entityIds: List<String>,
+        metricIds: List<String>,
+        step: MetricStep,
+        start: Instant,
+        stop: Instant?,
+        labels: List<String>
     ): Future<HistoricalView>
 
     fun getTraceStack(traceId: String): Future<TraceStack?>

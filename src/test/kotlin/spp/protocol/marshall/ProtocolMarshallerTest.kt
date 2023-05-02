@@ -43,12 +43,13 @@ class ProtocolMarshallerTest {
             MeterType.COUNT,
             MetricValue(MetricValueType.NUMBER, "1"),
             listOf(
-                MeterTagValue(
+                MeterTag(
                     "tagKey",
-                    MeterTagValueType.VALUE,
+                    MeterValueType.VALUE,
                     "tagValue"
                 )
             ),
+            listOf(),
             LiveSourceLocation("source", 1),
             "condition",
             System.currentTimeMillis(),

@@ -16,12 +16,32 @@
  */
 package spp.protocol.instrument.meter
 
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonArray
+import io.vertx.core.json.JsonObject
+
 /**
  * todo: description.
  *
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
-enum class MeterTagValueType {
-    VALUE,
-    VALUE_EXPRESSION;
+@DataObject
+data class MeterPartition(
+    val keys: List<String> = emptyList(),
+    val valueType: MeterValueType,
+    val value: String
+) {
+    constructor(json: JsonObject) : this(
+        json.getJsonArray("keys").map { it as String },
+        MeterValueType.valueOf(json.getString("valueType")),
+        json.getString("value")
+    )
+
+    fun toJson(): JsonObject {
+        val json = JsonObject()
+        json.put("keys", JsonArray().apply { keys.forEach { add(it) } })
+        json.put("valueType", valueType.name)
+        json.put("value", value)
+        return json
+    }
 }
