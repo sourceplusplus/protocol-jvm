@@ -1,0 +1,6 @@
+mutation setPlatformConfigValue {
+    setPlatformConfigValue {
+        config
+        value
+    }
+}

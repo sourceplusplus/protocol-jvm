@@ -58,6 +58,10 @@ interface LiveManagementService {
         }
     }
 
+    fun setConfigurationValue(config: String, value: String): Future<Boolean>
+    fun getConfigurationValue(config: String): Future<String>
+    fun getConfiguration(): Future<JsonObject>
+
     fun getVersion(): Future<String>
     fun getTimeInfo(): Future<TimeInfo>
 

@@ -1,0 +1,8 @@
+query getPlatformConfig {
+    getPlatformConfig {
+        platformConfig {
+            config
+            value
+        }
+    }
+}
