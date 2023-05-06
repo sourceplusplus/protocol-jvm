@@ -4091,7 +4091,7 @@
               "deprecationReason": null
             },
             {
-              "name": "setPlatformConfigValue",
+              "name": "setSystemConfigValue",
               "description": null,
               "args": [
                 {
@@ -4143,7 +4143,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "PlatformConfig",
+          "name": "SystemConfig",
           "description": null,
           "fields": [
             {
@@ -5083,7 +5083,7 @@
               "deprecationReason": null
             },
             {
-              "name": "getPlatformConfig",
+              "name": "getSystemConfig",
               "description": null,
               "args": [],
               "type": {
@@ -5097,7 +5097,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "PlatformConfig",
+                      "name": "SystemConfig",
                       "ofType": null
                     }
                   }
@@ -5107,7 +5107,7 @@
               "deprecationReason": null
             },
             {
-              "name": "getPlatformConfigValue",
+              "name": "getSystemConfigValue",
               "description": null,
               "args": [
                 {
