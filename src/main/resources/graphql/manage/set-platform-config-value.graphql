@@ -1,6 +1,3 @@
-mutation setPlatformConfigValue {
-    setPlatformConfigValue {
-        config
-        value
-    }
+mutation setPlatformConfigValue($config: String!, $value: String!) {
+    setPlatformConfigValue(config: $config, value: $value)
 }

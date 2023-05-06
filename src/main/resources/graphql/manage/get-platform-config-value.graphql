@@ -1,6 +1,3 @@
-query getPlatformConfigValue {
-    getPlatformConfigValue {
-        config
-        value
-    }
+query getPlatformConfigValue($config: String!){
+    getPlatformConfigValue(config: $config)
 }
