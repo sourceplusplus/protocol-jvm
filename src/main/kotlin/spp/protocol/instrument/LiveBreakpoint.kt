@@ -17,10 +17,15 @@
 package spp.protocol.instrument
 
 import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.event.LiveBreakpointHit
+import spp.protocol.instrument.event.LiveInstrumentEvent
+import spp.protocol.instrument.event.LiveInstrumentEventType
 import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.throttle.InstrumentThrottle
 import spp.protocol.instrument.variable.LiveVariableControl
+import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 
 /**
  * A live breakpoint represents a non-breaking breakpoint.
@@ -84,4 +89,18 @@ data class LiveBreakpoint(
      * Specify explicitly so Kotlin doesn't override.
      */
     override fun hashCode(): Int = super.hashCode()
+
+    fun addHitListener(vertx: Vertx, listener: (LiveBreakpointHit) -> Unit) {
+        val instrumentId = id
+        if (instrumentId == null) {
+            error("Instrument must be applied before adding a hit listener")
+        }
+
+        vertx.eventBus().consumer<JsonObject>(toLiveInstrumentSubscriberAddress(instrumentId)).handler {
+            val event = LiveInstrumentEvent.fromJson(it.body())
+            if (event.eventType == LiveInstrumentEventType.BREAKPOINT_HIT) {
+                listener.invoke(event as LiveBreakpointHit)
+            }
+        }
+    }
 }
