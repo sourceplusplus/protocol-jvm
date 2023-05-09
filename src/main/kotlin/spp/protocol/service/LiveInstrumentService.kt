@@ -25,6 +25,8 @@ import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.impl.ContextInternal
 import spp.protocol.instrument.*
 import spp.protocol.instrument.location.LiveSourceLocation
+import spp.protocol.instrument.variable.LiveVariableControl
+import spp.protocol.instrument.variable.LiveVariableControlBase
 import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
 
 /**
@@ -49,6 +51,29 @@ interface LiveInstrumentService {
                 }
             }
             return LiveInstrumentServiceVertxEBProxy(vertx, LIVE_INSTRUMENT, deliveryOptions)
+        }
+    }
+
+    fun getOrCreateLiveWatch(
+        location: LiveSourceLocation,
+        variables: List<String> = emptyList(),
+        id: String
+    ): Future<LiveBreakpoint> {
+        return getLiveInstrument(id).compose { liveInstrument ->
+            if (liveInstrument != null) {
+                Future.succeededFuture(liveInstrument as LiveBreakpoint)
+            } else {
+                addLiveBreakpoint(
+                    LiveBreakpoint(
+                        location = location,
+                        variableControl = LiveVariableControl(
+                            variableNameConfig = variables.associateWith { LiveVariableControlBase() }
+                        ),
+                        id = id,
+                        hitLimit = -1
+                    )
+                )
+            }
         }
     }
 
