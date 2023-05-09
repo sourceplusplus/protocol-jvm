@@ -54,6 +54,7 @@ interface LiveInstrumentService {
         }
     }
 
+    @GenIgnore
     fun getOrCreateLiveWatch(
         location: LiveSourceLocation,
         variables: List<String> = emptyList(),
