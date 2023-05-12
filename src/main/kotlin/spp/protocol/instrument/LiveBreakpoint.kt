@@ -25,7 +25,7 @@ import spp.protocol.instrument.event.LiveInstrumentEventType
 import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.throttle.InstrumentThrottle
 import spp.protocol.instrument.variable.LiveVariableControl
-import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
+import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscription
 
 /**
  * A live breakpoint represents a non-breaking breakpoint.
@@ -96,7 +96,7 @@ data class LiveBreakpoint(
             error("Instrument must be applied before adding a hit listener")
         }
 
-        vertx.eventBus().consumer<JsonObject>(toLiveInstrumentSubscriberAddress(instrumentId)).handler {
+        vertx.eventBus().consumer<JsonObject>(toLiveInstrumentSubscription(instrumentId)).handler {
             val event = LiveInstrumentEvent.fromJson(it.body())
             if (event.eventType == LiveInstrumentEventType.BREAKPOINT_HIT) {
                 listener.invoke(event as LiveBreakpointHit)
