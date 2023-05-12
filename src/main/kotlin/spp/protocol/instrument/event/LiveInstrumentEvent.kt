@@ -34,6 +34,9 @@ interface LiveInstrumentEvent {
     val eventType: LiveInstrumentEventType
 
     fun toJson(): JsonObject
+    fun withInstrument(
+        instrument: LiveInstrument = this.instrument,
+    ): LiveInstrumentEvent
 
     companion object {
         @JvmStatic

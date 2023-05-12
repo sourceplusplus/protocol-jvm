@@ -51,4 +51,8 @@ data class LiveInstrumentAdded(
     override fun toJson(): JsonObject {
         return JsonObject.mapFrom(this)
     }
+
+    override fun withInstrument(instrument: LiveInstrument): LiveInstrumentEvent {
+        return copy(instrument = instrument)
+    }
 }
