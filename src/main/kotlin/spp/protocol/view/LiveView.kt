@@ -17,10 +17,12 @@
 package spp.protocol.view
 
 import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.Vertx
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.ArtifactQualifiedName
 import spp.protocol.instrument.location.LiveSourceLocation
+import spp.protocol.service.SourceServices.Subscribe.toLiveViewSubscription
 
 /**
  * A back-end subscription to events/metrics for a given set of entities.
@@ -64,5 +66,12 @@ data class LiveView(
 
     override fun hashCode(): Int {
         return subscriptionId?.hashCode() ?: 0
+    }
+
+    fun addEventListener(vertx: Vertx, listener: (LiveViewEvent) -> Unit) {
+        val viewId = subscriptionId ?: error("Cannot add event listener to view with null subscriptionId")
+        vertx.eventBus().consumer<JsonObject>(toLiveViewSubscription(viewId)).handler {
+            listener.invoke(LiveViewEvent(it.body()))
+        }
     }
 }
