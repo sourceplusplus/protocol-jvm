@@ -24,15 +24,14 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.impl.ContextInternal
 import io.vertx.core.json.JsonObject
+import spp.protocol.artifact.metrics.MetricStep
 import spp.protocol.platform.auth.*
 import spp.protocol.platform.developer.Developer
 import spp.protocol.platform.developer.SelfInfo
-import spp.protocol.platform.general.Service
-import spp.protocol.platform.general.ServiceEndpoint
-import spp.protocol.platform.general.ServiceInstance
-import spp.protocol.platform.general.TimeInfo
+import spp.protocol.platform.general.*
 import spp.protocol.platform.status.InstanceConnection
 import spp.protocol.service.SourceServices.LIVE_MANAGEMENT
+import java.time.Instant
 
 /**
  * Back-end service for general and administrative tasks.
@@ -123,7 +122,19 @@ interface LiveManagementService {
 
     fun getServices(layer: String?): Future<List<Service>>
     fun getInstances(serviceId: String): Future<List<ServiceInstance>>
-    fun getEndpoints(serviceId: String): Future<List<ServiceEndpoint>>
+    fun getEndpoints(serviceId: String, limit: Int?): Future<List<ServiceEndpoint>>
+    fun searchEndpoints(serviceId: String, keyword: String, limit: Int?): Future<List<ServiceEndpoint>>
+    fun sortMetrics(
+        name: String,
+        parentService: String?,
+        normal: Boolean?,
+        scope: Scope?,
+        topN: Int,
+        order: Order,
+        step: MetricStep,
+        start: Instant,
+        stop: Instant?
+    ): Future<List<SelectedRecord>>
 
     fun getActiveProbes(): Future<List<InstanceConnection>>
     fun getActiveProbe(id: String): Future<InstanceConnection?>
