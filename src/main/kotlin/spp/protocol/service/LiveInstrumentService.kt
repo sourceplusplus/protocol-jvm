@@ -24,10 +24,12 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.impl.ContextInternal
 import spp.protocol.instrument.*
+import spp.protocol.instrument.event.LiveInstrumentEvent
 import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.variable.LiveVariableControl
 import spp.protocol.instrument.variable.LiveVariableControlBase
 import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
+import java.time.Instant
 
 /**
  * Back-end service for managing [LiveInstrument]s.
@@ -129,6 +131,14 @@ interface LiveInstrumentService {
     fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
     fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
     fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
+
+    fun getLiveInstrumentEvents(
+        instrumentId: String?,
+        from: Instant?,
+        to: Instant?,
+        offset: Int,
+        limit: Int
+    ): Future<List<LiveInstrumentEvent>>
 
     /**
      * Gets [LiveInstrument]s with the given [type].
