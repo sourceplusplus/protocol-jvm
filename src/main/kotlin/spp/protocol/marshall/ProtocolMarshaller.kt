@@ -21,7 +21,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
-import spp.protocol.instrument.*
+import spp.protocol.instrument.LiveInstrument
+import spp.protocol.instrument.event.LiveInstrumentEvent
 import spp.protocol.platform.auth.RolePermission
 import java.time.Instant
 
@@ -59,17 +60,17 @@ object ProtocolMarshaller {
 
     @JvmStatic
     fun deserializeLiveInstrument(value: JsonObject): LiveInstrument {
-        return if (value.getString("type") == "BREAKPOINT") {
-            LiveBreakpoint(value)
-        } else if (value.getString("type") == "LOG") {
-            LiveLog(value)
-        } else if (value.getString("type") == "METER") {
-            LiveMeter(value)
-        } else if (value.getString("type") == "SPAN") {
-            LiveSpan(value)
-        } else {
-            throw UnsupportedOperationException("Live instrument type: " + value.getString("type"))
-        }
+        return LiveInstrument.fromJson(value)
+    }
+
+    @JvmStatic
+    fun serializeLiveInstrumentEvent(value: LiveInstrumentEvent): JsonObject {
+        return JsonObject(Json.encode(value))
+    }
+
+    @JvmStatic
+    fun deserializeLiveInstrumentEvent(value: JsonObject): LiveInstrumentEvent {
+        return LiveInstrumentEvent.fromJson(value)
     }
 
     @JvmStatic
