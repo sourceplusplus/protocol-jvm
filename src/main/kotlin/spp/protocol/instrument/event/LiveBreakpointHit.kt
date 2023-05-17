@@ -19,6 +19,7 @@ package spp.protocol.instrument.event
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.exception.LiveStackTrace
+import spp.protocol.instrument.LiveBreakpoint
 import spp.protocol.instrument.LiveInstrument
 import java.time.Instant
 
@@ -40,7 +41,7 @@ data class LiveBreakpointHit(
     override val eventType: LiveInstrumentEventType = LiveInstrumentEventType.BREAKPOINT_HIT
 
     constructor(json: JsonObject) : this(
-        LiveInstrument.fromJson(json.getJsonObject("instrument")),
+        LiveBreakpoint(json.getJsonObject("instrument")),
         json.getString("traceId"),
         LiveStackTrace(json.getJsonObject("stackTrace")),
         Instant.parse(json.getString("occurredAt")),

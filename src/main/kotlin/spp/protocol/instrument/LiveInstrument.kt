@@ -53,15 +53,7 @@ sealed class LiveInstrument {
         return id?.hashCode() ?: 0
     }
 
-    open fun toJson(): JsonObject {
-        return when (this) {
-            is LiveBreakpoint -> this.toJson()
-            is LiveLog -> this.toJson()
-            is LiveSpan -> this.toJson()
-            is LiveMeter -> this.toJson()
-            else -> error("Unknown live instrument type: $this")
-        }
-    }
+    abstract fun toJson(): JsonObject
 
     fun addEventListener(vertx: Vertx, listener: (LiveInstrumentEvent) -> Unit) {
         val instrumentId = id
