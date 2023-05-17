@@ -54,6 +54,7 @@ interface LiveInstrumentEvent {
 
                 METER_ADDED -> LiveInstrumentAdded(json)
                 METER_APPLIED -> LiveInstrumentApplied(json)
+                METER_HIT -> LiveMeterHit(json)
                 METER_REMOVED -> LiveInstrumentRemoved(json)
                 METER_UPDATED -> TODO()
 

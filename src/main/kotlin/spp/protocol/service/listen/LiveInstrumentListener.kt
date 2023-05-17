@@ -33,6 +33,9 @@ interface LiveInstrumentListener {
     fun onInstrumentHitEvent(event: LiveInstrumentHit) {
     }
 
+    fun onMeterHitEvent(event: LiveMeterHit) {
+    }
+
     fun onLogHitEvent(event: LiveLogHit) {
     }
 

@@ -56,6 +56,11 @@ class LiveInstrumentListenerImpl(
                     listener.onLogHitEvent(event)
                 }
 
+                METER_HIT -> {
+                    listener.onInstrumentHitEvent(event as LiveMeterHit)
+                    listener.onMeterHitEvent(event)
+                }
+
                 BREAKPOINT_ADDED -> {
                     listener.onInstrumentAddedEvent(event as LiveInstrumentAdded)
                     listener.onBreakpointAddedEvent(event)
