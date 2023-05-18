@@ -132,8 +132,19 @@ interface LiveInstrumentService {
     fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
     fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
 
+    @GenIgnore
     fun getLiveInstrumentEvents(
         instrumentId: String?,
+        from: Instant?,
+        to: Instant?,
+        offset: Int,
+        limit: Int
+    ): Future<List<LiveInstrumentEvent>> {
+        return getLiveInstrumentEvents(listOfNotNull(instrumentId), from, to, offset, limit)
+    }
+
+    fun getLiveInstrumentEvents(
+        instrumentIds: List<String>,
         from: Instant?,
         to: Instant?,
         offset: Int,
