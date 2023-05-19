@@ -68,6 +68,18 @@ data class LiveView(
         return subscriptionId?.hashCode() ?: 0
     }
 
+    override fun toString(): String {
+        return buildString {
+            append("LiveView(")
+            if (subscriptionId != null) append("subscriptionId=$subscriptionId, ")
+            append("entityIds=$entityIds, ")
+            if (artifactQualifiedName != null) append("artifactQualifiedName=$artifactQualifiedName, ")
+            if (artifactLocation != null) append("artifactLocation=$artifactLocation, ")
+            append("viewConfig=$viewConfig")
+            append(")")
+        }
+    }
+
     fun addEventListener(vertx: Vertx, listener: (LiveViewEvent) -> Unit) {
         val viewId = subscriptionId ?: error("Cannot add event listener to view with null subscriptionId")
         vertx.eventBus().consumer<JsonObject>(toLiveViewSubscription(viewId)).handler {
