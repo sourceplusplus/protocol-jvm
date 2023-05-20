@@ -111,8 +111,10 @@ interface LiveManagementService {
     fun removeClientAccess(id: String): Future<Boolean>
     fun refreshClientAccess(id: String): Future<ClientAccess>
 
+    fun getHealth(): Future<JsonObject>
     fun getClients(): Future<JsonObject>
     fun getStats(): Future<JsonObject>
+    fun getMetrics(includeUnused: Boolean): Future<JsonObject>
     fun getSelf(): Future<SelfInfo>
 
     @GenIgnore
