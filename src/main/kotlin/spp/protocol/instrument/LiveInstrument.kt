@@ -16,9 +16,12 @@
  */
 package spp.protocol.instrument
 
+import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.event.LiveInstrumentEvent
 import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.throttle.InstrumentThrottle
+import spp.protocol.service.SourceServices.Subscribe.toLiveInstrumentSubscriberAddress
 
 /**
  * todo: description.
@@ -50,13 +53,16 @@ sealed class LiveInstrument {
         return id?.hashCode() ?: 0
     }
 
-    open fun toJson(): JsonObject {
-        return when (this) {
-            is LiveBreakpoint -> this.toJson()
-            is LiveLog -> this.toJson()
-            is LiveSpan -> this.toJson()
-            is LiveMeter -> this.toJson()
-            else -> error("Unknown live instrument type: $this")
+    abstract fun toJson(): JsonObject
+
+    fun addEventListener(vertx: Vertx, listener: (LiveInstrumentEvent) -> Unit) {
+        val instrumentId = id
+        if (instrumentId == null) {
+            error("Instrument must be applied before adding an event listener")
+        }
+
+        vertx.eventBus().consumer<JsonObject>(toLiveInstrumentSubscriberAddress(instrumentId)).handler {
+            listener.invoke(LiveInstrumentEvent.fromJson(it.body()))
         }
     }
 

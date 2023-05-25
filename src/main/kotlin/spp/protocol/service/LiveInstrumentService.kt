@@ -24,8 +24,12 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.impl.ContextInternal
 import spp.protocol.instrument.*
+import spp.protocol.instrument.event.LiveInstrumentEvent
 import spp.protocol.instrument.location.LiveSourceLocation
+import spp.protocol.instrument.variable.LiveVariableControl
+import spp.protocol.instrument.variable.LiveVariableControlBase
 import spp.protocol.service.SourceServices.LIVE_INSTRUMENT
+import java.time.Instant
 
 /**
  * Back-end service for managing [LiveInstrument]s.
@@ -49,6 +53,30 @@ interface LiveInstrumentService {
                 }
             }
             return LiveInstrumentServiceVertxEBProxy(vertx, LIVE_INSTRUMENT, deliveryOptions)
+        }
+    }
+
+    @GenIgnore
+    fun getOrCreateLiveWatch(
+        location: LiveSourceLocation,
+        variables: List<String> = emptyList(),
+        id: String
+    ): Future<LiveBreakpoint> {
+        return getLiveInstrument(id).compose { liveInstrument ->
+            if (liveInstrument != null) {
+                Future.succeededFuture(liveInstrument as LiveBreakpoint)
+            } else {
+                addLiveBreakpoint(
+                    LiveBreakpoint(
+                        location = location,
+                        variableControl = LiveVariableControl(
+                            variableNameConfig = variables.associateWith { LiveVariableControlBase() }
+                        ),
+                        id = id,
+                        hitLimit = -1
+                    )
+                )
+            }
         }
     }
 
@@ -103,6 +131,25 @@ interface LiveInstrumentService {
     fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
     fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
     fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
+
+    @GenIgnore
+    fun getLiveInstrumentEvents(
+        instrumentId: String?,
+        from: Instant?,
+        to: Instant?,
+        offset: Int,
+        limit: Int
+    ): Future<List<LiveInstrumentEvent>> {
+        return getLiveInstrumentEvents(listOfNotNull(instrumentId), from, to, offset, limit)
+    }
+
+    fun getLiveInstrumentEvents(
+        instrumentIds: List<String>,
+        from: Instant?,
+        to: Instant?,
+        offset: Int,
+        limit: Int
+    ): Future<List<LiveInstrumentEvent>>
 
     /**
      * Gets [LiveInstrument]s with the given [type].

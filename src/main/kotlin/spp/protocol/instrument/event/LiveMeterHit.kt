@@ -19,33 +19,31 @@ package spp.protocol.instrument.event
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.LiveInstrument
-import spp.protocol.instrument.LiveInstrumentType
+import spp.protocol.instrument.LiveMeter
 import java.time.Instant
 
 /**
  * todo: description.
  *
- * @since 0.7.7
+ * @since 0.7.8
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
  */
 @DataObject
-data class LiveInstrumentAdded(
+data class LiveMeterHit(
     override val instrument: LiveInstrument,
-    override val occurredAt: Instant = Instant.now()
-) : LiveInstrumentEvent {
-    override val eventType: LiveInstrumentEventType
-        get() {
-            return when (instrument.type) {
-                LiveInstrumentType.BREAKPOINT -> LiveInstrumentEventType.BREAKPOINT_ADDED
-                LiveInstrumentType.LOG -> LiveInstrumentEventType.LOG_ADDED
-                LiveInstrumentType.METER -> LiveInstrumentEventType.METER_ADDED
-                LiveInstrumentType.SPAN -> LiveInstrumentEventType.SPAN_ADDED
-            }
-        }
+    val metricsData: JsonObject,
+    override val occurredAt: Instant,
+    override val serviceInstance: String,
+    override val service: String
+) : LiveInstrumentHit {
+    override val eventType: LiveInstrumentEventType = LiveInstrumentEventType.METER_HIT
 
     constructor(json: JsonObject) : this(
-        instrument = LiveInstrument.fromJson(json.getJsonObject("instrument")),
-        occurredAt = Instant.parse(json.getString("occurredAt"))
+        LiveMeter(json.getJsonObject("instrument")),
+        json.getJsonObject("metricsData"),
+        Instant.parse(json.getString("occurredAt")),
+        json.getString("serviceInstance"),
+        json.getString("service")
     )
 
     override fun toJson(): JsonObject {

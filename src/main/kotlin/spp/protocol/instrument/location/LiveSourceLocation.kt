@@ -90,4 +90,20 @@ data class LiveSourceLocation @JvmOverloads constructor(
         if (probeId != null && probeId != other.instanceId) return false
         return true
     }
+
+    override fun toString(): String {
+        return buildString {
+            append("LiveSourceLocation(")
+            append("source=$source")
+            if (line != -1) append(", line=$line")
+            if (service != null) append(", service=$service")
+            if (serviceInstance != null) append(", serviceInstance=$serviceInstance")
+            if (commitId != null) append(", commitId=$commitId")
+            if (fileChecksum != null) append(", fileChecksum=$fileChecksum")
+            //if (language != null) append(", language=$language")
+            if (probeId != null) append(", probeId=$probeId")
+            if (scope != LocationScope.LINE) append(", scope=$scope")
+            append(")")
+        }
+    }
 }

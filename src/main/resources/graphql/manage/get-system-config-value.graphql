@@ -1,0 +1,3 @@
+query getSystemConfigValue($config: String!){
+    getSystemConfigValue(config: $config)
+}

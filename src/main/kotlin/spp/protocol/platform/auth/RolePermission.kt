@@ -24,6 +24,16 @@ import spp.protocol.platform.auth.CommandType.*
 enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
     RESET(true, LIVE_MANAGEMENT_SERVICE),
 
+    //system
+    GET_HEALTH(false, LIVE_MANAGEMENT_SERVICE),
+    GET_STATS(false, LIVE_MANAGEMENT_SERVICE),
+    GET_CLIENTS(false, LIVE_MANAGEMENT_SERVICE),
+    GET_METRICS(false, LIVE_MANAGEMENT_SERVICE),
+
+    //config
+    SET_CONFIGURATION_VALUE(true, LIVE_MANAGEMENT_SERVICE),
+    GET_CONFIGURATION_VALUE(true, LIVE_MANAGEMENT_SERVICE),
+
     //clients
     ADD_CLIENT_ACCESS(true, LIVE_MANAGEMENT_SERVICE),
     REMOVE_CLIENT_ACCESS(true, LIVE_MANAGEMENT_SERVICE),

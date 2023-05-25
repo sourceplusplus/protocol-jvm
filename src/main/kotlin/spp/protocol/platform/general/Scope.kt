@@ -14,32 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.instrument.event
+package spp.protocol.platform.general
 
-/**
- * todo: description.
- *
- * @since 0.3.0
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-enum class LiveInstrumentEventType {
-    BREAKPOINT_ADDED,
-    BREAKPOINT_APPLIED,
-    BREAKPOINT_HIT,
-    BREAKPOINT_REMOVED,
-
-    LOG_ADDED,
-    LOG_APPLIED,
-    LOG_HIT,
-    LOG_REMOVED,
-
-    METER_ADDED,
-    METER_APPLIED,
-    METER_HIT,
-    METER_UPDATED,
-    METER_REMOVED,
-
-    SPAN_ADDED,
-    SPAN_APPLIED,
-    SPAN_REMOVED;
+enum class Scope {
+    All,
+    Service,
+    ServiceInstance,
+    Endpoint,
+    ServiceRelation,
+    ServiceInstanceRelation,
+    EndpointRelation
 }

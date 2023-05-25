@@ -1,0 +1,6 @@
+query getSystemConfig {
+    getSystemConfig {
+        config
+        value
+    }
+}

@@ -14,32 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.instrument.event
+package spp.protocol.platform.general
 
-/**
- * todo: description.
- *
- * @since 0.3.0
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-enum class LiveInstrumentEventType {
-    BREAKPOINT_ADDED,
-    BREAKPOINT_APPLIED,
-    BREAKPOINT_HIT,
-    BREAKPOINT_REMOVED,
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonObject
 
-    LOG_ADDED,
-    LOG_APPLIED,
-    LOG_HIT,
-    LOG_REMOVED,
+@DataObject
+data class SelectedRecord(
+    val name: String,
+    val id: String,
+    val value: String,
+    val refId: String? = null
+) {
+    constructor(json: JsonObject) : this(
+        json.getString("name"),
+        json.getString("id"),
+        json.getString("value"),
+        json.getString("refId")
+    )
 
-    METER_ADDED,
-    METER_APPLIED,
-    METER_HIT,
-    METER_UPDATED,
-    METER_REMOVED,
-
-    SPAN_ADDED,
-    SPAN_APPLIED,
-    SPAN_REMOVED;
+    fun toJson(): JsonObject = JsonObject.mapFrom(this)
 }
