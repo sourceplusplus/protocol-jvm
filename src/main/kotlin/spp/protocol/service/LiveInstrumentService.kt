@@ -134,6 +134,13 @@ interface LiveInstrumentService {
 
     @GenIgnore
     fun getLiveInstrumentEvents(
+        instrumentId: String
+    ): Future<List<LiveInstrumentEvent>> {
+        return getLiveInstrumentEvents(listOf(instrumentId), null, null, 0, Int.MAX_VALUE)
+    }
+
+    @GenIgnore
+    fun getLiveInstrumentEvents(
         instrumentId: String?,
         from: Instant?,
         to: Instant?,
