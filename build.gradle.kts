@@ -87,7 +87,7 @@ dependencies {
     kapt("io.vertx:vertx-codegen:$vertxVersion:processor")
     compileOnly("io.vertx:vertx-codegen:$vertxVersion")
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.0")
 }
 
 tasks.withType<JavaCompile> {
