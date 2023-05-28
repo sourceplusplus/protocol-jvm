@@ -41,5 +41,5 @@ enum class LiveInstrumentEventType {
 
     SPAN_ADDED,
     SPAN_APPLIED,
-    SPAN_REMOVED;
+    SPAN_REMOVED
 }

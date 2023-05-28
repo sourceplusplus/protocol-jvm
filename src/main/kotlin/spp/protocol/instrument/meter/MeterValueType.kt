@@ -23,5 +23,5 @@ package spp.protocol.instrument.meter
  */
 enum class MeterValueType {
     VALUE,
-    VALUE_EXPRESSION;
+    VALUE_EXPRESSION
 }
