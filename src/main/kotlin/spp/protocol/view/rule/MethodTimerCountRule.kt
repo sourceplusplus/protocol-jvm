@@ -24,5 +24,6 @@ class MethodTimerCountRule(private val meter: LiveMeter) : ViewRule(
         append("(")
         append(meter.id).append("_timer_meter")
         append(").sum(['service']).service(['service'], Layer.GENERAL)")
-    }
+    },
+    meterIds = listOf(meter.id!!)
 )

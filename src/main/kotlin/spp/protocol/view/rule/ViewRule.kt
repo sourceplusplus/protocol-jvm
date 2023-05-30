@@ -25,12 +25,14 @@ open class ViewRule(
     val name: String,
     val exp: String,
     val partitions: List<RulePartition> = emptyList(),
+    val meterIds: List<String> = emptyList()
 ) {
 
     constructor(json: JsonObject) : this(
         name = json.getString("name"),
         exp = json.getString("exp"),
-        partitions = json.getJsonArray("partitions").map { RulePartition(it as JsonObject) }
+        partitions = json.getJsonArray("partitions").map { RulePartition(it as JsonObject) },
+        meterIds = json.getJsonArray("meterIds").map { it as String }
     )
 
     fun toJson(): JsonObject {
@@ -38,13 +40,15 @@ open class ViewRule(
         json.put("name", name)
         json.put("exp", exp)
         json.put("partitions", JsonArray().apply { partitions.forEach { add(it.toJson()) } })
+        json.put("meterIds", JsonArray().apply { meterIds.forEach { add(it) } })
         return json
     }
 
     fun copy(name: String) = ViewRule(
         name = name,
         exp = exp,
-        partitions = partitions
+        partitions = partitions,
+        meterIds = meterIds
     )
 
     override fun equals(other: Any?): Boolean {
@@ -53,13 +57,11 @@ open class ViewRule(
         other as ViewRule
         if (name != other.name) return false
         if (exp != other.exp) return false
-        return partitions == other.partitions
+        if (partitions != other.partitions) return false
+        return meterIds == other.meterIds
     }
 
     override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + exp.hashCode()
-        result = 31 * result + partitions.hashCode()
-        return result
+        return name.hashCode()
     }
 }
