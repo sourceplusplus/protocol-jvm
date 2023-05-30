@@ -78,6 +78,34 @@ data class LiveLog(
         return json
     }
 
+    override fun copy(
+        location: LiveSourceLocation?,
+        condition: String?,
+        expiresAt: Long?,
+        hitLimit: Int?,
+        id: String?,
+        applyImmediately: Boolean?,
+        applied: Boolean?,
+        pending: Boolean?,
+        throttle: InstrumentThrottle?,
+        meta: Map<String, Any>?
+    ): LiveInstrument {
+        return copy(
+            logFormat = logFormat,
+            logArguments = logArguments,
+            location = location ?: this.location,
+            condition = condition ?: this.condition,
+            expiresAt = expiresAt ?: this.expiresAt,
+            hitLimit = hitLimit ?: this.hitLimit,
+            id = id ?: this.id,
+            applyImmediately = applyImmediately ?: this.applyImmediately,
+            applied = applied ?: this.applied,
+            pending = pending ?: this.pending,
+            throttle = throttle ?: this.throttle,
+            meta = meta ?: this.meta
+        )
+    }
+
     /**
      * Specify explicitly so Kotlin doesn't override.
      */

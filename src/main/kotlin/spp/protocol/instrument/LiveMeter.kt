@@ -87,6 +87,36 @@ data class LiveMeter(
         return json
     }
 
+    override fun copy(
+        location: LiveSourceLocation?,
+        condition: String?,
+        expiresAt: Long?,
+        hitLimit: Int?,
+        id: String?,
+        applyImmediately: Boolean?,
+        applied: Boolean?,
+        pending: Boolean?,
+        throttle: InstrumentThrottle?,
+        meta: Map<String, Any>?
+    ): LiveInstrument {
+        return copy(
+            meterType = meterType,
+            metricValue = metricValue,
+            meterTags = meterTags,
+            meterPartitions = meterPartitions,
+            location = location ?: this.location,
+            condition = condition ?: this.condition,
+            expiresAt = expiresAt ?: this.expiresAt,
+            hitLimit = hitLimit ?: this.hitLimit,
+            id = id ?: this.id,
+            applyImmediately = applyImmediately ?: this.applyImmediately,
+            applied = applied ?: this.applied,
+            pending = pending ?: this.pending,
+            throttle = throttle ?: this.throttle,
+            meta = meta ?: this.meta
+        )
+    }
+
     /**
      * Returns an id without the "spp_" prefix in a format that is compatible with SkyWalking metrics.
      */

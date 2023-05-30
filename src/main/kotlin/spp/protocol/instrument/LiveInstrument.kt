@@ -55,6 +55,19 @@ sealed class LiveInstrument {
 
     abstract fun toJson(): JsonObject
 
+    abstract fun copy(
+        location: LiveSourceLocation? = null,
+        condition: String? = null,
+        expiresAt: Long? = null,
+        hitLimit: Int? = null,
+        id: String? = null,
+        applyImmediately: Boolean? = null,
+        applied: Boolean? = null,
+        pending: Boolean? = null,
+        throttle: InstrumentThrottle? = null,
+        meta: Map<String, Any>? = null
+    ): LiveInstrument
+
     fun addEventListener(vertx: Vertx, listener: (LiveInstrumentEvent) -> Unit) {
         val instrumentId = id
         if (instrumentId == null) {
