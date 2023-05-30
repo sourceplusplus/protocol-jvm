@@ -50,6 +50,20 @@ data class LiveMeter(
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.METER
 
+    init {
+        if (isInvalidId()) {
+            error(buildString {
+                append("Invalid meter id: '$id'. ")
+                append(buildString {
+                    append("Must begin with 'spp_', ")
+                    append("contain only lowercase letters, numbers, ")
+                    append("and underscores, must be 1-64 characters in length, ")
+                    append("and cannot end with an underscore.")
+                })
+            })
+        }
+    }
+
     constructor(json: JsonObject) : this(
         meterType = MeterType.valueOf(json.getString("meterType")),
         metricValue = json.getJsonObject("metricValue")?.let { MetricValue(it) },
@@ -118,17 +132,6 @@ data class LiveMeter(
     }
 
     /**
-     * Returns an id without the "spp_" prefix in a format that is compatible with SkyWalking metrics.
-     */
-    fun toMetricIdWithoutPrefix(): String = meterType.name.lowercase() + "_" +
-            id!!.replace("[^a-zA-Z0-9]".toRegex(), "_")
-
-    /**
-     * Returns an id in a format that is compatible with SkyWalking metrics.
-     */
-    fun toMetricId(): String = "spp_" + toMetricIdWithoutPrefix()
-
-    /**
      * Specify explicitly so Kotlin doesn't override.
      */
     override fun equals(other: Any?): Boolean = super.equals(other)
@@ -138,12 +141,18 @@ data class LiveMeter(
      */
     override fun hashCode(): Int = super.hashCode()
 
+    fun isInvalidId(): Boolean {
+        return id?.let { !VALID_ID_PATTERN.matches(it) } ?: false
+    }
+
     companion object {
+        val VALID_ID_PATTERN = Regex("spp_[a-zA-Z0-9_]{1,63}(?<!_)")
+
         fun formatMeterName(meterName: String): String {
             val sb = StringBuilder()
             for (c in meterName) {
                 if (c.isLetterOrDigit() || c == '_') {
-                    sb.append(c) //todo: lowercase()?
+                    sb.append(c.lowercase())
                 } else {
                     sb.append('_')
                 }

@@ -21,7 +21,7 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 
 @DataObject
-data class ViewRule(
+open class ViewRule(
     val name: String,
     val exp: String,
     val partitions: List<RulePartition> = emptyList(),
@@ -39,5 +39,27 @@ data class ViewRule(
         json.put("exp", exp)
         json.put("partitions", JsonArray().apply { partitions.forEach { add(it.toJson()) } })
         return json
+    }
+
+    fun copy(name: String) = ViewRule(
+        name = name,
+        exp = exp,
+        partitions = partitions
+    )
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as ViewRule
+        if (name != other.name) return false
+        if (exp != other.exp) return false
+        return partitions == other.partitions
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + exp.hashCode()
+        result = 31 * result + partitions.hashCode()
+        return result
     }
 }
