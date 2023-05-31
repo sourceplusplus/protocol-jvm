@@ -32,7 +32,7 @@ open class ViewRule(
         name = json.getString("name"),
         exp = json.getString("exp"),
         partitions = json.getJsonArray("partitions").map { RulePartition(it as JsonObject) },
-        meterIds = json.getJsonArray("meterIds").map { it as String }
+        meterIds = json.getJsonArray("meterIds")?.map { it as String } ?: emptyList()
     )
 
     fun toJson(): JsonObject {
