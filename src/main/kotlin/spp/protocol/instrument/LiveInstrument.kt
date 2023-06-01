@@ -55,6 +55,7 @@ sealed class LiveInstrument {
 
     abstract fun toJson(): JsonObject
 
+    @Suppress("LongParameterList")
     abstract fun copy(
         location: LiveSourceLocation? = null,
         condition: String? = null,
