@@ -124,11 +124,16 @@ interface LiveInstrumentService {
 
     @GenIgnore
     fun getLiveInstrument(id: String): Future<LiveInstrument?> {
-        return getLiveInstrumentById(id)
+        return getLiveInstrument(id, false)
+    }
+
+    @GenIgnore
+    fun getLiveInstrument(id: String, includeArchive: Boolean): Future<LiveInstrument?> {
+        return getLiveInstrumentById(id, includeArchive)
     }
 
     @Deprecated("use getLiveInstrument", ReplaceWith("getLiveInstrument(id)"))
-    fun getLiveInstrumentById(id: String): Future<LiveInstrument?>
+    fun getLiveInstrumentById(id: String, includeArchive: Boolean): Future<LiveInstrument?>
     fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
     fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
 
