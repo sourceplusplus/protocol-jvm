@@ -45,8 +45,14 @@ data class LiveInstrumentCommand(
         return buildString {
             append("LiveInstrumentCommand(")
             append("commandType=").append(commandType)
-            append(", instruments=").append(instruments.size)
-            append(", locations=").append(locations.size)
+            if (instruments.size > 1) {
+                append(", instruments=").append(instruments.size)
+            } else if (instruments.size == 1) {
+                append(", instrument=").append(instruments.first().id)
+            }
+            if (locations.isNotEmpty()) {
+                append(", locations=").append(locations.size)
+            }
             append(")")
         }
     }
