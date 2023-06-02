@@ -40,4 +40,14 @@ data class LiveInstrumentCommand(
         json.put("locations", locations.map { it.toJson() })
         return json
     }
+
+    override fun toString(): String {
+        return buildString {
+            append("LiveInstrumentCommand(")
+            append("commandType=").append(commandType)
+            append(", instruments=").append(instruments.size)
+            append(", locations=").append(locations.size)
+            append(")")
+        }
+    }
 }
