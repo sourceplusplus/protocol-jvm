@@ -41,6 +41,11 @@ data class LiveInstrumentCommand(
         return json
     }
 
+    fun isDispatchable(): Boolean {
+        if (commandType == CommandType.SET_INITIAL_INSTRUMENTS) return true
+        return instruments.isNotEmpty() || locations.isNotEmpty()
+    }
+
     override fun toString(): String {
         return buildString {
             append("LiveInstrumentCommand(")
