@@ -100,7 +100,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 tasks.getByName<Test>("test") {
-    failFast = true
     useJUnitPlatform()
 }
 
