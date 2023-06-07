@@ -14,14 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.instrument.meter
+package spp.protocol.view.rule
 
-/**
- * todo: description.
- *
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-enum class MeterValueType {
-    VALUE,
-    VALUE_EXPRESSION
-}
+import spp.protocol.instrument.LiveMeter
+
+class MeterSumRule(private val meter: LiveMeter) : ViewRule(
+    meter.id!!,
+    buildString {
+        append("(")
+        append(meter.id)
+        append(").sum(['service']).service(['service'], Layer.GENERAL)")
+    },
+    meterIds = listOf(meter.id)
+)

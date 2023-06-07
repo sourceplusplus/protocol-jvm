@@ -22,16 +22,15 @@ import spp.protocol.artifact.exception.LiveStackTrace
 import spp.protocol.artifact.exception.LiveStackTraceElement
 import spp.protocol.instrument.LiveBreakpoint
 import spp.protocol.instrument.LiveLog
-import spp.protocol.instrument.LiveMeter
 import spp.protocol.instrument.command.CommandType
 import spp.protocol.instrument.command.LiveInstrumentCommand
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentRemoved
 import spp.protocol.instrument.location.LiveSourceLocation
-import spp.protocol.instrument.meter.*
 import spp.protocol.instrument.throttle.InstrumentThrottle
 import spp.protocol.instrument.throttle.ThrottleStep
 import spp.protocol.instrument.variable.LiveVariable
+import spp.protocol.instrument.variable.LiveVariableControl
 import spp.protocol.instrument.variable.LiveVariableScope
 import java.time.Instant
 
@@ -39,17 +38,10 @@ class ProtocolMarshallerTest {
 
     @Test
     fun testLiveInstrument() {
-        val liveInstrument = LiveMeter(
-            MeterType.COUNT,
-            MetricValue(MetricValueType.NUMBER, "1"),
-            listOf(
-                MeterTag(
-                    "tagKey",
-                    MeterValueType.VALUE,
-                    "tagValue"
-                )
+        val liveInstrument = LiveBreakpoint(
+            LiveVariableControl(
+                maxObjectDepth = 8
             ),
-            listOf(),
             LiveSourceLocation("source", 1),
             "condition",
             System.currentTimeMillis(),

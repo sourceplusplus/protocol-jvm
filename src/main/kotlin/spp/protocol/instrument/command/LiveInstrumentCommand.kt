@@ -40,4 +40,25 @@ data class LiveInstrumentCommand(
         json.put("locations", locations.map { it.toJson() })
         return json
     }
+
+    fun isDispatchable(): Boolean {
+        if (commandType == CommandType.SET_INITIAL_INSTRUMENTS) return true
+        return instruments.isNotEmpty() || locations.isNotEmpty()
+    }
+
+    override fun toString(): String {
+        return buildString {
+            append("LiveInstrumentCommand(")
+            append("commandType=").append(commandType)
+            if (instruments.size > 1) {
+                append(", instruments=").append(instruments.size)
+            } else if (instruments.size == 1) {
+                append(", instrument=").append(instruments.first().id)
+            }
+            if (locations.isNotEmpty()) {
+                append(", locations=").append(locations.size)
+            }
+            append(")")
+        }
+    }
 }

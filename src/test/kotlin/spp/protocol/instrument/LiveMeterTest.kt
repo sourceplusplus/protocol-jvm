@@ -16,24 +16,33 @@
  */
 package spp.protocol.instrument
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.meter.MeterType
 import spp.protocol.instrument.meter.MetricValue
 import spp.protocol.instrument.meter.MetricValueType
+import java.util.*
 
 class LiveMeterTest {
 
     @Test
     fun `valid metric id`() {
-        val liveMeter = LiveMeter(
-            MeterType.COUNT,
-            MetricValue(MetricValueType.NUMBER, "1"),
-            location = LiveSourceLocation("location", -1),
-            id = "test.the.id:1 2-3()"
-        )
-        assertEquals("test.the.id:1 2-3()", liveMeter.id)
-        assertEquals("count_test_the_id_1_2_3__", liveMeter.toMetricIdWithoutPrefix())
+        try {
+            LiveMeter(
+                MeterType.COUNT,
+                MetricValue(MetricValueType.NUMBER, "1"),
+                location = LiveSourceLocation("location", -1),
+                id = "test.the.id:1 2-3()"
+            )
+        } catch (e: Exception) {
+            assertTrue(e.message!!.contains("Invalid meter id: 'test.the.id:1 2-3()'."))
+        }
+
+        assertTrue(LiveMeter.VALID_ID_PATTERN.matches("spp_" + UUID.randomUUID().toString().replace("-", "")))
+        assertTrue(LiveMeter.VALID_ID_PATTERN.matches("spp_test_the_id_1_2_3"))
+        assertFalse(LiveMeter.VALID_ID_PATTERN.matches("spp_test_the_id_1_2_3_"))
+        assertFalse(LiveMeter.VALID_ID_PATTERN.matches("test_the_id"))
     }
 }

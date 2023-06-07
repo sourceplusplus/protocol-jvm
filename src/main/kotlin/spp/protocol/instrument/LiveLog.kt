@@ -56,8 +56,8 @@ data class LiveLog(
         applyImmediately = json.getBoolean("applyImmediately") ?: false,
         applied = json.getBoolean("applied") ?: false,
         pending = json.getBoolean("pending") ?: false,
-        throttle = InstrumentThrottle(json.getJsonObject("throttle")),
-        meta = json.getJsonObject("meta").associate { it.key to it.value }
+        throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) } ?: InstrumentThrottle.DEFAULT,
+        meta = json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
     )
 
     override fun toJson(): JsonObject {
@@ -76,6 +76,34 @@ data class LiveLog(
         json.put("throttle", throttle.toJson())
         json.put("meta", JsonObject(meta))
         return json
+    }
+
+    override fun copy(
+        location: LiveSourceLocation?,
+        condition: String?,
+        expiresAt: Long?,
+        hitLimit: Int?,
+        id: String?,
+        applyImmediately: Boolean?,
+        applied: Boolean?,
+        pending: Boolean?,
+        throttle: InstrumentThrottle?,
+        meta: Map<String, Any>?
+    ): LiveInstrument {
+        return copy(
+            logFormat = logFormat,
+            logArguments = logArguments,
+            location = location ?: this.location,
+            condition = condition ?: this.condition,
+            expiresAt = expiresAt ?: this.expiresAt,
+            hitLimit = hitLimit ?: this.hitLimit,
+            id = id ?: this.id,
+            applyImmediately = applyImmediately ?: this.applyImmediately,
+            applied = applied ?: this.applied,
+            pending = pending ?: this.pending,
+            throttle = throttle ?: this.throttle,
+            meta = meta ?: this.meta
+        )
     }
 
     /**

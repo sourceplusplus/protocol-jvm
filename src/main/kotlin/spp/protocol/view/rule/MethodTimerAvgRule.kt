@@ -14,14 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spp.protocol.instrument.meter
+package spp.protocol.view.rule
 
-/**
- * todo: description.
- *
- * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
- */
-enum class MeterValueType {
-    VALUE,
-    VALUE_EXPRESSION
-}
+import spp.protocol.instrument.LiveMeter
+
+class MethodTimerAvgRule(private val meter: LiveMeter) : ViewRule(
+    "${meter.id}_avg",
+    buildString {
+        append("(")
+        append(meter.id).append("_timer_duration_sum")
+        append("/")
+        append(meter.id).append("_timer_meter")
+        append(").avg(['service']).service(['service'], Layer.GENERAL)")
+    },
+    meterIds = listOf(meter.id!!)
+)
