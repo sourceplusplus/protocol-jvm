@@ -80,6 +80,47 @@ interface LiveInstrumentService {
         }
     }
 
+    @GenIgnore
+    fun <T : LiveInstrument> upsertLiveInstrument(
+        instrument: T
+    ): Future<T> {
+        return getLiveInstrument(instrument.id!!).compose { liveInstrument ->
+            if (liveInstrument != null) {
+                if (liveInstrument.javaClass != instrument.javaClass) {
+                    Future.failedFuture("Instrument type mismatch")
+                } else {
+                    Future.succeededFuture(liveInstrument as T)
+                }
+            } else {
+                addLiveInstrument(instrument).map { it as T }
+            }
+        }
+    }
+
+    @GenIgnore
+    fun upsertLiveWatch(
+        location: LiveSourceLocation,
+        variables: List<String> = emptyList(),
+        id: String
+    ): Future<LiveBreakpoint> {
+        return getLiveInstrument(id).compose { liveInstrument ->
+            if (liveInstrument != null) {
+                Future.succeededFuture(liveInstrument as LiveBreakpoint)
+            } else {
+                addLiveBreakpoint(
+                    LiveBreakpoint(
+                        location = location,
+                        variableControl = LiveVariableControl(
+                            variableNameConfig = variables.associateWith { LiveVariableControlBase() }
+                        ),
+                        id = id,
+                        hitLimit = -1
+                    )
+                )
+            }
+        }
+    }
+
     /**
      * Applies the given [LiveInstrument].
      */
