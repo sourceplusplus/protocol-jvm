@@ -58,6 +58,8 @@ interface LiveViewService {
         }
     }
 
+    fun getRules(): Future<List<ViewRule>>
+    fun getRule(ruleName: String): Future<ViewRule?>
     fun saveRule(rule: ViewRule): Future<ViewRule>
     fun deleteRule(ruleName: String): Future<ViewRule?>
 
