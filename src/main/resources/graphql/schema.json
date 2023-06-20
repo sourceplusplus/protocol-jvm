@@ -4521,7 +4521,7 @@
           "description": null,
           "fields": [
             {
-              "name": "version",
+              "name": "getVersion",
               "description": null,
               "args": [],
               "type": {
@@ -4537,7 +4537,7 @@
               "deprecationReason": null
             },
             {
-              "name": "timeInfo",
+              "name": "getTimeInfo",
               "description": null,
               "args": [],
               "type": {
