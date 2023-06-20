@@ -4465,7 +4465,7 @@
               "deprecationReason": null
             },
             {
-              "name": "setSystemConfigValue",
+              "name": "setConfigValue",
               "description": null,
               "args": [
                 {
@@ -5806,7 +5806,7 @@
               "deprecationReason": null
             },
             {
-              "name": "getSystemConfig",
+              "name": "getConfiguration",
               "description": null,
               "args": [],
               "type": {
@@ -5830,7 +5830,7 @@
               "deprecationReason": null
             },
             {
-              "name": "getSystemConfigValue",
+              "name": "getConfigValue",
               "description": null,
               "args": [
                 {
@@ -7786,42 +7786,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "onOperation",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": true,
-              "deprecationReason": "Use `locations`."
-            },
-            {
-              "name": "onFragment",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": true,
-              "deprecationReason": "Use `locations`."
-            },
-            {
-              "name": "onField",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": true,
-              "deprecationReason": "Use `locations`."
             }
           ],
           "inputFields": null,
@@ -8532,7 +8496,7 @@
               "deprecationReason": null
             },
             {
-              "name": "specifiedByUrl",
+              "name": "specifiedByURL",
               "description": null,
               "args": [],
               "type": {
@@ -8542,6 +8506,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "specifiedByUrl",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "This legacy name has been replaced by `specifiedByURL`"
             }
           ],
           "inputFields": null,
@@ -8559,7 +8535,7 @@
           "enumValues": [
             {
               "name": "SCALAR",
-              "description": "Indicates this type is a scalar. 'specifiedByUrl' is a valid field",
+              "description": "Indicates this type is a scalar. 'specifiedByURL' is a valid field",
               "isDeprecated": false,
               "deprecationReason": null
             },
