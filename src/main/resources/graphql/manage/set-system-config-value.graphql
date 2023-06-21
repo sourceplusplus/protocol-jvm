@@ -1,3 +1,0 @@
-mutation setSystemConfigValue($config: String!, $value: String!) {
-    setSystemConfigValue(config: $config, value: $value)
-}

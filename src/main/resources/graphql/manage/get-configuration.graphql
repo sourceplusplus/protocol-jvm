@@ -1,0 +1,6 @@
+query getConfiguration {
+    getConfiguration {
+        config
+        value
+    }
+}
