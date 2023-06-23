@@ -70,4 +70,17 @@ enum class MetricStep {
         }
         return Instant.from(formatter.parse(value))
     }
+
+    companion object {
+        fun fromBucketFormat(value: String): MetricStep {
+            return values().firstOrNull {
+                try {
+                    it.bucketFormatter.parse(value)
+                    true
+                } catch (ignore: Exception) {
+                    false
+                }
+            } ?: throw IllegalArgumentException("Invalid date time format: $value")
+        }
+    }
 }
