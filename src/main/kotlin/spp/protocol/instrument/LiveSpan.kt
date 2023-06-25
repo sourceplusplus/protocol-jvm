@@ -17,6 +17,7 @@
 package spp.protocol.instrument
 
 import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.location.LiveSourceLocation
 import spp.protocol.instrument.throttle.InstrumentThrottle
@@ -37,7 +38,7 @@ data class LiveSpan(
     override val applyImmediately: Boolean = false,
     override val applied: Boolean = false,
     override val pending: Boolean = false,
-    override val throttle: InstrumentThrottle? = null,
+    override val throttle: InstrumentThrottle = InstrumentThrottle.DEFAULT,
     override val meta: Map<String, Any> = emptyMap()
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.SPAN
@@ -52,8 +53,14 @@ data class LiveSpan(
         applyImmediately = json.getBoolean("applyImmediately") ?: false,
         applied = json.getBoolean("applied") ?: false,
         pending = json.getBoolean("pending") ?: false,
-        throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) },
-        meta = json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
+        throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) } ?: InstrumentThrottle.DEFAULT,
+        meta = json.getValue("meta")?.let {
+            if (it is JsonObject) {
+                it.associate { it.key to it.value }
+            } else {
+                toJsonMap(it as JsonArray)
+            }
+        } ?: emptyMap()
     )
 
     override fun toJson(): JsonObject {
@@ -68,7 +75,7 @@ data class LiveSpan(
         json.put("applyImmediately", applyImmediately)
         json.put("applied", applied)
         json.put("pending", pending)
-        json.put("throttle", throttle?.toJson())
+        json.put("throttle", throttle.toJson())
         json.put("meta", JsonObject(meta))
         return json
     }

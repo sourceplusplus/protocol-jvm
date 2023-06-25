@@ -42,7 +42,6 @@ data class LiveInstrumentCommand(
     }
 
     fun isDispatchable(): Boolean {
-        if (commandType == CommandType.SET_INITIAL_INSTRUMENTS) return true
         return instruments.isNotEmpty() || locations.isNotEmpty()
     }
 

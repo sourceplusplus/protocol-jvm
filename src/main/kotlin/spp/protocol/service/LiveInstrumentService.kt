@@ -39,7 +39,7 @@ import java.time.Instant
  */
 @ProxyGen
 @VertxGen
-@Suppress("TooManyFunctions") // public API
+@Suppress("TooManyFunctions", "unused") // public API
 interface LiveInstrumentService {
 
     @GenIgnore
@@ -168,13 +168,7 @@ interface LiveInstrumentService {
         return getLiveInstrument(id, false)
     }
 
-    @GenIgnore
-    fun getLiveInstrument(id: String, includeArchive: Boolean): Future<LiveInstrument?> {
-        return getLiveInstrumentById(id, includeArchive)
-    }
-
-    @Deprecated("use getLiveInstrument", ReplaceWith("getLiveInstrument(id)"))
-    fun getLiveInstrumentById(id: String, includeArchive: Boolean): Future<LiveInstrument?>
+    fun getLiveInstrument(id: String, includeArchive: Boolean): Future<LiveInstrument?>
     fun getLiveInstrumentsByIds(ids: List<String>): Future<List<LiveInstrument>>
     fun getLiveInstrumentsByLocation(location: LiveSourceLocation): Future<List<LiveInstrument>>
 

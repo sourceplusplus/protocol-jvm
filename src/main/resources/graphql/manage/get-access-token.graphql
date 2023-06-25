@@ -1,0 +1,3 @@
+query getAccessToken($authorizationCode: String!){
+    getAccessToken(authorizationCode: $authorizationCode)
+}
