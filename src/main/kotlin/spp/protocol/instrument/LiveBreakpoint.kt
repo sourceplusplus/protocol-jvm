@@ -18,6 +18,7 @@ package spp.protocol.instrument
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.Vertx
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.event.LiveBreakpointHit
 import spp.protocol.instrument.event.LiveInstrumentEvent
@@ -60,7 +61,13 @@ data class LiveBreakpoint(
         applied = json.getBoolean("applied") ?: false,
         pending = json.getBoolean("pending") ?: false,
         throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) } ?: InstrumentThrottle.DEFAULT,
-        meta = json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
+        meta = json.getValue("meta")?.let {
+            if (it is JsonObject) {
+                it.associate { it.key to it.value }
+            } else {
+                toJsonMap(it as JsonArray)
+            }
+        } ?: emptyMap()
     )
 
     override fun toJson(): JsonObject {

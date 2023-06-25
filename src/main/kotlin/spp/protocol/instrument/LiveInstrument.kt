@@ -17,6 +17,7 @@
 package spp.protocol.instrument
 
 import io.vertx.core.Vertx
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import spp.protocol.instrument.event.LiveInstrumentEvent
 import spp.protocol.instrument.location.LiveSourceLocation
@@ -39,7 +40,7 @@ sealed class LiveInstrument {
     abstract val applyImmediately: Boolean
     abstract val applied: Boolean
     abstract val pending: Boolean
-    abstract val throttle: InstrumentThrottle?
+    abstract val throttle: InstrumentThrottle
     abstract val meta: Map<String, Any>
 
     override fun equals(other: Any?): Boolean {
@@ -87,6 +88,16 @@ sealed class LiveInstrument {
                 LiveInstrumentType.SPAN -> LiveSpan(json)
                 LiveInstrumentType.METER -> LiveMeter(json)
             }
+        }
+
+        internal fun toJsonMap(metaArray: JsonArray?): Map<String, Any> {
+            val meta = mutableMapOf<String, String>()
+            val metaOb = metaArray ?: JsonArray()
+            for (i in 0 until metaOb.size()) {
+                val metaInfoOb = metaOb.getJsonObject(i)
+                meta[metaInfoOb.getString("name")] = metaInfoOb.getString("value")
+            }
+            return meta
         }
     }
 }

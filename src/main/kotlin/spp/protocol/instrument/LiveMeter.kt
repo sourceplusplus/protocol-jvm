@@ -35,8 +35,8 @@ import spp.protocol.instrument.throttle.InstrumentThrottle
 data class LiveMeter(
     val meterType: MeterType,
     val metricValue: MetricValue? = null,
-    val meterTags: List<MeterTag> = emptyList(),
-    val meterPartitions: List<MeterPartition> = emptyList(),
+    val meterTags: List<MeterTag> = emptyList(), //todo: rename to tags
+    val meterPartitions: List<MeterPartition> = emptyList(), //todo: rename to partitions
     override val location: LiveSourceLocation,
     override val condition: String? = null,
     override val expiresAt: Long? = null,
@@ -45,7 +45,7 @@ data class LiveMeter(
     override val applyImmediately: Boolean = false,
     override val applied: Boolean = false,
     override val pending: Boolean = false,
-    override val throttle: InstrumentThrottle? = null,
+    override val throttle: InstrumentThrottle = InstrumentThrottle.NONE,
     override val meta: Map<String, Any> = emptyMap()
 ) : LiveInstrument() {
     override val type: LiveInstrumentType = LiveInstrumentType.METER
@@ -77,8 +77,14 @@ data class LiveMeter(
         applyImmediately = json.getBoolean("applyImmediately") ?: false,
         applied = json.getBoolean("applied") ?: false,
         pending = json.getBoolean("pending") ?: false,
-        throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) },
-        meta = json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
+        throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) } ?: InstrumentThrottle.NONE,
+        meta = json.getValue("meta")?.let {
+            if (it is JsonObject) {
+                it.associate { it.key to it.value }
+            } else {
+                toJsonMap(it as JsonArray)
+            }
+        } ?: emptyMap()
     )
 
     override fun toJson(): JsonObject {
@@ -96,7 +102,7 @@ data class LiveMeter(
         json.put("applyImmediately", applyImmediately)
         json.put("applied", applied)
         json.put("pending", pending)
-        json.put("throttle", throttle?.toJson())
+        json.put("throttle", throttle.toJson())
         json.put("meta", JsonObject(meta))
         return json
     }

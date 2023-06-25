@@ -57,7 +57,13 @@ data class LiveLog(
         applied = json.getBoolean("applied") ?: false,
         pending = json.getBoolean("pending") ?: false,
         throttle = json.getJsonObject("throttle")?.let { InstrumentThrottle(it) } ?: InstrumentThrottle.DEFAULT,
-        meta = json.getJsonObject("meta")?.associate { it.key to it.value } ?: emptyMap()
+        meta = json.getValue("meta")?.let {
+            if (it is JsonObject) {
+                it.associate { it.key to it.value }
+            } else {
+                toJsonMap(it as JsonArray)
+            }
+        } ?: emptyMap()
     )
 
     override fun toJson(): JsonObject {
