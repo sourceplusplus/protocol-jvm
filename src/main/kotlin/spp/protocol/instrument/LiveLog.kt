@@ -47,7 +47,7 @@ data class LiveLog(
 
     constructor(json: JsonObject) : this(
         logFormat = json.getString("logFormat"),
-        logArguments = json.getJsonArray("logArguments").map { it.toString() },
+        logArguments = json.getJsonArray("logArguments")?.map { it.toString() } ?: emptyList(),
         location = LiveSourceLocation(json.getJsonObject("location")),
         condition = json.getString("condition"),
         expiresAt = json.getLong("expiresAt"),
