@@ -57,7 +57,7 @@ data class LiveMeter(
                 append(buildString {
                     append("Must begin with 'spp_', ")
                     append("contain only lowercase letters, numbers, ")
-                    append("and underscores, must be 1-64 characters in length, ")
+                    append("and underscores, must be 1-128 characters in length, ")
                     append("and cannot end with an underscore.")
                 })
             })
@@ -152,7 +152,7 @@ data class LiveMeter(
     }
 
     companion object {
-        val VALID_ID_PATTERN = Regex("spp_[a-zA-Z0-9_]{1,63}(?<!_)")
+        val VALID_ID_PATTERN = Regex("spp_[a-zA-Z0-9_]{1,127}(?<!_)")
 
         fun formatMeterName(meterName: String): String {
             val sb = StringBuilder()
