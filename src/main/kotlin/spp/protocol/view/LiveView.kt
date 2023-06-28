@@ -20,8 +20,7 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import spp.protocol.artifact.ArtifactQualifiedName
-import spp.protocol.instrument.location.LiveSourceLocation
+import spp.protocol.platform.general.Service
 import spp.protocol.service.SourceServices.Subscribe.toLiveViewSubscription
 
 /**
@@ -32,27 +31,27 @@ import spp.protocol.service.SourceServices.Subscribe.toLiveViewSubscription
  */
 @DataObject
 data class LiveView(
-    val subscriptionId: String? = null, //todo: actual bottom
     val entityIds: MutableSet<String>,
-    val artifactQualifiedName: ArtifactQualifiedName? = null, //todo: remove, use artifactLocation
-    val artifactLocation: LiveSourceLocation? = null, //todo: bottom?
-    val viewConfig: LiveViewConfig
+    val viewConfig: LiveViewConfig,
+    val service: Service? = null,
+    val serviceInstance: String? = null,
+    val subscriptionId: String? = null
 ) {
     constructor(json: JsonObject) : this(
         subscriptionId = json.getString("subscriptionId"),
         entityIds = json.getJsonArray("entityIds").map { it.toString() }.toMutableSet(),
-        artifactQualifiedName = json.getJsonObject("artifactQualifiedName")?.let { ArtifactQualifiedName(it) },
-        artifactLocation = json.getJsonObject("artifactLocation")?.let { LiveSourceLocation(it) },
-        viewConfig = LiveViewConfig(json.getJsonObject("viewConfig"))
+        viewConfig = LiveViewConfig(json.getJsonObject("viewConfig")),
+        service = json.getJsonObject("service")?.let { Service(it) },
+        serviceInstance = json.getString("serviceInstance")
     )
 
     fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("subscriptionId", subscriptionId)
         json.put("entityIds", JsonArray().apply { entityIds.forEach { add(it) } })
-        artifactQualifiedName?.let { json.put("artifactQualifiedName", it.toJson()) }
-        artifactLocation?.let { json.put("artifactLocation", it.toJson()) }
         json.put("viewConfig", viewConfig.toJson())
+        service?.let { json.put("service", it.toJson()) }
+        json.put("serviceInstance", serviceInstance)
         return json
     }
 
@@ -73,9 +72,9 @@ data class LiveView(
             append("LiveView(")
             if (subscriptionId != null) append("subscriptionId=$subscriptionId, ")
             append("entityIds=$entityIds, ")
-            if (artifactQualifiedName != null) append("artifactQualifiedName=$artifactQualifiedName, ")
-            if (artifactLocation != null) append("artifactLocation=$artifactLocation, ")
             append("viewConfig=$viewConfig")
+            if (service != null) append(", service=$service")
+            if (serviceInstance != null) append(", serviceInstance=$serviceInstance")
             append(")")
         }
     }

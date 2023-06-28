@@ -25,9 +25,9 @@ class LiveViewTest {
     @Test
     fun `test mutable entity ids`() {
         val sub = LiveView(
-            "id",
             mutableSetOf("entity-1"),
-            viewConfig = LiveViewConfig("name", listOf("metrics"))
+            viewConfig = LiveViewConfig("name", listOf("metrics")),
+            subscriptionId = "id"
         )
         val subJson = sub.toJson()
         assertEquals(JsonArray(listOf("entity-1")), subJson.getJsonArray("entityIds"))
