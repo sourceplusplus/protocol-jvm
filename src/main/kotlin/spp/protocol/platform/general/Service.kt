@@ -27,15 +27,24 @@ import spp.protocol.platform.general.util.IDManager
  */
 @DataObject
 data class Service(
-    val id: String,
     val name: String,
     val group: String = "",
     val shortName: String? = null,
     val layers: List<String> = emptyList(),
-    val normal: Boolean = true
+    val normal: Boolean = true,
+    val environment: String? = null,
+    val commitId: String? = null
 ) {
+
+    val id by lazy {
+        if (commitId != null) {
+            IDManager.ServiceID.buildId("$name|$environment|$commitId", normal)
+        } else {
+            IDManager.ServiceID.buildId(name, normal)
+        }
+    }
+
     constructor(json: JsonObject) : this(
-        json.getString("id"),
         json.getString("name"),
         json.getString("group"),
         json.getString("shortName"),
@@ -45,7 +54,6 @@ data class Service(
 
     fun toJson(): JsonObject {
         val json = JsonObject()
-        json.put("id", id)
         json.put("name", name)
         json.put("group", group)
         json.put("shortName", shortName)
@@ -54,23 +62,59 @@ data class Service(
         return json
     }
 
+    fun withEnvironment(environment: String?): Service {
+        return copy(environment = environment)
+    }
+
+    fun withCommitId(commitId: String?): Service {
+        return copy(commitId = commitId)
+    }
+
+    /**
+     * Ensures all non-null fields are equal.
+     */
+    fun isSameLocation(other: Service): Boolean {
+        if (name != other.name) return false
+        if (group != other.group) return false
+        if (shortName != null && shortName != other.shortName) return false
+        if (layers != other.layers) return false
+        if (normal != other.normal) return false
+        if (environment != null && environment != other.environment) return false
+        if (commitId != null && commitId != other.commitId) return false
+        return true
+    }
+
+    fun withName(name: String?): Service {
+        if (name == null) return this
+        if (name.contains("|")) {
+            val parts = name.split("|")
+            return withName(parts[0])
+                .withEnvironment(parts[1])
+                .withCommitId(parts[2])
+        }
+        return copy(name = name)
+    }
+
     companion object {
+
+        @JvmStatic
         fun fromId(id: String): Service {
             val definition = IDManager.ServiceID.analysisId(id)
-            return Service(
-                id = id,
-                name = definition.name,
-                normal = definition.isReal
-            )
+            return fromName(definition.name)
         }
 
+        @JvmStatic
         fun fromName(name: String): Service {
-            return Service(
-                id = IDManager.ServiceID.buildId(name, true),
-                name = name
-            )
+            if (name.contains("|")) {
+                val parts = name.split("|")
+                return fromName(parts[0])
+                    .withEnvironment(parts[1])
+                    .withCommitId(parts[2])
+            }
+            return Service(name = name)
         }
 
+        @JvmStatic
         fun fromNameIfPresent(name: String?): Service? {
             return if (name != null) {
                 fromName(name)
