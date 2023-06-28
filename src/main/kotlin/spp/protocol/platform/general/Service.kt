@@ -18,6 +18,7 @@ package spp.protocol.platform.general
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
+import spp.protocol.platform.general.util.IDManager
 
 /**
  * Represents a service.
@@ -51,5 +52,31 @@ data class Service(
         json.put("layers", layers)
         json.put("normal", normal)
         return json
+    }
+
+    companion object {
+        fun fromId(id: String): Service {
+            val definition = IDManager.ServiceID.analysisId(id)
+            return Service(
+                id = id,
+                name = definition.name,
+                normal = definition.isReal
+            )
+        }
+
+        fun fromName(name: String): Service {
+            return Service(
+                id = IDManager.ServiceID.buildId(name, true),
+                name = name
+            )
+        }
+
+        fun fromNameIfPresent(name: String?): Service? {
+            return if (name != null) {
+                fromName(name)
+            } else {
+                null
+            }
+        }
     }
 }
