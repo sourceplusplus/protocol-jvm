@@ -67,9 +67,7 @@ object IDManager {
             val strings: Array<String> =
                 id.split(Const.SERVICE_ID_PARSER_SPLIT.toRegex()).dropLastWhile { it.isEmpty() }
                     .toTypedArray()
-            if (strings.size != 2) {
-                throw IllegalArgumentException("Can't split service id into 2 parts, $id")
-            }
+            require(strings.size == 2) { "Can't split service id into 2 parts, $id" }
             return ServiceIDDefinition(
                 decode(strings[0]),
                 strings[1].toInt() == 1
@@ -90,9 +88,7 @@ object IDManager {
             val parts: Array<String> =
                 entityId.split(Const.RELATION_ID_PARSER_SPLIT.toRegex()).dropLastWhile { it.isEmpty() }
                     .toTypedArray()
-            if (parts.size != 2) {
-                throw RuntimeException("Illegal Service Relation entity id")
-            }
+            require(parts.size == 2) { "Illegal Service Relation entity id" }
             return ServiceRelationDefine(parts[0], parts[1])
         }
 
@@ -125,9 +121,7 @@ object IDManager {
             if (instanceName.isBlank()) {
                 instanceName = Const.BLANK_ENTITY_NAME
             }
-            return (serviceId
-                    + Const.ID_CONNECTOR
-                    ).toString() + encode(instanceName)
+            return (serviceId + Const.ID_CONNECTOR) + encode(instanceName)
         }
 
         /**
@@ -136,9 +130,7 @@ object IDManager {
         fun analysisId(id: String): InstanceIDDefinition {
             val strings: Array<String> = id.split(Const.ID_PARSER_SPLIT.toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray()
-            if (strings.size != 2) {
-                throw IllegalArgumentException("Can't split instance id into 2 parts, $id")
-            }
+            require(strings.size == 2) { "Can't split instance id into 2 parts, $id" }
             return InstanceIDDefinition(
                 strings[0],
                 decode(strings[1])
@@ -160,9 +152,7 @@ object IDManager {
             val parts: Array<String> =
                 entityId.split(Const.RELATION_ID_PARSER_SPLIT.toRegex()).dropLastWhile { it.isEmpty() }
                     .toTypedArray()
-            if (parts.size != 2) {
-                throw RuntimeException("Illegal Service Instance Relation entity id")
-            }
+            require(parts.size == 2) { "Illegal Service Instance Relation entity id" }
             return ServiceInstanceRelationDefine(parts[0], parts[1])
         }
 
@@ -201,9 +191,7 @@ object IDManager {
             if (endpointName.isBlank()) {
                 endpointName = Const.BLANK_ENTITY_NAME
             }
-            return (serviceId
-                    + Const.ID_CONNECTOR
-                    ).toString() + encode(endpointName)
+            return (serviceId + Const.ID_CONNECTOR) + encode(endpointName)
         }
 
         /**
@@ -212,9 +200,7 @@ object IDManager {
         fun analysisId(id: String): EndpointIDDefinition {
             val strings: Array<String> = id.split(Const.ID_PARSER_SPLIT.toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray()
-            if (strings.size != 2) {
-                throw IllegalArgumentException("Can't split endpoint id into 2 parts, $id")
-            }
+            require(strings.size == 2) { "Can't split endpoint id into 2 parts, $id" }
             return EndpointIDDefinition(
                 strings[0],
                 decode(strings[1])
@@ -227,11 +213,11 @@ object IDManager {
         fun buildRelationId(define: EndpointRelationDefine): String {
             return (((define.sourceServiceId
                     + Const.RELATION_ID_CONNECTOR
-                    ).toString() + encode(define.source)
+                    ) + encode(define.source)
                     + Const.RELATION_ID_CONNECTOR
-                    ).toString() + define.destServiceId
+                    ) + define.destServiceId
                     + Const.RELATION_ID_CONNECTOR
-                    ).toString() + encode(define.dest)
+                    ) + encode(define.dest)
         }
 
         /**
@@ -241,9 +227,7 @@ object IDManager {
             val parts: Array<String> =
                 entityId.split(Const.RELATION_ID_PARSER_SPLIT.toRegex()).dropLastWhile { it.isEmpty() }
                     .toTypedArray()
-            if (parts.size != 4) {
-                throw IllegalArgumentException("Illegal endpoint Relation entity id, $entityId")
-            }
+            require(parts.size == 4) { "Illegal endpoint Relation entity id, $entityId" }
             return EndpointRelationDefine(
                 parts[0],
                 decode(parts[1]),
@@ -292,6 +276,7 @@ object IDManager {
             }
             return Hashing.sha256().newHasher().putString(
                 String.format(
+                    Locale.ENGLISH,
                     "%s_%s",
                     name, instanceId
                 ), Charsets.UTF_8
@@ -302,7 +287,7 @@ object IDManager {
          * @return encoded process relation id
          */
         fun buildRelationId(define: ProcessRelationDefine): String {
-            return (define.sourceId + Const.RELATION_ID_CONNECTOR).toString() + define.destId
+            return (define.sourceId + Const.RELATION_ID_CONNECTOR) + define.destId
         }
 
         /**
@@ -312,9 +297,7 @@ object IDManager {
             val parts: Array<String> =
                 entityId.split(Const.RELATION_ID_PARSER_SPLIT.toRegex()).dropLastWhile { it.isEmpty() }
                     .toTypedArray()
-            if (parts.size != 2) {
-                throw RuntimeException("Illegal Process Relation entity id")
-            }
+            require(parts.size == 2) { "Illegal Process Relation entity id" }
             return ProcessRelationDefine(parts[0], parts[1])
         }
 
