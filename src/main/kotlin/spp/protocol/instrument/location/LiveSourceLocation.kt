@@ -18,10 +18,11 @@ package spp.protocol.instrument.location
 
 import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.json.JsonObject
+import spp.protocol.platform.general.Service
 import spp.protocol.platform.status.InstanceConnection
 
 /**
- * todo: description.
+ * Represents a location in source code.
  *
  * @since 0.3.0
  * @author [Brandon Fergerson](mailto:bfergerson@apache.org)
@@ -30,23 +31,21 @@ import spp.protocol.platform.status.InstanceConnection
 data class LiveSourceLocation @JvmOverloads constructor(
     val source: String,
     val line: Int = -1,
-    val service: String? = null, //todo: can use Service
-    val serviceInstance: String? = null, //todo: fully impl
-    val commitId: String? = null, //todo: impl
-    val fileChecksum: String? = null, //todo: impl
-    //val language: ArtifactLanguage? = null, //todo: impl
-    val probeId: String? = null,
+    override val service: Service? = null,
+    override val serviceInstance: String? = null,
+    override val commitId: String? = null,
+    override val fileChecksum: String? = null, //todo: impl
+    override val probeId: String? = null, //todo: impl
     val scope: LocationScope = LocationScope.LINE
-) : Comparable<LiveSourceLocation> {
+) : LiveLocation, Comparable<LiveSourceLocation> {
 
     constructor(json: JsonObject) : this(
         source = json.getString("source"),
         line = json.getInteger("line") ?: -1,
-        service = json.getString("service"),
+        service = json.getJsonObject("service")?.let { Service(it) },
         serviceInstance = json.getString("serviceInstance"),
         commitId = json.getString("commitId"),
         fileChecksum = json.getString("fileChecksum"),
-        //language = json.getString("language")?.let { ArtifactLanguage.valueOf(it) }
         probeId = json.getString("probeId"),
         scope = json.getString("scope")?.let { LocationScope.valueOf(it) } ?: LocationScope.LINE
     )
@@ -55,11 +54,10 @@ data class LiveSourceLocation @JvmOverloads constructor(
         val json = JsonObject()
         json.put("source", source)
         json.put("line", line)
-        json.put("service", service)
+        json.put("service", service?.toJson())
         json.put("serviceInstance", serviceInstance)
         json.put("commitId", commitId)
         json.put("fileChecksum", fileChecksum)
-        //json.put("language", language?.name)
         json.put("probeId", probeId)
         json.put("scope", scope.name)
         return json
@@ -78,13 +76,12 @@ data class LiveSourceLocation @JvmOverloads constructor(
         if (serviceInstance != other.serviceInstance) return false
         if (commitId != other.commitId) return false
         if (fileChecksum != other.fileChecksum) return false
-        //if (language != other.language) return false
         if (probeId != other.probeId) return false
         return true
     }
 
     fun isSameLocation(other: InstanceConnection): Boolean {
-        if (service != null && service != other.meta["service"]) return false
+        if (service != null && service.name != other.meta["service"]) return false
         if (serviceInstance != null && serviceInstance != other.meta["service_instance"]) return false
         if (commitId != null && commitId != other.meta["commit_id"]) return false
         if (probeId != null && probeId != other.instanceId) return false
@@ -100,7 +97,6 @@ data class LiveSourceLocation @JvmOverloads constructor(
             if (serviceInstance != null) append(", serviceInstance=$serviceInstance")
             if (commitId != null) append(", commitId=$commitId")
             if (fileChecksum != null) append(", fileChecksum=$fileChecksum")
-            //if (language != null) append(", language=$language")
             if (probeId != null) append(", probeId=$probeId")
             if (scope != LocationScope.LINE) append(", scope=$scope")
             append(")")
