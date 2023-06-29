@@ -49,7 +49,9 @@ data class Service(
         json.getString("group"),
         json.getString("shortName"),
         json.getJsonArray("layers").map { it as String },
-        json.getBoolean("normal")
+        json.getBoolean("normal"),
+        json.getString("environment"),
+        json.getString("commitId")
     )
 
     fun toJson(): JsonObject {
@@ -59,6 +61,8 @@ data class Service(
         json.put("shortName", shortName)
         json.put("layers", layers)
         json.put("normal", normal)
+        json.put("environment", environment)
+        json.put("commitId", commitId)
         return json
     }
 
