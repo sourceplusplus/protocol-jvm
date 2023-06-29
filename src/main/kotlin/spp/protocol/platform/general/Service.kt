@@ -99,6 +99,21 @@ data class Service(
         return copy(name = name)
     }
 
+    fun withId(id: String?): Service {
+        if (id == null) return this
+        val definition = IDManager.ServiceID.analysisId(id)
+        if (name.contains("|")) {
+            val parts = name.split("|")
+            return copy(
+                name = parts[0],
+                environment = parts[1],
+                commitId = parts[2],
+                normal = definition.isReal
+            )
+        }
+        return copy(name = definition.name, normal = definition.isReal)
+    }
+
     companion object {
 
         @JvmStatic
