@@ -42,7 +42,14 @@ data class LiveSourceLocation @JvmOverloads constructor(
     constructor(json: JsonObject) : this(
         source = json.getString("source"),
         line = json.getInteger("line") ?: -1,
-        service = json.getJsonObject("service")?.let { Service(it) },
+        service = json.getValue("service")?.let {
+            if (it is JsonObject) {
+                Service(it)
+            } else {
+                //todo: remove v0.8.0+
+                Service.fromName(it.toString())
+            }
+        },
         serviceInstance = json.getString("serviceInstance"),
         commitId = json.getString("commitId"),
         fileChecksum = json.getString("fileChecksum"),
