@@ -6,6 +6,18 @@ query getLiveLogs{
         location {
             source
             line
+            service {
+                id
+                name
+                group
+                shortName
+                layers
+                normal
+                environment
+                version
+            }
+            probeId
+            scope
         }
         condition
         expiresAt

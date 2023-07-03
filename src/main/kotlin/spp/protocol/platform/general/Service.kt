@@ -28,7 +28,7 @@ import spp.protocol.platform.general.util.IDManager
 @DataObject
 data class Service(
     val name: String,
-    val group: String = "",
+    val group: String? = null,
     val shortName: String? = null,
     val layers: List<String> = emptyList(),
     val normal: Boolean = true,
@@ -48,8 +48,8 @@ data class Service(
         json.getString("name"),
         json.getString("group"),
         json.getString("shortName"),
-        json.getJsonArray("layers").map { it as String },
-        json.getBoolean("normal"),
+        json.getJsonArray("layers")?.map { it.toString() } ?: emptyList(),
+        json.getBoolean("normal") ?: true,
         json.getString("environment"),
         json.getString("version")
     )
@@ -77,9 +77,9 @@ data class Service(
     /**
      * Ensures all non-null fields are equal.
      */
-    fun isSameLocation(other: Service): Boolean {
+    fun isSameService(other: Service): Boolean {
         if (name != other.name) return false
-        if (group != other.group) return false
+        if (group != null && group != other.group) return false
         if (shortName != null && shortName != other.shortName) return false
         if (layers != other.layers) return false
         if (normal != other.normal) return false
@@ -118,7 +118,7 @@ data class Service(
         return buildString {
             append("Service(")
             append("name=$name")
-            if (group != "") append(", group=$group")
+            if (group != null && group != "") append(", group=$group")
             if (shortName != null) append(", shortName=$shortName")
             if (layers.isNotEmpty()) append(", layers=$layers")
             if (!normal) append(", normal=$normal")

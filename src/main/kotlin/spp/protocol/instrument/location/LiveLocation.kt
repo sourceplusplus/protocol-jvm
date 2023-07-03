@@ -23,8 +23,5 @@ import spp.protocol.platform.general.Service
  */
 interface LiveLocation {
     val service: Service?
-    val serviceInstance: String?
-    val commitId: String?
-    val fileChecksum: String?
     val probeId: String?
 }
