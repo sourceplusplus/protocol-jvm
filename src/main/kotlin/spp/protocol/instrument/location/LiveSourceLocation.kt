@@ -32,9 +32,6 @@ data class LiveSourceLocation @JvmOverloads constructor(
     val source: String,
     val line: Int = -1,
     override val service: Service? = null,
-    override val serviceInstance: String? = null,
-    override val commitId: String? = null,
-    override val fileChecksum: String? = null, //todo: impl
     override val probeId: String? = null, //todo: impl
     val scope: LocationScope = LocationScope.LINE
 ) : LiveLocation, Comparable<LiveSourceLocation> {
@@ -50,9 +47,6 @@ data class LiveSourceLocation @JvmOverloads constructor(
                 Service.fromName(it.toString())
             }
         },
-        serviceInstance = json.getString("serviceInstance"),
-        commitId = json.getString("commitId"),
-        fileChecksum = json.getString("fileChecksum"),
         probeId = json.getString("probeId"),
         scope = json.getString("scope")?.let { LocationScope.valueOf(it) } ?: LocationScope.LINE
     )
@@ -62,9 +56,6 @@ data class LiveSourceLocation @JvmOverloads constructor(
         json.put("source", source)
         json.put("line", line)
         json.put("service", service?.toJson())
-        json.put("serviceInstance", serviceInstance)
-        json.put("commitId", commitId)
-        json.put("fileChecksum", fileChecksum)
         json.put("probeId", probeId)
         json.put("scope", scope.name)
         return json
@@ -79,18 +70,13 @@ data class LiveSourceLocation @JvmOverloads constructor(
     fun isSameLocation(other: LiveSourceLocation): Boolean {
         if (source != other.source) return false
         if (line != other.line && line != -1 && other.line != -1) return false //-1 is wildcard
-        if (service != other.service) return false
-        if (serviceInstance != other.serviceInstance) return false
-        if (commitId != other.commitId) return false
-        if (fileChecksum != other.fileChecksum) return false
-        if (probeId != other.probeId) return false
+        if (service != null && (other.service == null || !service.isSameService(other.service))) return false
+        if (probeId != null && probeId != other.probeId) return false
         return true
     }
 
     fun isSameLocation(other: InstanceConnection): Boolean {
         if (service != null && service.name != other.meta["service"]) return false
-        if (serviceInstance != null && serviceInstance != other.meta["service_instance"]) return false
-        if (commitId != null && commitId != other.meta["commit_id"]) return false
         if (probeId != null && probeId != other.instanceId) return false
         return true
     }
@@ -101,9 +87,6 @@ data class LiveSourceLocation @JvmOverloads constructor(
             append("source=$source")
             if (line != -1) append(", line=$line")
             if (service != null) append(", service=$service")
-            if (serviceInstance != null) append(", serviceInstance=$serviceInstance")
-            if (commitId != null) append(", commitId=$commitId")
-            if (fileChecksum != null) append(", fileChecksum=$fileChecksum")
             if (probeId != null) append(", probeId=$probeId")
             if (scope != LocationScope.LINE) append(", scope=$scope")
             append(")")
