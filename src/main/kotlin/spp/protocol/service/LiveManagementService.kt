@@ -117,15 +117,17 @@ interface LiveManagementService {
     fun getMetrics(includeUnused: Boolean): Future<JsonObject>
     fun getSelf(): Future<SelfInfo>
 
+    fun getActiveServices(serviceName: String): Future<List<Service>>
+
     @GenIgnore
     fun getServices(): Future<List<Service>> {
         return getServices(null)
     }
 
     fun getServices(layer: String?): Future<List<Service>>
-    fun getInstances(serviceId: String): Future<List<ServiceInstance>>
-    fun getEndpoints(serviceId: String, limit: Int?): Future<List<ServiceEndpoint>>
-    fun searchEndpoints(serviceId: String, keyword: String, limit: Int?): Future<List<ServiceEndpoint>>
+    fun getInstances(service: Service): Future<List<ServiceInstance>>
+    fun getEndpoints(service: Service, limit: Int?): Future<List<ServiceEndpoint>>
+    fun searchEndpoints(service: Service, keyword: String, limit: Int?): Future<List<ServiceEndpoint>>
     fun sortMetrics(
         name: String,
         parentService: String?,
