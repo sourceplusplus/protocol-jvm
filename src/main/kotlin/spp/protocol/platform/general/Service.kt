@@ -33,12 +33,12 @@ data class Service(
     val layers: List<String> = emptyList(),
     val normal: Boolean = true,
     val environment: String? = null,
-    val commitId: String? = null
+    val version: String? = null
 ) {
 
     val id by lazy {
-        if (commitId != null) {
-            IDManager.ServiceID.buildId("$name|$environment|$commitId", normal)
+        if (version != null) {
+            IDManager.ServiceID.buildId("$name|$environment|$version", normal)
         } else {
             IDManager.ServiceID.buildId(name, normal)
         }
@@ -51,7 +51,7 @@ data class Service(
         json.getJsonArray("layers").map { it as String },
         json.getBoolean("normal"),
         json.getString("environment"),
-        json.getString("commitId")
+        json.getString("version")
     )
 
     fun toJson(): JsonObject {
@@ -62,7 +62,7 @@ data class Service(
         json.put("layers", layers)
         json.put("normal", normal)
         json.put("environment", environment)
-        json.put("commitId", commitId)
+        json.put("version", version)
         return json
     }
 
@@ -70,8 +70,8 @@ data class Service(
         return copy(environment = environment)
     }
 
-    fun withCommitId(commitId: String?): Service {
-        return copy(commitId = commitId)
+    fun withVersion(version: String?): Service {
+        return copy(version = version)
     }
 
     /**
@@ -84,7 +84,7 @@ data class Service(
         if (layers != other.layers) return false
         if (normal != other.normal) return false
         if (environment != null && environment != other.environment) return false
-        if (commitId != null && commitId != other.commitId) return false
+        if (version != null && version != other.version) return false
         return true
     }
 
@@ -94,7 +94,7 @@ data class Service(
             val parts = name.split("|")
             return withName(parts[0])
                 .withEnvironment(if (parts[1] != "null") parts[1] else null)
-                .withCommitId(if (parts[2] != "null") parts[2] else null)
+                .withVersion(if (parts[2] != "null") parts[2] else null)
         }
         return copy(name = name)
     }
@@ -107,7 +107,7 @@ data class Service(
             return copy(
                 name = parts[0],
                 environment = if (parts[1] != "null") parts[1] else null,
-                commitId = if (parts[2] != "null") parts[2] else null,
+                version = if (parts[2] != "null") parts[2] else null,
                 normal = definition.isReal
             )
         }
@@ -123,7 +123,7 @@ data class Service(
             if (layers.isNotEmpty()) append(", layers=$layers")
             if (!normal) append(", normal=$normal")
             if (environment != null) append(", environment=$environment")
-            if (commitId != null) append(", commitId=$commitId")
+            if (version != null) append(", version=$version")
             append(")")
         }
     }
@@ -142,7 +142,7 @@ data class Service(
                 val parts = name.split("|")
                 return fromName(parts[0])
                     .withEnvironment(if (parts[1] != "null") parts[1] else null)
-                    .withCommitId(if (parts[2] != "null") parts[2] else null)
+                    .withVersion(if (parts[2] != "null") parts[2] else null)
             }
             return Service(name = name)
         }
