@@ -93,8 +93,8 @@ data class Service(
         if (name.contains("|")) {
             val parts = name.split("|")
             return withName(parts[0])
-                .withEnvironment(parts[1])
-                .withCommitId(parts[2])
+                .withEnvironment(if (parts[1] != "null") parts[1] else null)
+                .withCommitId(if (parts[2] != "null") parts[2] else null)
         }
         return copy(name = name)
     }
@@ -106,12 +106,26 @@ data class Service(
             val parts = definition.name.split("|")
             return copy(
                 name = parts[0],
-                environment = parts[1],
-                commitId = parts[2],
+                environment = if (parts[1] != "null") parts[1] else null,
+                commitId = if (parts[2] != "null") parts[2] else null,
                 normal = definition.isReal
             )
         }
         return copy(name = definition.name, normal = definition.isReal)
+    }
+
+    override fun toString(): String {
+        return buildString {
+            append("Service(")
+            append("name=$name")
+            if (group != "") append(", group=$group")
+            if (shortName != null) append(", shortName=$shortName")
+            if (layers.isNotEmpty()) append(", layers=$layers")
+            if (!normal) append(", normal=$normal")
+            if (environment != null) append(", environment=$environment")
+            if (commitId != null) append(", commitId=$commitId")
+            append(")")
+        }
     }
 
     companion object {
@@ -127,8 +141,8 @@ data class Service(
             if (name.contains("|")) {
                 val parts = name.split("|")
                 return fromName(parts[0])
-                    .withEnvironment(parts[1])
-                    .withCommitId(parts[2])
+                    .withEnvironment(if (parts[1] != "null") parts[1] else null)
+                    .withCommitId(if (parts[2] != "null") parts[2] else null)
             }
             return Service(name = name)
         }
