@@ -6947,7 +6947,7 @@
               "deprecationReason": null
             },
             {
-              "name": "commitId",
+              "name": "version",
               "description": null,
               "args": [],
               "type": {
