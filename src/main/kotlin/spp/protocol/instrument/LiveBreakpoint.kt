@@ -117,19 +117,17 @@ data class LiveBreakpoint(
     /**
      * Specify explicitly so Kotlin doesn't override.
      */
+    @Suppress("RedundantOverride")
     override fun equals(other: Any?): Boolean = super.equals(other)
 
     /**
      * Specify explicitly so Kotlin doesn't override.
      */
+    @Suppress("RedundantOverride")
     override fun hashCode(): Int = super.hashCode()
 
     fun addHitListener(vertx: Vertx, listener: (LiveBreakpointHit) -> Unit) {
-        val instrumentId = id
-        if (instrumentId == null) {
-            error("Instrument must be applied before adding a hit listener")
-        }
-
+        val instrumentId = id ?: error("Instrument must be applied before adding a hit listener")
         vertx.eventBus().consumer<JsonObject>(toLiveInstrumentSubscription(instrumentId)).handler {
             val event = LiveInstrumentEvent.fromJson(it.body())
             if (event.eventType == LiveInstrumentEventType.BREAKPOINT_HIT) {
