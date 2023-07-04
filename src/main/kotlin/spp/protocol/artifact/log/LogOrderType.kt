@@ -24,5 +24,5 @@ package spp.protocol.artifact.log
  */
 enum class LogOrderType {
     NEWEST_LOGS,
-    OLDEST_LOGS;
+    OLDEST_LOGS
 }

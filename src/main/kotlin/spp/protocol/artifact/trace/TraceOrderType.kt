@@ -25,5 +25,5 @@ package spp.protocol.artifact.trace
 enum class TraceOrderType {
     LATEST_TRACES,
     SLOWEST_TRACES,
-    FAILED_TRACES;
+    FAILED_TRACES
 }
