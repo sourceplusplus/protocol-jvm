@@ -16,6 +16,7 @@
  */
 package spp.protocol.instrument.location
 
+import io.vertx.core.json.JsonObject
 import spp.protocol.platform.general.Service
 
 /**
@@ -24,4 +25,17 @@ import spp.protocol.platform.general.Service
 interface LiveLocation {
     val service: Service?
     val probeId: String?
+
+    fun isSameLocation(other: LiveLocation): Boolean
+    fun toJson(): JsonObject
+
+    companion object {
+        fun fromJson(json: JsonObject): LiveLocation {
+            return if (json.containsKey("source")) {
+                LiveSourceLocation(json)
+            } else {
+                Service(json)
+            }
+        }
+    }
 }
