@@ -30,16 +30,14 @@ data class ArtifactQualifiedName(
     val identifier: String,
     val commitId: String? = null,
     val type: ArtifactType,
-    val lineNumber: Int? = null,
-    val operationName: String? = null //todo: only method artifacts need
+    val lineNumber: Int? = null
 ) {
 
     constructor(json: JsonObject) : this(
         json.getString("identifier"),
         json.getString("commitId"),
         ArtifactType.valueOf(json.getString("type")),
-        json.getInteger("lineNumber"),
-        json.getString("operationName")
+        json.getInteger("lineNumber")
     )
 
     fun toJson(): JsonObject {
@@ -48,7 +46,6 @@ data class ArtifactQualifiedName(
         json.put("commitId", commitId)
         json.put("type", type.name)
         json.put("lineNumber", lineNumber)
-        json.put("operationName", operationName)
         return json
     }
 
