@@ -240,8 +240,8 @@ object IDManager {
             /**
              * Built by [ServiceID.buildId]
              */
-            private val serviceId: String? = null,
-            private val endpointName: String? = null
+            val serviceId: String? = null,
+            val endpointName: String? = null
         )
 
         data class EndpointRelationDefine(
