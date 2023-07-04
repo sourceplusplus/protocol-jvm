@@ -55,12 +55,12 @@ data class LiveSourceLocation @JvmOverloads constructor(
         scope = json.getString("scope")?.let { LocationScope.valueOf(it) } ?: LocationScope.LINE
     )
 
-    override fun isSameLocation(other: LiveLocation): Boolean {
-        if (other !is LiveSourceLocation) return false
-        if (source != other.source) return false
-        if (line != other.line && line != -1 && other.line != -1) return false //-1 is wildcard
-        if (service != null && (other.service == null || !service.isSameLocation(other.service!!))) return false
-        if (probeId != null && probeId != other.probeId) return false
+    override fun isSameLocation(location: LiveLocation): Boolean {
+        if (location !is LiveSourceLocation) return false
+        if (source != location.source) return false
+        if (line != location.line && line != -1 && location.line != -1) return false //-1 is wildcard
+        if (service != null && (location.service == null || !service.isSameLocation(location.service!!))) return false
+        if (probeId != null && probeId != location.probeId) return false
         return true
     }
 

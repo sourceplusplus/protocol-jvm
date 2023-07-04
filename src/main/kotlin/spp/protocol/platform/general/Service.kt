@@ -89,8 +89,8 @@ data class Service(
     /**
      * Ensures all non-null fields are equal.
      */
-    override fun isSameLocation(other: LiveLocation): Boolean {
-        if (other !is Service) return false //todo: support other types
+    override fun isSameLocation(location: LiveLocation): Boolean {
+        val other = location.service ?: return false
         if (name != other.name) return false
         if (group != null && group != other.group) return false
         if (shortName != null && shortName != other.shortName) return false

@@ -26,7 +26,7 @@ interface LiveLocation {
     val service: Service?
     val probeId: String?
 
-    fun isSameLocation(other: LiveLocation): Boolean
+    fun isSameLocation(location: LiveLocation): Boolean
     fun toJson(): JsonObject
 
     companion object {
