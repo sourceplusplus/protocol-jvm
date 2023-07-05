@@ -1,0 +1,6 @@
+query searchEndpoints($serviceId: String!, $keyword: String!) {
+    searchEndpoints(serviceId: $serviceId, keyword: $keyword) {
+        id
+        name
+    }
+}
