@@ -95,7 +95,11 @@ enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
     SHOW_QUICK_STATS(false, LIVE_VIEW);
 
     companion object {
-        fun fromString(s: String): RolePermission? {
+        fun fromString(s: String): RolePermission {
+            return fromStringOrNull(s) ?: RolePermission.valueOf(s)
+        }
+
+        fun fromStringOrNull(s: String): RolePermission? {
             //todo: remove v0.8.0+
             if (s == "ADD_LIVE_VIEW_SUBSCRIPTION") {
                 return ADD_LIVE_VIEW
