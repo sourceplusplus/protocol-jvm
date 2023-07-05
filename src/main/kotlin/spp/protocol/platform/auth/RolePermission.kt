@@ -96,6 +96,15 @@ enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
 
     companion object {
         fun fromString(s: String): RolePermission? {
+            //todo: remove v0.8.0+
+            if (s == "ADD_LIVE_VIEW_SUBSCRIPTION") {
+                return ADD_LIVE_VIEW
+            } else if (s == "REMOVE_LIVE_VIEW_SUBSCRIPTION") {
+                return REMOVE_LIVE_VIEW
+            } else if (s == "GET_LIVE_VIEW_SUBSCRIPTIONS") {
+                return GET_LIVE_VIEWS
+            }
+
             val exactMatch = values().firstOrNull { it.name.equals(s, true) }
             if (exactMatch != null) {
                 return exactMatch
