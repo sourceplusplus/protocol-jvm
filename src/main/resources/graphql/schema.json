@@ -6479,19 +6479,19 @@
               "deprecationReason": null
             },
             {
-              "name": "ADD_LIVE_VIEW_SUBSCRIPTION",
+              "name": "ADD_LIVE_VIEW",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "REMOVE_LIVE_VIEW_SUBSCRIPTION",
+              "name": "REMOVE_LIVE_VIEW",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "GET_LIVE_VIEW_SUBSCRIPTIONS",
+              "name": "GET_LIVE_VIEWS",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -6805,13 +6805,9 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null

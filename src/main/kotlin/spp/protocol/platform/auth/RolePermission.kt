@@ -84,9 +84,9 @@ enum class RolePermission(val manager: Boolean, val commandType: CommandType) {
     BREAKPOINT_VARIABLE_CONTROL(false, LIVE_INSTRUMENT),
 
     //views
-    ADD_LIVE_VIEW_SUBSCRIPTION(false, LIVE_VIEW),
-    REMOVE_LIVE_VIEW_SUBSCRIPTION(false, LIVE_VIEW),
-    GET_LIVE_VIEW_SUBSCRIPTIONS(false, LIVE_VIEW),
+    ADD_LIVE_VIEW(false, LIVE_VIEW),
+    REMOVE_LIVE_VIEW(false, LIVE_VIEW),
+    GET_LIVE_VIEWS(false, LIVE_VIEW),
 
 //    VIEW_OVERVIEW(false, LIVE_VIEW),
     VIEW_ACTIVITY(false, LIVE_VIEW),
