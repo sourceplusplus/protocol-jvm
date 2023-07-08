@@ -64,4 +64,19 @@ open class ViewRule(
     override fun hashCode(): Int {
         return name.hashCode()
     }
+
+    override fun toString(): String {
+        return buildString {
+            append("ViewRule(")
+            append("name=$name, ")
+            append("exp=$exp")
+            if (partitions.isNotEmpty()) {
+                append(", partitions=$partitions")
+            }
+            if (meterIds.isNotEmpty()) {
+                append(", meterIds=$meterIds")
+            }
+            append(")")
+        }
+    }
 }
