@@ -20,7 +20,7 @@ import io.vertx.codegen.annotations.DataObject
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import spp.protocol.platform.general.Service
+import spp.protocol.instrument.location.LiveLocation
 import spp.protocol.service.SourceServices.Subscribe.toLiveViewSubscription
 
 /**
@@ -33,25 +33,22 @@ import spp.protocol.service.SourceServices.Subscribe.toLiveViewSubscription
 data class LiveView(
     val entityIds: MutableSet<String>,
     val viewConfig: LiveViewConfig,
-    val service: Service? = null,
-    val serviceInstance: String? = null,
+    val location: LiveLocation? = null,
     val subscriptionId: String? = null
 ) {
     constructor(json: JsonObject) : this(
         subscriptionId = json.getString("subscriptionId"),
         entityIds = json.getJsonArray("entityIds").map { it.toString() }.toMutableSet(),
         viewConfig = LiveViewConfig(json.getJsonObject("viewConfig")),
-        service = json.getJsonObject("service")?.let { Service(it) },
-        serviceInstance = json.getString("serviceInstance")
+        location = json.getJsonObject("location")?.let { LiveLocation.fromJson(it) },
     )
 
     fun toJson(): JsonObject {
         val json = JsonObject()
-        json.put("subscriptionId", subscriptionId)
         json.put("entityIds", JsonArray().apply { entityIds.forEach { add(it) } })
         json.put("viewConfig", viewConfig.toJson())
-        service?.let { json.put("service", it.toJson()) }
-        json.put("serviceInstance", serviceInstance)
+        json.put("location", location?.toJson())
+        json.put("subscriptionId", subscriptionId)
         return json
     }
 
@@ -73,8 +70,7 @@ data class LiveView(
             if (subscriptionId != null) append("subscriptionId=$subscriptionId, ")
             append("entityIds=$entityIds, ")
             append("viewConfig=$viewConfig")
-            if (service != null) append(", service=$service")
-            if (serviceInstance != null) append(", serviceInstance=$serviceInstance")
+            if (location != null) append(", location=$location")
             append(")")
         }
     }

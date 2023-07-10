@@ -33,8 +33,7 @@ data class SelfInfo(
     constructor(json: JsonObject) : this(
         developer = Developer(json.getJsonObject("developer")),
         roles = json.getJsonArray("roles").map { DeveloperRole.fromString(it.toString()) },
-        permissions = json.getJsonArray("permissions")
-            .map { RolePermission.fromString(it.toString()) ?: error("Invalid permission: $it") },
+        permissions = json.getJsonArray("permissions").map { RolePermission.fromString(it.toString()) },
         access = json.getJsonArray("access").map { AccessPermission(JsonObject.mapFrom(it)) }
     )
 

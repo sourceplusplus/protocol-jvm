@@ -27,6 +27,9 @@ import io.vertx.core.impl.ContextInternal
 import io.vertx.core.json.JsonObject
 import spp.protocol.artifact.metrics.MetricStep
 import spp.protocol.artifact.trace.TraceStack
+import spp.protocol.platform.general.Order
+import spp.protocol.platform.general.Scope
+import spp.protocol.platform.general.SelectedRecord
 import spp.protocol.service.SourceServices.LIVE_VIEW
 import spp.protocol.view.HistoricalView
 import spp.protocol.view.LiveView
@@ -81,6 +84,18 @@ interface LiveViewService {
     fun getLiveViews(): Future<List<LiveView>>
     fun clearLiveViews(): Future<List<LiveView>>
     fun getLiveViewStats(): Future<JsonObject>
+
+    fun sortMetrics(
+        name: String,
+        parentService: String?,
+        normal: Boolean?,
+        scope: Scope?,
+        topN: Int,
+        order: Order,
+        step: MetricStep,
+        start: Instant,
+        stop: Instant?
+    ): Future<List<SelectedRecord>>
 
     @GenIgnore
     fun getHistoricalMetrics(

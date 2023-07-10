@@ -16,8 +16,11 @@
  */
 package spp.protocol.platform.general
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import io.vertx.codegen.annotations.DataObject
+import io.vertx.codegen.annotations.GenIgnore
 import io.vertx.core.json.JsonObject
+import spp.protocol.instrument.location.LiveLocation
 import spp.protocol.platform.general.util.IDManager
 
 /**
@@ -34,7 +37,16 @@ data class Service(
     val normal: Boolean = true,
     val environment: String? = null,
     val version: String? = null
-) {
+) : LiveLocation {
+
+    @GenIgnore
+    @get:JsonIgnore
+    @delegate:JsonIgnore
+    override val service: Service by lazy { this }
+
+    @GenIgnore
+    @get:JsonIgnore
+    override val probeId: String? = null
 
     val id by lazy {
         if (version != null) {
@@ -54,7 +66,7 @@ data class Service(
         json.getString("version")
     )
 
-    fun toJson(): JsonObject {
+    override fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("name", name)
         json.put("group", group)
@@ -77,7 +89,8 @@ data class Service(
     /**
      * Ensures all non-null fields are equal.
      */
-    fun isSameService(other: Service): Boolean {
+    override fun isSameLocation(location: LiveLocation): Boolean {
+        val other = location.service ?: return false
         if (name != other.name) return false
         if (group != null && group != other.group) return false
         if (shortName != null && shortName != other.shortName) return false

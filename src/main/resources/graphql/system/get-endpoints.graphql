@@ -1,0 +1,6 @@
+query getEndpoints($serviceId: String!){
+    getEndpoints(serviceId: $serviceId) {
+        id
+        name
+    }
+}

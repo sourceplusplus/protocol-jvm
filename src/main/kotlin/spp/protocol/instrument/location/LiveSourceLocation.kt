@@ -36,6 +36,10 @@ data class LiveSourceLocation @JvmOverloads constructor(
     val scope: LocationScope = LocationScope.LINE
 ) : LiveLocation, Comparable<LiveSourceLocation> {
 
+    init {
+        require(source.isNotBlank()) { "source is required" }
+    }
+
     constructor(json: JsonObject) : this(
         source = json.getString("source"),
         line = json.getInteger("line") ?: -1,
@@ -51,7 +55,16 @@ data class LiveSourceLocation @JvmOverloads constructor(
         scope = json.getString("scope")?.let { LocationScope.valueOf(it) } ?: LocationScope.LINE
     )
 
-    fun toJson(): JsonObject {
+    override fun isSameLocation(location: LiveLocation): Boolean {
+        if (location !is LiveSourceLocation) return false
+        if (source != location.source) return false
+        if (line != location.line && line != -1 && location.line != -1) return false //-1 is wildcard
+        if (service != null && (location.service == null || !service.isSameLocation(location.service!!))) return false
+        if (probeId != null && probeId != location.probeId) return false
+        return true
+    }
+
+    override fun toJson(): JsonObject {
         val json = JsonObject()
         json.put("source", source)
         json.put("line", line)
@@ -70,7 +83,7 @@ data class LiveSourceLocation @JvmOverloads constructor(
     fun isSameLocation(other: LiveSourceLocation): Boolean {
         if (source != other.source) return false
         if (line != other.line && line != -1 && other.line != -1) return false //-1 is wildcard
-        if (service != null && (other.service == null || !service.isSameService(other.service))) return false
+        if (service != null && (other.service == null || !service.isSameLocation(other.service))) return false
         if (probeId != null && probeId != other.probeId) return false
         return true
     }

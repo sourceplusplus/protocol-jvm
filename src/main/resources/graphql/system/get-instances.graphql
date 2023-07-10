@@ -1,0 +1,12 @@
+query getInstances($serviceId: String!){
+    getInstances(serviceId: $serviceId) {
+        id
+        name
+        language
+        instanceUUID
+        attributes {
+            key
+            value
+        }
+    }
+}
