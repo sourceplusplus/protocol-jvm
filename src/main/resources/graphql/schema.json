@@ -4825,7 +4825,7 @@
               "deprecationReason": null
             },
             {
-              "name": "setConfigValue",
+              "name": "setConfigurationValue",
               "description": null,
               "args": [
                 {
@@ -6190,7 +6190,7 @@
               "deprecationReason": null
             },
             {
-              "name": "getConfigValue",
+              "name": "getConfigurationValue",
               "description": null,
               "args": [
                 {

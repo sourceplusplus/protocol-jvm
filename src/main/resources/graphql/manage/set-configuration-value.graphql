@@ -1,0 +1,3 @@
+mutation setConfigurationValue($config: String!, $value: String!) {
+    setConfigurationValue(config: $config, value: $value)
+}
