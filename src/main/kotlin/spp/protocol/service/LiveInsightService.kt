@@ -44,14 +44,20 @@ interface LiveInsightService {
      * Uploads source code to the workspace.
      * @param sourceCode The source code to upload.
      */
-    fun uploadSourceCode(sourceCode: JsonObject): Future<Void>
+    fun uploadSourceCode(workspaceId: String, sourceCode: JsonObject): Future<Void>
 
     /**
      * Uploads source code repository to the workspace.
      *
      * @param repository The source code repository to upload.
      */
-    fun uploadRepository(repository: JsonObject): Future<Void>
+    fun uploadRepository(workspaceId: String, repository: JsonObject): Future<Void>
 
-    fun getArtifactInsights(artifact: ArtifactQualifiedName, types: JsonArray): Future<JsonObject>
+    fun getArtifactInsights(workspaceId: String, artifact: ArtifactQualifiedName, types: JsonArray): Future<JsonObject>
+
+    fun getProjectClasses(workspaceId: String, offset: Int, limit: Int): Future<JsonArray>
+
+    fun getProjectFunctions(workspaceId: String, offset: Int, limit: Int): Future<JsonArray>
+
+    fun getFunctionCode(workspaceId: String, function: ArtifactQualifiedName): Future<JsonObject>
 }
