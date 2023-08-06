@@ -124,7 +124,7 @@ interface LiveManagementService {
 
     fun getServices(layer: String?): Future<List<Service>>
     fun getInstances(service: Service): Future<List<ServiceInstance>>
-    fun getEndpoints(service: Service, limit: Int?): Future<List<ServiceEndpoint>>
+    fun getEndpoints(service: Service, limit: Int?, ignoreInactive: Boolean?): Future<List<ServiceEndpoint>>
     fun searchEndpoints(service: Service, keyword: String, limit: Int?): Future<List<ServiceEndpoint>>
 
     fun getActiveProbes(): Future<List<InstanceConnection>>
