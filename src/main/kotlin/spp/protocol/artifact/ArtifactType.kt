@@ -28,7 +28,8 @@ enum class ArtifactType {
     FUNCTION,
     STATEMENT,
     EXPRESSION,
-    ENDPOINT;
+    ENDPOINT,
+    ANNOTATION;
 
     fun showLineNumber(): Boolean {
         return this == STATEMENT || this == EXPRESSION
