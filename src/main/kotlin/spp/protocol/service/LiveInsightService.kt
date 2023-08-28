@@ -59,5 +59,7 @@ interface LiveInsightService {
 
     fun getProjectFunctions(workspaceId: String, offset: Int, limit: Int): Future<JsonArray>
 
+    fun getProjectEndpoints(workspaceId: String, offset: Int, limit: Int): Future<JsonArray>
+
     fun getFunctionCode(workspaceId: String, function: ArtifactQualifiedName): Future<JsonObject>
 }
