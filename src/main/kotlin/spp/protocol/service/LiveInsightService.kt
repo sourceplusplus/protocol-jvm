@@ -40,6 +40,13 @@ interface LiveInsightService {
         }
     }
 
+    fun createWorkspace(workspaceId: String, config: JsonObject): Future<Void>
+
+    @GenIgnore
+    fun createWorkspace(workspaceId: String): Future<Void> {
+        return createWorkspace(workspaceId, JsonObject())
+    }
+
     /**
      * Uploads source code to the workspace.
      * @param sourceCode The source code to upload.
