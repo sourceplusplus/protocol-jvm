@@ -26,6 +26,9 @@ import java.util.*
  * @since 0.1.0
  */
 class LocalMessageCodec<T> : MessageCodec<T, T> {
+
+    private val name = UUID.randomUUID().toString()
+
     override fun encodeToWire(buffer: Buffer, o: T): Unit =
         throw UnsupportedOperationException("Not supported yet.")
 
@@ -33,6 +36,6 @@ class LocalMessageCodec<T> : MessageCodec<T, T> {
         throw UnsupportedOperationException("Not supported yet.")
 
     override fun transform(o: T): T = o
-    override fun name(): String = UUID.randomUUID().toString()
+    override fun name(): String = name
     override fun systemCodecID(): Byte = -1
 }
